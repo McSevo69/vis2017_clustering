@@ -3,8 +3,8 @@ all:
 	make run
 
 build:
-	javac -cp lib/core.jar:. src/gui/Main.java 
+	javac -cp lib/*:src/ src/vis2017/gui/Main.java 
 
 run:
-	java -cp ./src gui.Main
+	java -cp lib/core.jar:src/. vis2017.gui.Main
 
