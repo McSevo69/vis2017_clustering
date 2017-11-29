@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="Window" fx:id="anchorPaneMain" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1314.0" styleClass="background" stylesheets="@../styles/ClusteringGUI.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.ait.enviro.uwedat.dataexport.gui.ExportController">
+<AnchorPane id="Window" fx:id="anchorPaneMain" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1314.0" styleClass="background" stylesheets="@../styles/ClusteringGUI.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.univie.vis2017.gui.ClusteringController">
    <children>
-      <TabPane layoutY="124.0" prefHeight="724.0" prefWidth="1314.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="124.0" prefHeight="724.0" prefWidth="1314.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="123.0">
         <tabs>
           <Tab text="k-means">
             <content>

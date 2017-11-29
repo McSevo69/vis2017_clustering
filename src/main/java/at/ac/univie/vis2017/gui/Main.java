@@ -22,8 +22,8 @@ import org.apache.logging.log4j.core.config.Configurator;
 public class Main extends Application {
 
     private Stage stage;
-    private final double MINIMUM_WINDOW_WIDTH = 655;
-    private final double MINIMUM_WINDOW_HEIGHT = 550.0;
+    private final double MINIMUM_WINDOW_WIDTH = 1920;
+    private final double MINIMUM_WINDOW_HEIGHT = 1080.0;
     private final static String LOG4J_DEFAULT_CONFIG_FILE = System.getProperty("user.dir") + 
             System.getProperty("file.separator") + "log4j2.xml";
     private static org.apache.logging.log4j.Logger logger = LogManager.getLogger(Main.class);
