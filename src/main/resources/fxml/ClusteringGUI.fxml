@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="Window" fx:id="anchorPaneMain" minHeight="-Infinity" minWidth="-Infinity" prefHeight="847.0" prefWidth="1314.0" styleClass="background" stylesheets="@../styles/ClusteringGUI.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.ait.enviro.uwedat.dataexport.gui.ExportController">
+   <children>
+      <TabPane layoutY="124.0" prefHeight="724.0" prefWidth="1314.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="k-means">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="DBSCAN">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="OPTICS">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="ALGORITHM4">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+         <styleClass>
+            <String fx:value="top-segment" />
+            <String fx:value="tabPaneContent" />
+         </styleClass>
+      </TabPane>
+   </children>
+</AnchorPane>

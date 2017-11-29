@@ -1,0 +1,35 @@
+#Window {
+ -fx-padding: 0;
+ -fx-background-image: url("../images/noise.png"), 
+      url("../images/title.png");
+ -fx-background-repeat: repeat, no-repeat;
+ -fx-background-position: left top, left 19px top 15px ;
+ -fx-background-color: radial-gradient(center 70% 5%, radius 90%, #767a7b,#2b2f32);
+}
+
+.bottom-menu {
+    -fx-background-color: rgba(176,176,176,1);
+    -fx-border-color: 
+        transparent rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08),
+        transparent rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+    -fx-border-width: 1, 1.5;
+    -fx-border-insets: -1, 0; 
+}
+
+.top-segment {
+    -fx-background-color: rgba(176,176,176,1);
+    -fx-border-color: 
+        transparent rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08),
+        transparent rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+    -fx-border-width: 1, 1.5;
+    -fx-border-insets: -1, 0; 
+}
+
+.tabPaneContent {
+    -fx-border-color:
+        transparent rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08) rgba(255, 255, 255, 0.08),
+        transparent rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+    -fx-border-width: 1, 1.5;
+    -fx-border-insets: -1, 0; 
+    -fx-opacity: 0.5;
+}
