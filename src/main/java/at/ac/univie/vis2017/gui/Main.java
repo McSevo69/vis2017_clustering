@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
+import at.ac.univie.vis2017.visualizer.Visualizer;
 
 /**
  * Main Application. This class handles navigation and user session.
@@ -22,8 +23,8 @@ import org.apache.logging.log4j.core.config.Configurator;
 public class Main extends Application {
 
     private Stage stage;
-    private final double MINIMUM_WINDOW_WIDTH = 1920;
-    private final double MINIMUM_WINDOW_HEIGHT = 1080.0;
+    private final double MINIMUM_WINDOW_WIDTH = 1600;
+    private final double MINIMUM_WINDOW_HEIGHT = 900;
     private final static String LOG4J_DEFAULT_CONFIG_FILE = System.getProperty("user.dir") + 
             System.getProperty("file.separator") + "log4j2.xml";
     private static org.apache.logging.log4j.Logger logger = LogManager.getLogger(Main.class);
@@ -57,6 +58,9 @@ public class Main extends Application {
         
         loadLogger();                               
         launch(args);
+        
+        System.out.println("I'm awake.");
+        
     }
 
     @Override
@@ -74,7 +78,8 @@ public class Main extends Application {
             
             stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setHeight(MINIMUM_WINDOW_HEIGHT);
-            stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
+            stage.setMaxWidth(1920);
+            stage.setMaxHeight(1080);
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
             stage.setTitle("Clustering Visualizer");
             stage.getIcons().add(new Image("images/clustering.png"));          

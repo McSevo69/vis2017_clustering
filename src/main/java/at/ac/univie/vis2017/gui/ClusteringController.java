@@ -31,10 +31,15 @@
  */
 package at.ac.univie.vis2017.gui;
 
+import at.ac.univie.vis2017.visualizer.Visualizer;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.embed.swing.SwingNode;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +51,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML TabPane tabPaneMenu;    
     //@FXML Tab kmeansTab;       
     //@FXML Tab dbscanTab;     
-    //@FXML Tab opticsTab;        
+    //@FXML Tab opticsTab;  
+    @FXML SwingNode kmeansNode;
 
     private Main application;
     
@@ -61,7 +67,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-                        
+        Visualizer visualizer = new Visualizer();
+        
+        JPanel panel = new JPanel();
+        panel.setBounds(100, 100, 600, 600);
+        panel.add(visualizer);
+        visualizer.init();
+        kmeansNode.setContent(panel);
     }
     
 }
