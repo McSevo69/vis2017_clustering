@@ -3,14 +3,21 @@ package at.ac.univie.vis2017.util;
 public class Point {
 
     // x and y coordinates
-    private double x = NULL;
-    private double y = NULL;
+    private double x;
+    private double y;
     // cluster center (just for kmeans and kmedoids)
-    private double centerX = NULL;
-    private double centerY = NULL;
+    private double centerX;
+    private double centerY;
     // cluster number
     private int clusterNumber = 0;
 
+    public Point(double x, double y, double centerX, double centerY, int clusterNumber) {
+        this.x = x;
+        this.y = y;
+        this.centerX = centerX;
+        this.centerY = centerY;
+        this.clusterNumber = clusterNumber;
+    }
 
     @Override
     public String toString() {

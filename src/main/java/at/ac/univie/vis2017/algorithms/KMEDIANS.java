@@ -9,7 +9,7 @@ public class KMEDIANS {
     // maximum number of iterations
     private int maxIter = 100;
     // dataframe for points to cluster
-    DataFrame data = NULL;
+    DataFrame data = null;
 
 
     public KMEDIANS(int numberClusters, int maxIter, DataFrame data) {

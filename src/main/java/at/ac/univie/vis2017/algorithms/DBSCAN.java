@@ -7,7 +7,7 @@ public class DBSCAN {
     private int minPts = 0;
     private double eps_value = 0.0;
     // save all necessary informations
-    private DataFrame data = NULL;
+    private DataFrame data = null;
 
     public DBSCAN(int minPts, double eps_value, DataFrame data) {
         this.minPts = minPts;
