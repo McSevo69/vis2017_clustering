@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="gradle-wrapper">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../paleo/gradle/wrapper/gradle-wrapper.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/vavr-0.9.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/vavr-kotlin-0.9.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
