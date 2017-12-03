@@ -1,4 +1,4 @@
-package at.ac.univie.vis2017.algorithms;
+package at.ac.univie.vis2017.clustering_algorithms;
 
 import ch.netzwerg.paleo.DataFrame;
 
