@@ -7,6 +7,13 @@
  -fx-background-color: radial-gradient(center 70% 5%, radius 90%, #767a7b,#2b2f32);
 }
 
+.canvas {
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-border-width: 1, 1, 1, 1;
+    -fx-background-color: rgba( 0, 0, 0, 0.8 );
+    
+}
+
 .bottom-menu {
     -fx-background-color: rgba(176,176,176,1);
     -fx-border-color: 

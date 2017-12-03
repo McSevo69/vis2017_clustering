@@ -32,12 +32,19 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.visualizer.Visualizer;
+import at.ac.univie.vis2017.visualizer.VisualizerFX;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
@@ -53,6 +60,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML Tab dbscanTab;     
     //@FXML Tab opticsTab;  
     @FXML SwingNode kmeansNode;
+    @FXML Canvas kmeansCanvas;
+    @FXML Accordion kmeansAccordion;
+    @FXML TitledPane kmeansDataGenPane;
+    @FXML Pane kmeansParentPane;
 
     private Main application;
     
@@ -67,13 +78,24 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Visualizer visualizer = new Visualizer();
+        //Visualizer visualizer = new Visualizer();        
+        //JPanel panel = new JPanel();
+        //panel.setBounds(100, 100, 600, 600);
+        //panel.add(visualizer);
+        //visualizer.init();
+        //kmeansNode.setContent(panel);
         
-        JPanel panel = new JPanel();
-        panel.setBounds(100, 100, 600, 600);
-        panel.add(visualizer);
-        visualizer.init();
-        kmeansNode.setContent(panel);
+        kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
+        
+        VisualizerFX visualizer = new VisualizerFX();
+        
+        GraphicsContext gc = kmeansCanvas.getGraphicsContext2D();
+        
+        visualizer.drawShapes(gc);
+        //visualizer.drawBorder(gc);
+        visualizer.bindProperties(kmeansCanvas, kmeansParentPane, gc);
+        
+        kmeansParentPane.setStyle("-fx-border-color: black");
     }
     
 }
