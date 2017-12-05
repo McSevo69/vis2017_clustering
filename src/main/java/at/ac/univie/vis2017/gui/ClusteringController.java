@@ -33,12 +33,15 @@ package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.visualizer.Visualizer;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
+import java.io.File;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
@@ -47,6 +50,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,6 +71,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Pane kmeansParentPane;
 
     private Main application;
+    private String datasetPath;
+    private File openedDataset;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -74,6 +81,28 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void setApp(Main application){
         this.application = application;
+    }
+    
+    public void loadFromFile() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Load dataset from file");
+        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        chooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter("Dataset", "*.txt"));
+        
+        Stage stageOpen = new Stage();
+        stageOpen.setScene(new Scene(new Group(), 500, 400));
+        File openedDatasetFile = chooser.showOpenDialog(stageOpen);
+        
+        try {
+            if (openedDatasetFile.length() > 0) {
+                datasetPath = openedDatasetFile.getPath();
+            } else {
+                //
+            }
+        } catch (NullPointerException ex) {
+            logger.debug("File opening aborted");
+        }   
     }
     
     @Override
