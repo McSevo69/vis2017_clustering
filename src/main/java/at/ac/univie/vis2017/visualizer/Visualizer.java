@@ -6,8 +6,9 @@ import processing.core.*;
 
 import at.ac.univie.vis2017.util.*;
 
-public class Visualizer extends PApplet implements IVisualizer
+public class Visualizer //extends PApplet implements IVisualizer
 {
+/*
     private int iteration;
     
     @Override
@@ -50,4 +51,5 @@ public class Visualizer extends PApplet implements IVisualizer
         // ellipse (x-coordinate, y-coordinate, x-radius, y-radius);
         ellipse (10, 10, 10, 10);
     }
+*/
 }

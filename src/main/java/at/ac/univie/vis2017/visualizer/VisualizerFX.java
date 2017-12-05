@@ -7,6 +7,7 @@ package at.ac.univie.vis2017.visualizer;
 
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
+import at.ac.univie.vis2017.util.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Border;
@@ -20,6 +21,8 @@ import javafx.scene.shape.ArcType;
  * @author phuksz
  */
 public class VisualizerFX implements IVisualizer {
+    private Canvas canvas;
+    
     private int iteration;
     private int speed;
     private Algorithm algorithm;
@@ -72,16 +75,27 @@ public class VisualizerFX implements IVisualizer {
     public void iterate () {
         
     }
+    
+    public void drawPoint(GraphicsContext gc, Point p) {
+        gc.fillOval(p.getX(), p.getY(), 2, 2);
+    }
 
     public void drawShapes(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
+        
+        if (data != null) {
+            gc.setFill(Color.GREEN);
+
+            for (Point p : data.getIteration(iteration)) {
+                drawPoint (gc, p);
+            }
+        }
+        
         gc.setFill(Color.GREEN);
-        gc.setStroke(Color.BLUE);
-//        gc.setLineWidth(5);
-        
-        gc.strokeLine(40, 10, 10, 40);
-        
         gc.fillOval(10, 60, 30, 30);
-        gc.strokeOval(10, 60, 30, 30);
+        
 /*
         gc.setFill(Color.GREEN);
         gc.setStroke(Color.BLUE);
@@ -117,11 +131,10 @@ public class VisualizerFX implements IVisualizer {
     }*/
     
     public void bindProperties(Canvas canvas, Pane parent, GraphicsContext gc) {
-
         canvas.widthProperty().bind(parent.widthProperty());
         canvas.heightProperty().bind(parent.heightProperty());
         canvas.widthProperty().addListener(evt -> drawShapes(gc));
         canvas.heightProperty().addListener(evt -> drawShapes(gc));
-
+        this.canvas = canvas;
     }
 }
