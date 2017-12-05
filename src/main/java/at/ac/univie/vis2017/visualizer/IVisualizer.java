@@ -19,18 +19,22 @@ import at.ac.univie.vis2017.util.*;
  */
 
 public interface IVisualizer {
+    public enum Mode {
+        AUTO, MANUAL
+    }
+    
     public void setAlgorithm (Algorithm algorithm);
     
-    public void setIteration ();
+    public void setIteration (int iteration);
     public int getIteration ();
     
-    public void setSpeed ();
+    public void setSpeed (int speed);
     
-    public void setMode ();
+    public void setMode (Mode mode);
     
-    public void setShowPaths ();
+    public void setShowPaths (boolean showPaths);
     
-    public void setData ();
+    public void setData (Data data);
     
     public void iterate ();
 }

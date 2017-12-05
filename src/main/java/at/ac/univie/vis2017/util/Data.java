@@ -66,4 +66,8 @@ public class Data {
     public Algorithm getAlgortihm () {
         return this.algorithm;
     }
+    
+    public int getN () {
+        return this.n;
+    }
 }

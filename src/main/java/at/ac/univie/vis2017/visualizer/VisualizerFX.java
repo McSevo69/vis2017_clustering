@@ -6,6 +6,7 @@
 package at.ac.univie.vis2017.visualizer;
 
 import at.ac.univie.vis2017.util.Algorithm;
+import at.ac.univie.vis2017.util.Data;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Border;
@@ -16,36 +17,56 @@ import javafx.scene.shape.ArcType;
 /**
  *
  * @author Severin
+ * @author phuksz
  */
 public class VisualizerFX implements IVisualizer {
     private int iteration;
+    private int speed;
+    private Algorithm algorithm;
+    private Mode mode;
+    private boolean showPaths;
     
-    public void setAlgorithm (Algorithm algorithm) {
+    private Data data;
+    
+    public VisualizerFX () {
         
     }
     
-    public void setIteration () {
-        
+    public VisualizerFX (Data data) {
+        this.iteration = 0;
+        this.speed = data.getN();
+        this.algorithm = data.getAlgortihm();
+        this.mode = Mode.MANUAL;
+        this.showPaths = false;
+        this.data = data;
+    }
+    
+    public void setAlgorithm (Algorithm algorithm) {
+        this.algorithm = algorithm;
+    }
+    
+    public void setIteration (int iteration) {
+        this.iteration = iteration;
     }
     
     public int getIteration () {
         return iteration;
     }
     
-    public void setSpeed () {
-        
+    public void setSpeed (int speed) {
+        this.speed = speed;
     }
     
-    public void setMode () {
-        
+    public void setMode (Mode mode) {
+        this.mode = mode;
     }
     
-    public void setShowPaths () {
-        
+    public void setShowPaths (boolean showPaths) {
+        this.showPaths = showPaths;
     }
     
-    public void setData () {
-        
+    public void setData (Data data) {
+        this.data = data;
     }
     
     public void iterate () {
