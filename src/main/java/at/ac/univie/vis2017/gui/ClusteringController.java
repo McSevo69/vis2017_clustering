@@ -91,9 +91,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         GraphicsContext gc = kmeansCanvas.getGraphicsContext2D();
         
-        visualizer.drawShapes(gc);
         //visualizer.drawBorder(gc);
         visualizer.bindProperties(kmeansCanvas, kmeansParentPane, gc);
+        visualizer.drawShapes(gc);
         
         kmeansParentPane.setStyle("-fx-border-color: black");
     }
