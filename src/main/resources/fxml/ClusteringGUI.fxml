@@ -76,7 +76,7 @@
                                                    </font></Label>
                                                 <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="119.0" text="Generate" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                                 <Spinner prefHeight="26.0" prefWidth="118.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                                <Button mnemonicParsing="false" onAction="#loadFromFile" prefHeight="36.0" prefWidth="118.0" text="Load from file" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                                <Button mnemonicParsing="false" onAction="#loadKmeansFile" prefHeight="36.0" prefWidth="118.0" text="Load from file" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                                              </children>
                                           </GridPane>
                                        </children>

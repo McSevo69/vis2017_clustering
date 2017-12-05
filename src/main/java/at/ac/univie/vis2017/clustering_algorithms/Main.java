@@ -1,12 +1,14 @@
 package at.ac.univie.vis2017.clustering_algorithms;
 
 import ch.netzwerg.paleo.DataFrame;
+import ch.netzwerg.paleo.io.Parser;
 
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 
 public class Main {
 
@@ -25,11 +27,12 @@ public class Main {
         // create buffered reader
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         String line;
+        String datasetString = "";
 
         try {
             while ((line = br.readLine()) != null) {
 
-                System.out.println(line + "\n");
+                datasetString+=line+"\n";
 
             }
             br.close();
@@ -38,6 +41,10 @@ public class Main {
             System.out.println("ERROR: unable to read file " + file);
             e.printStackTrace();
         }
+        
+        System.out.println(datasetString);
+        
+        data = Parser.tsv(new StringReader(datasetString));
 
         return data;
     }
@@ -48,10 +55,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        String fileName = "dbscan1.txt";
+        String fileName = "dbscan2.txt";
         String filePath = System.getProperty("user.dir") + "/src/main/data/";
 
         DataFrame dat = getDataFromTxt(filePath, fileName);
+        
+        System.out.println("TEST " + dat.getRowCount());
+        //dat.getMetaData().
 
     }
 }

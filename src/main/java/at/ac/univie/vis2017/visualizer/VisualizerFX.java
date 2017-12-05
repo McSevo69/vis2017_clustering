@@ -8,6 +8,11 @@ package at.ac.univie.vis2017.visualizer;
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
+import ch.netzwerg.paleo.ColumnIds.CategoryColumnId;
+import ch.netzwerg.paleo.ColumnIds.DoubleColumnId;
+import ch.netzwerg.paleo.ColumnIds.StringColumnId;
+import ch.netzwerg.paleo.ColumnType;
+import ch.netzwerg.paleo.DataFrame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Border;
@@ -76,6 +81,15 @@ public class VisualizerFX implements IVisualizer {
         
     }
     
+    public void drawDataFrame(GraphicsContext gc, DataFrame df) {
+        DoubleColumnId xValue = df.getColumnId(1, ColumnType.DOUBLE);
+        DoubleColumnId yValue = df.getColumnId(2, ColumnType.DOUBLE);
+                
+        for (int i=6; i<df.getRowCount()-5; i++) {
+            gc.fillOval(df.getValueAt(i, xValue), df.getValueAt(i, yValue), 2, 2 );
+        }      
+    }
+    
     public void drawPoint(GraphicsContext gc, Point p) {
         gc.fillOval(p.getX(), p.getY(), 2, 2);
     }
@@ -94,7 +108,7 @@ public class VisualizerFX implements IVisualizer {
         }
         
         gc.setFill(Color.GREEN);
-        gc.fillOval(10, 60, 30, 30);
+        //gc.fillOval(10, 60, 30, 30);
         
 /*
         gc.setFill(Color.GREEN);
