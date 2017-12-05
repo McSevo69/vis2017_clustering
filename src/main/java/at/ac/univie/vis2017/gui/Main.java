@@ -84,6 +84,8 @@ public class Main extends Application {
             
             stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+            stage.setHeight(MINIMUM_WINDOW_HEIGHT);
+            stage.setWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(height);
             stage.setMaxWidth(width);
             stage.setTitle("Clustering Visualizer");
@@ -94,7 +96,7 @@ public class Main extends Application {
             //stage.maxHeightProperty().bind(stage.widthProperty().multiply(9/16));
             //stage.maxWidthProperty().bind(stage.heightProperty().multiply(16/9));
             //stage.
-            stage.setMaximized(true);
+            //stage.setMaximized(true);
         } catch (IOException ex) {
             logger.fatal("Fatal error", ex);
         }
