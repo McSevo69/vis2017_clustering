@@ -4,7 +4,7 @@ import java.util.*;
 
 import processing.core.*;
 
-import vis2017.util.*;
+import at.ac.univie.vis2017.util.*;
 
 public class Visualizer extends PApplet implements IVisualizer
 {
@@ -31,6 +31,10 @@ public class Visualizer extends PApplet implements IVisualizer
     
     @Override
     public void setData () {}
+    
+    public void iterate () {
+        
+    }
 
     public void settings () {
         size (512, 512);

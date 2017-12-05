@@ -1,6 +1,6 @@
 package at.ac.univie.vis2017.visualizer;
 
-import vis2017.util.*;
+import at.ac.univie.vis2017.util.*;
 
 /*
  *  data fields:
@@ -31,4 +31,6 @@ public interface IVisualizer {
     public void setShowPaths ();
     
     public void setData ();
+    
+    public void iterate ();
 }
