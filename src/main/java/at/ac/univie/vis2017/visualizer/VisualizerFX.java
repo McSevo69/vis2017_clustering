@@ -84,9 +84,18 @@ public class VisualizerFX implements IVisualizer {
     public void drawDataFrame(GraphicsContext gc, DataFrame df) {
         DoubleColumnId xValue = df.getColumnId(1, ColumnType.DOUBLE);
         DoubleColumnId yValue = df.getColumnId(2, ColumnType.DOUBLE);
+        
+        double height = gc.getCanvas().getHeight();
+        double width = gc.getCanvas().getWidth();
+        double canvasHeight = 500;
+        double canvasWidth = 500;
+        double normalize = 140.0;
+        
+        gc.setFill(Color.BLACK);
                 
         for (int i=6; i<df.getRowCount()-5; i++) {
-            gc.fillOval(df.getValueAt(i, xValue), df.getValueAt(i, yValue), 2, 2 );
+            gc.setStroke(Color.WHITE);
+            gc.fillOval((df.getValueAt(i, xValue)/normalize)*width, (df.getValueAt(i, yValue)/normalize)*height, 8*width/canvasWidth, 8*height/canvasHeight);
         }
         
     }
@@ -98,17 +107,17 @@ public class VisualizerFX implements IVisualizer {
     public void drawShapes(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
+        //System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
         
-        if (data != null) {
-            gc.setFill(Color.GREEN);
+        //if (data != null) {
+          //  gc.setFill(Color.GREEN);
 
-            for (Point p : data.getIteration(iteration)) {
-                drawPoint (gc, p);
-            }
-        }
+           // for (Point p : data.getIteration(iteration)) {
+           //     drawPoint (gc, p);
+           // }
+        //}
         
-        gc.setFill(Color.GREEN);
+        //gc.setFill(Color.GREEN);
         //gc.fillOval(10, 60, 30, 30);
         
 /*

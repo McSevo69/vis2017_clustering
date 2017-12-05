@@ -34,6 +34,8 @@ package at.ac.univie.vis2017.gui;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 import ch.netzwerg.paleo.DataFrame;
 import ch.netzwerg.paleo.io.Parser;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,6 +56,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -72,10 +75,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML Tab dbscanTab;     
     //@FXML Tab opticsTab;  
     @FXML SwingNode kmeansNode;
-    @FXML Canvas kmeansCanvas;
+    @FXML Canvas kmeansCanvasMain;
+    @FXML Canvas kmeansCanvasStart;
+    @FXML Canvas kmeansCanvasMiddle;
+    @FXML Canvas kmeansCanvasEnd;
     @FXML Accordion kmeansAccordion;
     @FXML TitledPane kmeansDataGenPane;
     @FXML Pane kmeansParentPane;
+    @FXML AnchorPane anchorPaneMain;
+    @FXML GridPane gridPaneControl;
+    @FXML GridPane gridPaneTimeView;
 
     private Main application;
     private DataFrame kmeansDataFrame;
@@ -151,7 +160,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         try {
             kmeansDataFrame = getDataFromTxt(kmeansFile);
             System.out.println("Test");
-            visualizer.drawDataFrame(kmeansCanvas.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasMain.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasStart.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasMiddle.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasEnd.getGraphicsContext2D(), kmeansDataFrame);
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(ClusteringController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -161,15 +173,27 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
+        
+        
         kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
                 
-        GraphicsContext gc = kmeansCanvas.getGraphicsContext2D();
+        GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
         //visualizer.drawBorder(gc);
-        visualizer.bindProperties(kmeansCanvas, kmeansParentPane, gc);
+        visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane, gc);
         visualizer.drawShapes(gc);
+        //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
+        //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
+        //visualizer.drawShapes(kmeansCanvasEnd.getGraphicsContext2D());
         
         kmeansParentPane.setStyle("-fx-border-color: black");
+        //kmeansParentPane.minWidthProperty().bind(kmeansParentPane.heightProperty());
+        //kmeansParentPane.maxWidthProperty().bind(kmeansParentPane.heightProperty());
+        //kmeansParentPane.setPrefWidth(kmeansParentPane.getMaxHeight());
+        //kmeansParentPane.widthProperty().
+        //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
+        
+        
     }
     
 }
