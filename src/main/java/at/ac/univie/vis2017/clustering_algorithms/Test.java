@@ -8,9 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class Test {
 
-    public Main() throws IOException {
+    public Test() throws IOException {
     }
 
     // read data from txt-file
@@ -29,7 +29,7 @@ public class Main {
         try {
             while ((line = br.readLine()) != null) {
 
-                System.out.println(line + "\n");
+                System.out.println(line);
 
             }
             br.close();
@@ -52,6 +52,11 @@ public class Main {
         String filePath = System.getProperty("user.dir") + "/src/main/data/";
 
         DataFrame dat = getDataFromTxt(filePath, fileName);
+
+        int minPts = 4;
+        double epsValue = 0.3;
+        DBSCAN dbscan = new DBSCAN(minPts, epsValue, dat);
+
 
     }
 }

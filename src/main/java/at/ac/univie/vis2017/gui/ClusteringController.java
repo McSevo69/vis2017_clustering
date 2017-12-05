@@ -31,7 +31,7 @@
  */
 package at.ac.univie.vis2017.gui;
 
-import at.ac.univie.vis2017.visualizer.Visualizer;
+
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 import java.io.File;
 
