@@ -87,7 +87,8 @@ public class VisualizerFX implements IVisualizer {
                 
         for (int i=6; i<df.getRowCount()-5; i++) {
             gc.fillOval(df.getValueAt(i, xValue), df.getValueAt(i, yValue), 2, 2 );
-        }      
+        }
+        
     }
     
     public void drawPoint(GraphicsContext gc, Point p) {
