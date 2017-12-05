@@ -101,8 +101,8 @@
                         </Accordion>
                         <GridPane prefHeight="582.0" prefWidth="1160.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="15.0">
                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="651.0" minWidth="10.0" prefWidth="651.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="331.0" minWidth="200.0" prefWidth="208.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="651.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="800.0" minWidth="400.0" prefWidth="800.0" />
                           </columnConstraints>
                           <rowConstraints>
