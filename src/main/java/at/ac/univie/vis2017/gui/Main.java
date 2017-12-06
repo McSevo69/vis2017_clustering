@@ -96,7 +96,7 @@ public class Main extends Application {
             //stage.maxHeightProperty().bind(stage.widthProperty().multiply(9/16));
             //stage.maxWidthProperty().bind(stage.heightProperty().multiply(16/9));
             //stage.
-            //stage.setMaximized(true);
+            stage.setMaximized(true);
         } catch (IOException ex) {
             logger.fatal("Fatal error", ex);
         }
