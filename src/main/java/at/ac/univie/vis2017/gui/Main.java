@@ -11,11 +11,8 @@ import java.io.IOException;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
-import at.ac.univie.vis2017.visualizer.Visualizer;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
