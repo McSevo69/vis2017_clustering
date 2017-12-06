@@ -31,12 +31,21 @@
  */
 package at.ac.univie.vis2017.gui;
 
-
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
+import ch.netzwerg.paleo.DataFrame;
+import ch.netzwerg.paleo.io.Parser;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,6 +56,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -65,25 +75,62 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML Tab dbscanTab;     
     //@FXML Tab opticsTab;  
     @FXML SwingNode kmeansNode;
-    @FXML Canvas kmeansCanvas;
+    @FXML Canvas kmeansCanvasMain;
+    @FXML Canvas kmeansCanvasStart;
+    @FXML Canvas kmeansCanvasMiddle;
+    @FXML Canvas kmeansCanvasEnd;
     @FXML Accordion kmeansAccordion;
     @FXML TitledPane kmeansDataGenPane;
     @FXML Pane kmeansParentPane;
+    @FXML AnchorPane anchorPaneMain;
+    @FXML GridPane gridPaneControl;
+    @FXML GridPane gridPaneTimeView;
 
     private Main application;
-    private String datasetPath;
-    private File openedDataset;
+    private DataFrame kmeansDataFrame;
+    private VisualizerFX visualizer;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
     public ClusteringController() {
+        this.visualizer = new VisualizerFX();
     }
     
     public void setApp(Main application){
         this.application = application;
     }
     
-    public void loadFromFile() {
+    // read data from txt-file
+    // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
+    public static DataFrame getDataFromTxt(String filePath) throws IOException {
+
+        // create dataframe where txt file is saved
+        DataFrame data = null;
+
+        // create buffered reader
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+        String line;
+        String datasetString = "";
+
+        try {
+            while ((line = br.readLine()) != null) {
+                datasetString+=line+"\n";
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: unable to read file " + filePath);
+            e.printStackTrace();
+        }
+        
+        //System.out.println(datasetString);
+        
+        data = Parser.tsv(new StringReader(datasetString));
+
+        return data;
+    }
+    
+    public String loadFromFile() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Load dataset from file");
         chooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -93,6 +140,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Stage stageOpen = new Stage();
         stageOpen.setScene(new Scene(new Group(), 500, 400));
         File openedDatasetFile = chooser.showOpenDialog(stageOpen);
+        String datasetPath = "";
         
         try {
             if (openedDatasetFile.length() > 0) {
@@ -103,28 +151,49 @@ public class ClusteringController extends AnchorPane implements Initializable {
         } catch (NullPointerException ex) {
             logger.debug("File opening aborted");
         }   
+        
+        return datasetPath;
+    }
+    
+    public void loadKmeansFile() {
+        String kmeansFile = loadFromFile();
+        try {
+            kmeansDataFrame = getDataFromTxt(kmeansFile);
+            System.out.println("Test");
+            visualizer.drawDataFrame(kmeansCanvasMain.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasStart.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasMiddle.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawDataFrame(kmeansCanvasEnd.getGraphicsContext2D(), kmeansDataFrame);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(ClusteringController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //Visualizer visualizer = new Visualizer();        
-        //JPanel panel = new JPanel();
-        //panel.setBounds(100, 100, 600, 600);
-        //panel.add(visualizer);
-        //visualizer.init();
-        //kmeansNode.setContent(panel);
+        
+        
         
         kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
-        
-        VisualizerFX visualizer = new VisualizerFX();
-        
-        GraphicsContext gc = kmeansCanvas.getGraphicsContext2D();
+                
+        GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
         //visualizer.drawBorder(gc);
-        visualizer.bindProperties(kmeansCanvas, kmeansParentPane, gc);
+        visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane, gc);
         visualizer.drawShapes(gc);
+        //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
+        //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
+        //visualizer.drawShapes(kmeansCanvasEnd.getGraphicsContext2D());
         
         kmeansParentPane.setStyle("-fx-border-color: black");
+        //kmeansParentPane.minWidthProperty().bind(kmeansParentPane.heightProperty());
+        //kmeansParentPane.maxWidthProperty().bind(kmeansParentPane.heightProperty());
+        //kmeansParentPane.setPrefWidth(kmeansParentPane.getMaxHeight());
+        //kmeansParentPane.widthProperty().
+        //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
+        
+        
     }
     
 }

@@ -8,6 +8,11 @@ package at.ac.univie.vis2017.visualizer;
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
+import ch.netzwerg.paleo.ColumnIds.CategoryColumnId;
+import ch.netzwerg.paleo.ColumnIds.DoubleColumnId;
+import ch.netzwerg.paleo.ColumnIds.StringColumnId;
+import ch.netzwerg.paleo.ColumnType;
+import ch.netzwerg.paleo.DataFrame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Border;
@@ -76,6 +81,25 @@ public class VisualizerFX implements IVisualizer {
         
     }
     
+    public void drawDataFrame(GraphicsContext gc, DataFrame df) {
+        DoubleColumnId xValue = df.getColumnId(1, ColumnType.DOUBLE);
+        DoubleColumnId yValue = df.getColumnId(2, ColumnType.DOUBLE);
+        
+        double height = gc.getCanvas().getHeight();
+        double width = gc.getCanvas().getWidth();
+        double canvasHeight = 500;
+        double canvasWidth = 500;
+        double normalize = 140.0;
+        
+        gc.setFill(Color.BLACK);
+                
+        for (int i=6; i<df.getRowCount()-5; i++) {
+            gc.setStroke(Color.WHITE);
+            gc.fillOval((df.getValueAt(i, xValue)/normalize)*width, (df.getValueAt(i, yValue)/normalize)*height, 8*width/canvasWidth, 8*height/canvasHeight);
+        }
+        
+    }
+    
     public void drawPoint(GraphicsContext gc, Point p) {
         gc.fillOval(p.getX(), p.getY(), 2, 2);
     }
@@ -83,18 +107,18 @@ public class VisualizerFX implements IVisualizer {
     public void drawShapes(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
+        //System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
         
-        if (data != null) {
-            gc.setFill(Color.GREEN);
+        //if (data != null) {
+          //  gc.setFill(Color.GREEN);
 
-            for (Point p : data.getIteration(iteration)) {
-                drawPoint (gc, p);
-            }
-        }
+           // for (Point p : data.getIteration(iteration)) {
+           //     drawPoint (gc, p);
+           // }
+        //}
         
-        gc.setFill(Color.GREEN);
-        gc.fillOval(10, 60, 30, 30);
+        //gc.setFill(Color.GREEN);
+        //gc.fillOval(10, 60, 30, 30);
         
 /*
         gc.setFill(Color.GREEN);

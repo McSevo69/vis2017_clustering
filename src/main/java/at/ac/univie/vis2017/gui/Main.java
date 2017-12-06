@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
-
+import at.ac.univie.vis2017.visualizer.Visualizer;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
- * Test Application. This class handles navigation and user session.
+ * Main Application. This class handles navigation and user session.
  */
 public class Main extends Application {
 
@@ -76,15 +78,25 @@ public class Main extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/styles/ClusteringGUI.css");
             
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth();
+            double height = screenSize.getHeight();
+            
             stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
-            stage.setHeight(MINIMUM_WINDOW_HEIGHT);
-            stage.setMaxWidth(1920);
-            stage.setMaxHeight(1080);
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+            stage.setHeight(MINIMUM_WINDOW_HEIGHT);
+            stage.setWidth(MINIMUM_WINDOW_WIDTH);
+            stage.setMaxHeight(height);
+            stage.setMaxWidth(width);
             stage.setTitle("Clustering Visualizer");
             stage.getIcons().add(new Image("images/clustering.png"));          
             stage.setScene(scene);
             stage.show();
+            //stage.setResizable(false);
+            //stage.maxHeightProperty().bind(stage.widthProperty().multiply(9/16));
+            //stage.maxWidthProperty().bind(stage.heightProperty().multiply(16/9));
+            //stage.
+            //stage.setMaximized(true);
         } catch (IOException ex) {
             logger.fatal("Fatal error", ex);
         }
