@@ -116,12 +116,12 @@ public class Data {
         points.add(new Point(20, 45, 1, 1, 1));
         points.add(new Point(22, 40, 1, 1, 1));
         points.add(new Point(25, 43, 1, 1, 1));
-        points.add(new Point(130, 150, 1, 1, 2));
-        points.add(new Point(132, 145, 1, 1, 2));
+        points.add(new Point(130, 150, 1, 1, 1));
+        points.add(new Point(132, 145, 1, 1, 1));
         
         ArrayList<Point> centers = new ArrayList<Point>();
-        centers.add(new Point(22.3, 42.6, 1, 1, 1));
-        centers.add(new Point(131, 147.5, 1, 1, 2));
+        centers.add(new Point(120, 50, 1, 1, 1));
+        centers.add(new Point(200, 150, 1, 1, 2));
 
         data.addIteration(points, centers);
 
