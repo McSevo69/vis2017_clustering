@@ -59,8 +59,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -169,6 +167,18 @@ public class ClusteringController extends AnchorPane implements Initializable {
             java.util.logging.Logger.getLogger(ClusteringController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public void restarteKmeans() {
+        visualizer.restart();
+    }
+    
+    public void iterateKmeans() {
+        visualizer.iterate();
+    }
+    
+    public void stepBackKmeans() {
+        visualizer.stepback();
     }
     
     @Override
