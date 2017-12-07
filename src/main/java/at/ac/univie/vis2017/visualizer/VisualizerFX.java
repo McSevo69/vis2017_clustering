@@ -36,6 +36,11 @@ public class VisualizerFX implements IVisualizer {
     
     private Data data;
     
+    private GraphicsContext gc;
+    private double colorValueChunk; // the space of 360 degrees is divided into
+                                    // k equally sized chunks, where k is the
+                                    // amount of clusters in the data.
+    
     public VisualizerFX () {
         
     }
@@ -47,6 +52,8 @@ public class VisualizerFX implements IVisualizer {
         this.mode = Mode.MANUAL;
         this.showPaths = false;
         this.data = data;
+        
+        setColorValueChunk();
     }
     
     public void setAlgorithm (Algorithm algorithm) {
@@ -75,10 +82,20 @@ public class VisualizerFX implements IVisualizer {
     
     public void setData (Data data) {
         this.data = data;
+        setColorValueChunk();
+    }
+    
+    public void setGraphicsContext (GraphicsContext gc) {
+        this.gc = gc;
     }
     
     public void iterate () {
-        
+        iteration++;
+        drawIteration();
+    }
+    
+    private void setColorValueChunk () {
+        colorValueChunk = 360.0 / data.getK();
     }
     
     public void drawDataFrame(GraphicsContext gc, DataFrame df) {
@@ -101,7 +118,16 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawPoint(GraphicsContext gc, Point p) {
+        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
         gc.fillOval(p.getX(), p.getY(), 2, 2);
+    }
+    
+    public void drawIteration() {
+        if (data != null) {
+            for (Point p : data.getIterationData(iteration)) {
+                drawPoint(gc, p);
+            }
+        }
     }
 
     public void drawShapes(GraphicsContext gc) {
