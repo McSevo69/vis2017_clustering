@@ -169,16 +169,19 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
     }
     
-    public void restarteKmeans() {
+    public void restartKmeans() {
         visualizer.restart();
+        System.out.println("restartKmeans pressed");
     }
     
     public void iterateKmeans() {
         visualizer.iterate();
+        System.out.println("ierateKmeans pressed");
     }
     
     public void stepBackKmeans() {
         visualizer.stepback();
+        System.out.println("stepBackKmeans pressed");
     }
     
     @Override
