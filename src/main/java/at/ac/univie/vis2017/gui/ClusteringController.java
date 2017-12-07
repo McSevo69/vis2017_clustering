@@ -48,6 +48,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import javafx.beans.property.ObjectProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,6 +57,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -93,6 +97,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML ImageView restartManualModeKMeansImage;
     //@FXML ImageView stepBackManualModeKMeansImage;
     //@FXML ImageView iterateManualModeKMeansImage;
+    @FXML Spinner<Integer> iterationKmeansSpinner;
+    @FXML Slider speedKmeansSlider;
 
     private Main application;
     private DataFrame kmeansDataFrame;
@@ -180,16 +186,19 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void restartManualKmeans() {
         visualizer.restart();
+        //iterationKmeansSpinner.valueFactoryProperty().
         System.out.println("restartKmeans pressed");
     }
     
     public void iterateKmeans() {
         visualizer.iterate();
+        //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
         System.out.println("ierateKmeans pressed");
     }
     
     public void stepBackKmeans() {
         visualizer.stepback();
+        //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
         System.out.println("stepBackKmeans pressed");
     }
     
@@ -219,6 +228,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //restartManualModeKMeansImage.setImage(new Image("images/Skip_to_Start_32px.png"));
         //stepBackManualModeKMeansImage.setImage(new Image("images/Back_32px.png"));
         //iterateManualModeKMeansImage.setImage(new Image("images/Forward_32px.png"));
+        
+        //iterationKmeansSpinner.valueProperty().s
+        
+        speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            visualizer.setSpeed(newValue.intValue());
+            System.out.println("new speed set");
+        });
         
         
         kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
