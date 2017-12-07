@@ -92,7 +92,7 @@ public class Data {
         return data.size();
     }
     
-    public Algorithm getAlgortihm () {
+    public Algorithm getAlgorithm () {
         return algorithm;
     }
     

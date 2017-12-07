@@ -37,5 +37,5 @@ public interface IVisualizer {
     
     public void setData (Data data);
     
-    public void iterate (GraphicsContext gc);
+    public void iterate ();
 }

@@ -48,7 +48,7 @@ public class VisualizerFX implements IVisualizer {
     public VisualizerFX (Data data) {
         this.iteration = 0;
         this.speed = data.getN();
-        this.algorithm = data.getAlgortihm();
+        this.algorithm = data.getAlgorithm();
         this.mode = Mode.MANUAL;
         this.showPaths = false;
         this.data = data;
@@ -87,11 +87,16 @@ public class VisualizerFX implements IVisualizer {
     
     public void setGraphicsContext (GraphicsContext gc) {
         this.gc = gc;
+        setCanvas(gc.getCanvas());
     }
     
-    public void iterate (GraphicsContext gc) {
+    public void setCanvas (Canvas canvas) {
+        this.canvas = canvas;
+    }
+    
+    public void iterate () {
         iteration++;
-        drawIteration(gc);
+        draw();
     }
     
     private void setColorValueChunk () {
@@ -117,26 +122,50 @@ public class VisualizerFX implements IVisualizer {
         
     }
     
-    public void drawPoint(GraphicsContext gc, Point p) {
-//        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
-        gc.setFill(Color.GREEN);
+    public void drawPoint(Point p) {
+        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+//        gc.setFill(Color.GREEN);
         System.out.println(p.getX() + ":" + p.getY());
-        gc.fillOval(p.getX(), p.getY(), 5, 5);
+        gc.fillOval(p.getX(), p.getY(), 3, 3);
     }
     
-    public void drawIteration(GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        
+    public void drawIterationData() {
         if (data != null) {
             for (Point p : data.getIterationData(iteration)) {
-                drawPoint(gc, p);
+                drawPoint(p);
             }
         }
     }
 
+    public void drawIterationCenters () {
+        if (data != null) {
+            for (Point p : data.getIterationCenters(iteration)) {
+                drawPoint(p);
+            }
+        }
+    }
+    
+    public void draw () {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        if (data.getAlgorithm() == Algorithm.KMEANS) {
+            drawIterationData();
+            drawIterationCenters();
+        } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
+            
+        } else if (data.getAlgorithm() == Algorithm.OPTICS) {
+
+        } else if (data.getAlgorithm() == Algorithm.KMEDIANS) {
+            
+        } else if (data.getAlgorithm() == Algorithm.KMEDOIDS) {
+            
+        } else {
+            throw new IllegalArgumentException("not a known algorithm");
+        }
+    }
+
     public void drawShapes(GraphicsContext gc) {
-        drawIteration(gc);
         //System.out.println(canvas.getWidth() + ":" + canvas.getHeight());        
         
         //if (data != null) {
@@ -185,10 +214,11 @@ public class VisualizerFX implements IVisualizer {
     }*/
     
     public void bindProperties(Canvas canvas, Pane parent, GraphicsContext gc) {
+        this.canvas = canvas;
+        this.gc = gc;
         canvas.widthProperty().bind(parent.widthProperty());
         canvas.heightProperty().bind(parent.heightProperty());
-        canvas.widthProperty().addListener(evt -> drawShapes(gc));
-        canvas.heightProperty().addListener(evt -> drawShapes(gc));
-        this.canvas = canvas;
+        canvas.widthProperty().addListener(evt -> draw());
+        canvas.heightProperty().addListener(evt -> draw());
     }
 }
