@@ -41,6 +41,9 @@ public class VisualizerFX implements IVisualizer {
                                     // k equally sized chunks, where k is the
                                     // amount of clusters in the data.
     
+    private int pSize = 5;
+    private int cSize = 5;
+    
     public VisualizerFX () {
         
     }
@@ -99,6 +102,16 @@ public class VisualizerFX implements IVisualizer {
         draw();
     }
     
+    public void stepback () {
+        iteration--;
+        draw();
+    }
+    
+    public void restart () {
+        iteration = 0;
+        draw();
+    }
+    
     private void setColorValueChunk () {
         colorValueChunk = 360.0 / data.getK();
     }
@@ -126,9 +139,18 @@ public class VisualizerFX implements IVisualizer {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
 //        gc.setFill(Color.GREEN);
         System.out.println(p.getX() + ":" + p.getY());
-        gc.fillOval(p.getX(), p.getY(), 3, 3);
+        gc.fillOval(p.getX(), p.getY(), pSize, pSize);
     }
     
+    public void drawCenter(Point p) {
+        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+        gc.setStroke(Color.BLACK);
+//        gc.setFill(Color.GREEN);
+        System.out.println(p.getX() + ":" + p.getY());
+        gc.fillRect(p.getX(), p.getY(), cSize, cSize);
+        gc.strokeRect(p.getX(), p.getY(), cSize, cSize);
+    }
+
     public void drawIterationData() {
         if (data != null) {
             for (Point p : data.getIterationData(iteration)) {
@@ -140,7 +162,7 @@ public class VisualizerFX implements IVisualizer {
     public void drawIterationCenters () {
         if (data != null) {
             for (Point p : data.getIterationCenters(iteration)) {
-                drawPoint(p);
+                drawCenter(p);
             }
         }
     }
