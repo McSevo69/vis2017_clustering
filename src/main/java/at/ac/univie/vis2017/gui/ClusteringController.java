@@ -31,6 +31,7 @@
  */
 package at.ac.univie.vis2017.gui;
 
+import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 import ch.netzwerg.paleo.DataFrame;
 import ch.netzwerg.paleo.io.Parser;
@@ -181,7 +182,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         //visualizer.drawBorder(gc);
         visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane, gc);
-        visualizer.drawShapes(gc);
+//        visualizer.drawShapes(gc);
+
+        visualizer.setData(Data.getTestData());
+        visualizer.draw();
+
         //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
         //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
         //visualizer.drawShapes(kmeansCanvasEnd.getGraphicsContext2D());

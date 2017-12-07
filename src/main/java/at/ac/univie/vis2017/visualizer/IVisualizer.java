@@ -1,6 +1,7 @@
 package at.ac.univie.vis2017.visualizer;
 
 import at.ac.univie.vis2017.util.*;
+import javafx.scene.canvas.GraphicsContext;
 
 /*
  *  data fields:

@@ -41,6 +41,9 @@ public class VisualizerFX implements IVisualizer {
                                     // k equally sized chunks, where k is the
                                     // amount of clusters in the data.
     
+    private int pSize = 5;
+    private int cSize = 5;
+    
     public VisualizerFX () {
         
     }
@@ -48,7 +51,7 @@ public class VisualizerFX implements IVisualizer {
     public VisualizerFX (Data data) {
         this.iteration = 0;
         this.speed = data.getN();
-        this.algorithm = data.getAlgortihm();
+        this.algorithm = data.getAlgorithm();
         this.mode = Mode.MANUAL;
         this.showPaths = false;
         this.data = data;
@@ -87,11 +90,26 @@ public class VisualizerFX implements IVisualizer {
     
     public void setGraphicsContext (GraphicsContext gc) {
         this.gc = gc;
+        setCanvas(gc.getCanvas());
+    }
+    
+    public void setCanvas (Canvas canvas) {
+        this.canvas = canvas;
     }
     
     public void iterate () {
         iteration++;
-        drawIteration();
+        draw();
+    }
+    
+    public void stepback () {
+        iteration--;
+        draw();
+    }
+    
+    public void restart () {
+        iteration = 0;
+        draw();
     }
     
     private void setColorValueChunk () {
@@ -117,23 +135,60 @@ public class VisualizerFX implements IVisualizer {
         
     }
     
-    public void drawPoint(GraphicsContext gc, Point p) {
+    public void drawPoint(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
-        gc.fillOval(p.getX(), p.getY(), 2, 2);
+//        gc.setFill(Color.GREEN);
+        System.out.println(p.getX() + ":" + p.getY());
+        gc.fillOval(p.getX(), p.getY(), pSize, pSize);
     }
     
-    public void drawIteration() {
+    public void drawCenter(Point p) {
+        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+        gc.setStroke(Color.BLACK);
+//        gc.setFill(Color.GREEN);
+        System.out.println(p.getX() + ":" + p.getY());
+        gc.fillRect(p.getX(), p.getY(), cSize, cSize);
+        gc.strokeRect(p.getX(), p.getY(), cSize, cSize);
+    }
+
+    public void drawIterationData() {
         if (data != null) {
             for (Point p : data.getIterationData(iteration)) {
-                drawPoint(gc, p);
+                drawPoint(p);
             }
         }
     }
 
-    public void drawShapes(GraphicsContext gc) {
+    public void drawIterationCenters () {
+        if (data != null) {
+            for (Point p : data.getIterationCenters(iteration)) {
+                drawCenter(p);
+            }
+        }
+    }
+    
+    public void draw () {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
+        
+        if (data.getAlgorithm() == Algorithm.KMEANS) {
+            drawIterationData();
+            drawIterationCenters();
+        } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
+            
+        } else if (data.getAlgorithm() == Algorithm.OPTICS) {
+
+        } else if (data.getAlgorithm() == Algorithm.KMEDIANS) {
+            
+        } else if (data.getAlgorithm() == Algorithm.KMEDOIDS) {
+            
+        } else {
+            throw new IllegalArgumentException("not a known algorithm");
+        }
+    }
+
+    public void drawShapes(GraphicsContext gc) {
+        //System.out.println(canvas.getWidth() + ":" + canvas.getHeight());        
         
         //if (data != null) {
           //  gc.setFill(Color.GREEN);
@@ -181,10 +236,11 @@ public class VisualizerFX implements IVisualizer {
     }*/
     
     public void bindProperties(Canvas canvas, Pane parent, GraphicsContext gc) {
+        this.canvas = canvas;
+        this.gc = gc;
         canvas.widthProperty().bind(parent.widthProperty());
         canvas.heightProperty().bind(parent.heightProperty());
-        canvas.widthProperty().addListener(evt -> drawShapes(gc));
-        canvas.heightProperty().addListener(evt -> drawShapes(gc));
-        this.canvas = canvas;
+        canvas.widthProperty().addListener(evt -> draw());
+        canvas.heightProperty().addListener(evt -> draw());
     }
 }
