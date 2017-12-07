@@ -13,6 +13,7 @@ import ch.netzwerg.paleo.ColumnIds.DoubleColumnId;
 import ch.netzwerg.paleo.ColumnIds.StringColumnId;
 import ch.netzwerg.paleo.ColumnType;
 import ch.netzwerg.paleo.DataFrame;
+import java.util.ArrayList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Border;
@@ -116,9 +117,7 @@ public class VisualizerFX implements IVisualizer {
         colorValueChunk = 360.0 / data.getK();
     }
     
-    public void drawDataFrame(GraphicsContext gc, DataFrame df) {
-        DoubleColumnId xValue = df.getColumnId(1, ColumnType.DOUBLE);
-        DoubleColumnId yValue = df.getColumnId(2, ColumnType.DOUBLE);
+    public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
         
         double height = gc.getCanvas().getHeight();
         double width = gc.getCanvas().getWidth();
@@ -128,9 +127,9 @@ public class VisualizerFX implements IVisualizer {
         
         gc.setFill(Color.BLACK);
                 
-        for (int i=6; i<df.getRowCount()-5; i++) {
+        for (Point point : is) {
             gc.setStroke(Color.WHITE);
-            gc.fillOval((df.getValueAt(i, xValue)/normalize)*width, (df.getValueAt(i, yValue)/normalize)*height, 8*width/canvasWidth, 8*height/canvasHeight);
+            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, 8*width/canvasWidth, 8*height/canvasHeight);
         }
         
     }

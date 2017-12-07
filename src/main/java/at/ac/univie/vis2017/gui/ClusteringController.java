@@ -32,6 +32,7 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.util.Data;
+import at.ac.univie.vis2017.util.Point;
 import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 import ch.netzwerg.paleo.DataFrame;
@@ -46,6 +47,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javafx.beans.property.ObjectProperty;
@@ -101,13 +103,15 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Slider speedKmeansSlider;
 
     private Main application;
-    private DataFrame kmeansDataFrame;
+    //private DataFrame kmeansDataFrame;
+    private ArrayList<Point> initialStatePoints;
     private VisualizerFX visualizer;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
     public ClusteringController() {
         this.visualizer = new VisualizerFX();
+        this.initialStatePoints = new ArrayList<>();
     }
     
     public void setApp(Main application){
@@ -116,19 +120,19 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
-    public static DataFrame getDataFromTxt(String filePath) throws IOException {
+    public static ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
 
-        // create dataframe where txt file is saved
-        DataFrame data = null;
+        // create ArrayList where Points are saved
+        ArrayList<Point> data = new ArrayList<>();
 
         // create buffered reader
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
         String line;
-        String datasetString = "";
 
         try {
             while ((line = br.readLine()) != null) {
-                datasetString+=line+"\n";
+                String[] row = line.split(" ");
+                data.add(new Point(Double.parseDouble(row[1]), Double.parseDouble(row[2]), 0.0, 0.0, 0));
             }
             br.close();
         }
@@ -136,10 +140,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
             System.out.println("ERROR: unable to read file " + filePath);
             e.printStackTrace();
         }
-        
-        //System.out.println(datasetString);
-        
-        data = Parser.tsv(new StringReader(datasetString));
 
         return data;
     }
@@ -172,12 +172,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void loadKmeansFile() {
         String kmeansFile = loadFromFile();
         try {
-            kmeansDataFrame = getDataFromTxt(kmeansFile);
+            initialStatePoints = getDataFromTxt(kmeansFile);
             System.out.println("Test");
-            visualizer.drawDataFrame(kmeansCanvasMain.getGraphicsContext2D(), kmeansDataFrame);
-            visualizer.drawDataFrame(kmeansCanvasStart.getGraphicsContext2D(), kmeansDataFrame);
-            visualizer.drawDataFrame(kmeansCanvasMiddle.getGraphicsContext2D(), kmeansDataFrame);
-            visualizer.drawDataFrame(kmeansCanvasEnd.getGraphicsContext2D(), kmeansDataFrame);
+            visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+            visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
+            visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
+            visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(ClusteringController.class.getName()).log(Level.SEVERE, null, ex);
         }
