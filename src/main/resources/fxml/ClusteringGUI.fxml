@@ -10,10 +10,13 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -94,7 +97,56 @@
                             </TitledPane>
                             <TitledPane animated="false" prefHeight="371.0" prefWidth="175.0" text="Visualize">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="174.0" />
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="342.0" prefWidth="174.0">
+                                       <children>
+                                          <GridPane layoutX="25.0" layoutY="192.0" prefHeight="230.0" prefWidth="161.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Slider min="1.0" showTickLabels="true" showTickMarks="true" GridPane.rowIndex="3" />
+                                                <Spinner GridPane.rowIndex="1" />
+                                                <GridPane GridPane.rowIndex="5">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <ImageView fx:id="restartAutoModeKmeansImage" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#autoModeRestartKmeans" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                                                         <image>
+                                                            <Image url="@../images/Restart_32px.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fx:id="pauseAutoModeKmeansImage" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#autoModePauseKmeans" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                                         <image>
+                                                            <Image url="@../images/Pause_32px.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fx:id="playAutoModeKmeansImage" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#autoModePlayKmeans" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                                         <image>
+                                                            <Image url="@../images/Play_32px.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </GridPane>
+                                                <Label text="Auto mode:" GridPane.rowIndex="4" />
+                                                <Label text="Iteration:" />
+                                                <Label text="Speed" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                       </children></AnchorPane>
                               </content>
                             </TitledPane>
                           </panes>
@@ -140,19 +192,19 @@
                                       </VBox>
                                    </children>
                                 </GridPane>
-                              <GridPane fx:id="gridPaneControl" prefHeight="46.0" prefWidth="800.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <GridPane fx:id="gridPaneControl" minHeight="-Infinity" prefHeight="46.0" prefWidth="800.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="120.0" prefWidth="143.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="528.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="90.0" prefWidth="143.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="35.0" prefWidth="200.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="90.0" prefWidth="90.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Step back" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
-                                    <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Restart" GridPane.valignment="BOTTOM" />
-                                    <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Iterate" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
+                                    <Button maxHeight="32.0" maxWidth="80.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#restartManualKmeans" prefHeight="32.0" prefWidth="80.0" text="Restart" />
+                                    <Button maxHeight="32.0" maxWidth="80.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#stepBackKmeans" prefHeight="32.0" prefWidth="80.0" text="Step back" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                    <Button maxHeight="32.0" maxWidth="80.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#iterateKmeans" prefHeight="32.0" prefWidth="80.0" text="Iterate" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                  </children>
                               </GridPane>
                               <Pane fx:id="kmeansParentPane" maxHeight="800.0" maxWidth="800.0" prefHeight="800.0" prefWidth="800.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">

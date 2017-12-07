@@ -137,16 +137,13 @@ public class VisualizerFX implements IVisualizer {
     
     public void drawPoint(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
-//        gc.setFill(Color.GREEN);
-        System.out.println(p.getX() + ":" + p.getY());
         gc.fillOval(p.getX(), p.getY(), pSize, pSize);
     }
     
     public void drawCenter(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
         gc.setStroke(Color.BLACK);
-//        gc.setFill(Color.GREEN);
-        System.out.println(p.getX() + ":" + p.getY());
+
         gc.fillRect(p.getX(), p.getY(), cSize, cSize);
         gc.strokeRect(p.getX(), p.getY(), cSize, cSize);
     }
@@ -170,6 +167,9 @@ public class VisualizerFX implements IVisualizer {
     public void draw () {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
+        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         
         if (data.getAlgorithm() == Algorithm.KMEANS) {
             drawIterationData();

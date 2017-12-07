@@ -32,6 +32,7 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.util.Data;
+import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 import ch.netzwerg.paleo.DataFrame;
 import ch.netzwerg.paleo.io.Parser;
@@ -56,11 +57,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -86,6 +87,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML AnchorPane anchorPaneMain;
     @FXML GridPane gridPaneControl;
     @FXML GridPane gridPaneTimeView;
+    @FXML ImageView restartAutoModeKmeansImage;
+    @FXML ImageView pauseAutoModeKmeansImage;
+    @FXML ImageView playAutoModeKmeansImage;
+    //@FXML ImageView restartManualModeKMeansImage;
+    //@FXML ImageView stepBackManualModeKMeansImage;
+    //@FXML ImageView iterateManualModeKMeansImage;
 
     private Main application;
     private DataFrame kmeansDataFrame;
@@ -171,9 +178,47 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
     }
     
+    public void restartManualKmeans() {
+        visualizer.restart();
+        System.out.println("restartKmeans pressed");
+    }
+    
+    public void iterateKmeans() {
+        visualizer.iterate();
+        System.out.println("ierateKmeans pressed");
+    }
+    
+    public void stepBackKmeans() {
+        visualizer.stepback();
+        System.out.println("stepBackKmeans pressed");
+    }
+    
+    public void autoModePlayKmeans() {
+        visualizer.setMode(Mode.AUTO);
+        System.out.println("setMode.AUTO pressed");
+    }
+    
+    public void autoModePauseKmeans() {
+        visualizer.setMode(Mode.MANUAL);
+        System.out.println("setMode.MANUAL pressed");
+    }
+    
+    public void autoModeRestartKmeans() {
+        visualizer.restart();
+        visualizer.setMode(Mode.AUTO);
+        System.out.println("autoMode restarted");
+        
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+                
+        restartAutoModeKmeansImage.setImage(new Image("images/Restart_32px.png"));
+        pauseAutoModeKmeansImage.setImage(new Image("images/Pause_32px.png"));
+        playAutoModeKmeansImage.setImage(new Image("images/Play_32px.png"));
+        //restartManualModeKMeansImage.setImage(new Image("images/Skip_to_Start_32px.png"));
+        //stepBackManualModeKMeansImage.setImage(new Image("images/Back_32px.png"));
+        //iterateManualModeKMeansImage.setImage(new Image("images/Forward_32px.png"));
         
         
         kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
