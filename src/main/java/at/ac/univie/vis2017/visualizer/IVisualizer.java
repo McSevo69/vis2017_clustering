@@ -1,6 +1,7 @@
 package at.ac.univie.vis2017.visualizer;
 
 import at.ac.univie.vis2017.util.*;
+import javafx.scene.canvas.GraphicsContext;
 
 /*
  *  data fields:
@@ -36,5 +37,5 @@ public interface IVisualizer {
     
     public void setData (Data data);
     
-    public void iterate ();
+    public void iterate (GraphicsContext gc);
 }

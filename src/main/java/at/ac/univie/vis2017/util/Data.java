@@ -16,8 +16,8 @@ public class Data {
     private int n;
     private int k;
     private Algorithm algorithm;
-    private ArrayList<ArrayList<Point>> data;
-    private ArrayList<ArrayList<Point>> centers;
+    private ArrayList<ArrayList<Point>> data = new ArrayList<>();
+    private ArrayList<ArrayList<Point>> centers = new ArrayList<>();
     
     public Data (int n, Algorithm algorithm) {
         this.n = n;

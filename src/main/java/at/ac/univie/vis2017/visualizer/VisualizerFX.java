@@ -89,9 +89,9 @@ public class VisualizerFX implements IVisualizer {
         this.gc = gc;
     }
     
-    public void iterate () {
+    public void iterate (GraphicsContext gc) {
         iteration++;
-        drawIteration();
+        drawIteration(gc);
     }
     
     private void setColorValueChunk () {
@@ -118,11 +118,16 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawPoint(GraphicsContext gc, Point p) {
-        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
-        gc.fillOval(p.getX(), p.getY(), 2, 2);
+//        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+        gc.setFill(Color.GREEN);
+        System.out.println(p.getX() + ":" + p.getY());
+        gc.fillOval(p.getX(), p.getY(), 5, 5);
     }
     
-    public void drawIteration() {
+    public void drawIteration(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
         if (data != null) {
             for (Point p : data.getIterationData(iteration)) {
                 drawPoint(gc, p);
@@ -131,9 +136,8 @@ public class VisualizerFX implements IVisualizer {
     }
 
     public void drawShapes(GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //System.out.println(canvas.getWidth() + ":" + canvas.getWidth());        
+        drawIteration(gc);
+        //System.out.println(canvas.getWidth() + ":" + canvas.getHeight());        
         
         //if (data != null) {
           //  gc.setFill(Color.GREEN);
