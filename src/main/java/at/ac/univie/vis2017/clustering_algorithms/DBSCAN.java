@@ -1,18 +1,34 @@
 package at.ac.univie.vis2017.clustering_algorithms;
 
+
+
+import at.ac.univie.vis2017.util.Data;
+import at.ac.univie.vis2017.util.Point;
 import ch.netzwerg.paleo.DataFrame;
+
+import java.util.ArrayList;
+
+
 
 public class DBSCAN {
 
     private int minPts = 0;
     private double eps_value = 0.0;
-    // save all necessary informations
-    private DataFrame data = null;
+    ArrayList<Point> points = new ArrayList<>();
 
-    public DBSCAN(int minPts, double eps_value, DataFrame data) {
+    // save all necessary information
+    // check if point is already classified
+
+
+
+    // prepare Data object for
+    private Data dat = null;
+
+
+    public DBSCAN(int minPts, double eps_value, ArrayList<Point> points) {
         this.minPts = minPts;
         this.eps_value = eps_value;
-        this.data = data;
+        this.points = points;
     }
 
     public int getMinPts() {
@@ -31,11 +47,5 @@ public class DBSCAN {
         this.eps_value = eps_value;
     }
 
-    public DataFrame getData() {
-        return data;
-    }
 
-    public void setData(DataFrame data) {
-        this.data = data;
-    }
 }

@@ -3,6 +3,8 @@
  */
 package at.ac.univie.vis2017.gui;
 
+import at.ac.univie.vis2017.util.Point;
+import at.ac.univie.vis2017.gui.ClusteringController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 /**
  * Main Application. This class handles navigation and user session.
@@ -59,6 +62,16 @@ public class Main extends Application {
         launch(args);
         
         System.out.println("I'm awake.");
+
+        ArrayList<Point> points = new ArrayList<>();
+        try {
+            points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Point p : points)
+            System.out.println(p.toString());
         
     }
 
