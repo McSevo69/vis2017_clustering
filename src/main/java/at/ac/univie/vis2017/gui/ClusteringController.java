@@ -35,16 +35,13 @@ import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
 import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
-import ch.netzwerg.paleo.DataFrame;
-import ch.netzwerg.paleo.io.Parser;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
+
 
 import java.net.URL;
 import java.util.ArrayList;
