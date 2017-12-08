@@ -11,7 +11,15 @@ public class Point {
     private double centerY;
     // cluster number
     private int clusterNumber = 0;
-
+    
+    public Point (double x, double y) {
+        this.x = x;
+        this.y = y;
+        this.centerX = 0;
+        this.centerY = 0;
+        this.clusterNumber = 0;
+    }
+    
     public Point(double x, double y, double centerX, double centerY, int clusterNumber) {
         this.x = x;
         this.y = y;

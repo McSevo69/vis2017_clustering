@@ -33,7 +33,11 @@ public class VisualizerFX implements IVisualizer {
     private int speed;
     private Algorithm algorithm;
     private Mode mode;
+    
     private boolean showPaths;
+    private boolean showCenters;
+    private boolean showData;
+    private boolean showVoronoi;
     
     private Data data;
     
@@ -84,6 +88,18 @@ public class VisualizerFX implements IVisualizer {
         this.showPaths = showPaths;
     }
     
+    public void setShowCenters (boolean showCenters) {
+        this.showCenters = showCenters;
+    }
+    
+    public void setShowData (boolean showData) {
+        this.showData = showData;
+    }
+
+    public void setShowVornoi (boolean showVoronoi) {
+        this.showVoronoi = showVoronoi;
+    }
+
     public void setData (Data data) {
         this.data = data;
         setColorValueChunk();
@@ -167,6 +183,36 @@ public class VisualizerFX implements IVisualizer {
         }
     }
     
+    public void drawIterationPath () {
+        
+    }
+    
+    public void drawIterationVoronoi () {
+        ArrayList<Point> voronoiPoints = new ArrayList<Point>();
+        
+        for (int i = 0; i < data.getK(); ++i) {
+            Point c1 = data.getIterationCenters(iteration).get(i);
+
+            for (int j = i+1; j < data.getK(); ++j) {
+                Point c2 = data.getIterationCenters(iteration).get(j);
+                
+                System.out.println(i + ":" + j);
+                
+                voronoiPoints.add(
+                        new Point(
+                                (c1.getX()+c2.getX())/2, 
+                                (c1.getY()+c2.getY())/2
+                        )
+                );
+            }
+        }
+        
+        for (Point p : voronoiPoints) {
+            gc.setFill(Color.BLACK);
+            gc.strokeOval(p.getX(), p.getY(), pSize, pSize);
+        }
+    }
+    
     public void draw () {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -175,8 +221,21 @@ public class VisualizerFX implements IVisualizer {
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         
         if (data.getAlgorithm() == Algorithm.KMEANS) {
-            drawIterationData();
-            drawIterationCenters();
+            if (true) {
+                drawIterationPath();
+            }
+            
+            if (true) {
+                drawIterationData();
+            }
+            
+            if (true) {
+                drawIterationCenters();
+            }
+            
+            if (true) {
+                drawIterationVoronoi();
+            }
         } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
             
         } else if (data.getAlgorithm() == Algorithm.OPTICS) {

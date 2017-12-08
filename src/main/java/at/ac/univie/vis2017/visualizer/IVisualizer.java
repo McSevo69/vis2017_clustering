@@ -23,7 +23,7 @@ public interface IVisualizer {
     public enum Mode {
         AUTO, MANUAL
     }
-    
+        
     public void setAlgorithm (Algorithm algorithm);
     
     public void setIteration (int iteration);
@@ -34,7 +34,7 @@ public interface IVisualizer {
     public void setMode (Mode mode);
     
     public void setShowPaths (boolean showPaths);
-    
+
     public void setData (Data data);
     
     public void iterate ();

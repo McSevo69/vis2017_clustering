@@ -106,7 +106,7 @@ public class Data {
     
     public static Data getTestData () {
         int n = 5;
-        int k = 2;
+        int k = 4;
         Algorithm algorithm = Algorithm.KMEANS;
 
         
@@ -122,6 +122,8 @@ public class Data {
         ArrayList<Point> centers = new ArrayList<Point>();
         centers.add(new Point(120, 50, 1, 1, 1));
         centers.add(new Point(200, 150, 1, 1, 2));
+        centers.add(new Point(150, 200, 1, 1, 3));
+        centers.add(new Point(300, 300, 1, 1, 4));
 
         data.addIteration(points, centers);
 
@@ -136,6 +138,8 @@ public class Data {
         centers = new ArrayList<Point>();
         centers.add(new Point(22.3, 42.6, 1, 1, 1));
         centers.add(new Point(131, 147.5, 1, 1, 2));
+        centers.add(new Point(150, 200, 1, 1, 3));
+        centers.add(new Point(300, 300, 1, 1, 4));
         
         data.addIteration(points, centers);
         
