@@ -19,11 +19,19 @@ public class Data {
     private ArrayList<ArrayList<Point>> data = new ArrayList<>();
     private ArrayList<ArrayList<Point>> centers = new ArrayList<>();
     
+    public Data() {
+        this.n = 0;
+        this.k = 0;
+        this.algorithm = null;
+        this.data = null;
+        this.centers = null;
+    }
+    
     public Data (int n, Algorithm algorithm) {
         this.n = n;
         this.algorithm = algorithm;
     }
-    
+
     public Data(int n, Algorithm algorithm, ArrayList<Point> initData) {
         this.n = n;
         this.algorithm = algorithm;
