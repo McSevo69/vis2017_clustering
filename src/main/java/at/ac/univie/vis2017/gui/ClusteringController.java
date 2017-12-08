@@ -188,18 +188,26 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizer.restart();
         //iterationKmeansSpinner.valueFactoryProperty().
         System.out.println("restartKmeans pressed");
+        updateKmeansIteration();
+    }
+    
+    public void updateKmeansIteration(){
+        iterationKmeansSpinner.valueFactoryProperty().get().setValue(visualizer.getIteration());
+        System.out.println("Iteration Spinner updated");
     }
     
     public void iterateKmeans() {
         visualizer.iterate();
         //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
-        System.out.println("ierateKmeans pressed");
+        System.out.println("iterateKmeans pressed");
+        updateKmeansIteration();
     }
     
     public void stepBackKmeans() {
         visualizer.stepback();
         //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
         System.out.println("stepBackKmeans pressed");
+        updateKmeansIteration();
     }
     
     public void autoModePlayKmeans() {
@@ -216,7 +224,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizer.restart();
         visualizer.setMode(Mode.AUTO);
         System.out.println("autoMode restarted");
-        
+        updateKmeansIteration();      
     }
     
     @Override
@@ -229,8 +237,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //stepBackManualModeKMeansImage.setImage(new Image("images/Back_32px.png"));
         //iterateManualModeKMeansImage.setImage(new Image("images/Forward_32px.png"));
         
-        //iterationKmeansSpinner.valueProperty().s
-        
+        iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
+            visualizer.setIteration(newValue);
+            System.out.println("Iteration set to " + newValue);
+        });
+                
         speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setSpeed(newValue.intValue());
             System.out.println("new speed set");
