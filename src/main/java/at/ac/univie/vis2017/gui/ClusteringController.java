@@ -236,6 +236,15 @@ public class ClusteringController extends AnchorPane implements Initializable {
             System.out.println("new speed set");
         });
         
+        
+        //Checkboxes
+        centroidPathKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Show centroid paths: " + newValue.toString());
+            visualizer.setShowPaths(newValue);
+        });
+        //clusterCentersKmeansCheckBox
+        //@FXML CheckBox dataPointsKmeansCheckBox;
+        //@FXML CheckBox voronoiLinesKmeansCheckBox;
                
         GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
