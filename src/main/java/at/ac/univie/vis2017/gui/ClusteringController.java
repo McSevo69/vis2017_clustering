@@ -242,9 +242,21 @@ public class ClusteringController extends AnchorPane implements Initializable {
             System.out.println("Show centroid paths: " + newValue.toString());
             visualizer.setShowPaths(newValue);
         });
-        //clusterCentersKmeansCheckBox
-        //@FXML CheckBox dataPointsKmeansCheckBox;
-        //@FXML CheckBox voronoiLinesKmeansCheckBox;
+        
+        clusterCentersKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Show cluster centers: " + newValue.toString());
+            visualizer.setShowCenters(newValue);
+        });
+        
+        dataPointsKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Show data points: " + newValue.toString());
+            visualizer.setShowData(newValue);
+        });
+        
+        voronoiLinesKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Show voronoi: " + newValue.toString());
+            visualizer.setShowVornoi(newValue);
+        });
                
         GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
