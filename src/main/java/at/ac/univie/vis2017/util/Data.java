@@ -24,7 +24,7 @@ public class Data {
         this.algorithm = algorithm;
     }
     
-    public Data (int n, Algorithm algorithm, ArrayList<Point> initData) {
+    public Data() {
         this.n = n;
         this.algorithm = algorithm;
 
