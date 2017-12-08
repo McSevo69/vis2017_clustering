@@ -99,12 +99,16 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void iterate () {
-        iteration++;
+        if (iteration < data.getIterations() - 1) {
+            iteration++;
+        }
         draw();
     }
     
     public void stepback () {
-        iteration--;
+        if (iteration > 0) {
+            iteration--;
+        }
         draw();
     }
     
