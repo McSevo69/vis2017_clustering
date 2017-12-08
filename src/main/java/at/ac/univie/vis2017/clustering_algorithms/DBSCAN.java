@@ -22,13 +22,14 @@ public class DBSCAN {
 
 
     // prepare Data object for
-    private Data dat = null;
+    private Data dat;
 
 
     public DBSCAN(int minPts, double eps_value, ArrayList<Point> points) {
         this.minPts = minPts;
         this.eps_value = eps_value;
         this.points = points;
+        dat = new Data();
     }
 
     public int getMinPts() {
