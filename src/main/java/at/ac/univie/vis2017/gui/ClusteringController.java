@@ -120,7 +120,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
-    public static ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
+    public ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
 
         // create ArrayList where Points are saved
         ArrayList<Point> data = new ArrayList<>();
@@ -137,7 +137,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             br.close();
         }
         catch (IOException e) {
-            System.out.println("ERROR: unable to read file " + filePath);
+            logger.error("ERROR: unable to read file " + filePath);
             e.printStackTrace();
         }
 
@@ -160,7 +160,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
             if (openedDatasetFile.length() > 0) {
                 datasetPath = openedDatasetFile.getPath();
             } else {
-                //
+                datasetPath = "";
+                logger.error("Empty file selected");
             }
         } catch (NullPointerException ex) {
             logger.debug("File opening aborted");
@@ -173,57 +174,54 @@ public class ClusteringController extends AnchorPane implements Initializable {
         String kmeansFile = loadFromFile();
         try {
             initialStatePoints = getDataFromTxt(kmeansFile);
-            System.out.println("Test");
+            logger.debug("File loaded successfully");
             visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(ClusteringController.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("Cannot load file!\n" + ex);
         }
         
     }
     
     public void restartManualKmeans() {
         visualizer.restart();
-        //iterationKmeansSpinner.valueFactoryProperty().
-        System.out.println("restartKmeans pressed");
+        logger.debug("restartKmeans pressed");
         updateKmeansIteration();
     }
     
     public void updateKmeansIteration(){
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(visualizer.getIteration());
-        System.out.println("Iteration Spinner updated");
+        logger.debug("Iteration Spinner updated. New value: " + visualizer.getIteration());
     }
     
     public void iterateKmeans() {
         visualizer.iterate();
-        //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
-        System.out.println("iterateKmeans pressed");
+        logger.debug("iterateKmeans pressed");
         updateKmeansIteration();
     }
     
     public void stepBackKmeans() {
         visualizer.stepback();
-        //iterationKmeansSpinner.valueFactoryProperty().set((visualizer.getIteration()));
-        System.out.println("stepBackKmeans pressed");
+        logger.debug("stepBackKmeans pressed");
         updateKmeansIteration();
     }
     
     public void autoModePlayKmeans() {
         visualizer.setMode(Mode.AUTO);
-        System.out.println("setMode.AUTO pressed");
+        logger.debug("setMode.AUTO pressed");
     }
     
     public void autoModePauseKmeans() {
         visualizer.setMode(Mode.MANUAL);
-        System.out.println("setMode.MANUAL pressed");
+        logger.debug("setMode.MANUAL pressed");
     }
     
     public void autoModeRestartKmeans() {
         visualizer.restart();
         visualizer.setMode(Mode.AUTO);
-        System.out.println("autoMode restarted");
+        logger.debug("autoMode restarted");
         updateKmeansIteration();      
     }
     
@@ -233,39 +231,36 @@ public class ClusteringController extends AnchorPane implements Initializable {
         restartAutoModeKmeansImage.setImage(new Image("images/Restart_32px.png"));
         pauseAutoModeKmeansImage.setImage(new Image("images/Pause_32px.png"));
         playAutoModeKmeansImage.setImage(new Image("images/Play_32px.png"));
-        //restartManualModeKMeansImage.setImage(new Image("images/Skip_to_Start_32px.png"));
-        //stepBackManualModeKMeansImage.setImage(new Image("images/Back_32px.png"));
-        //iterateManualModeKMeansImage.setImage(new Image("images/Forward_32px.png"));
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setIteration(newValue);
-            System.out.println("Iteration set to " + newValue);
+            logger.debug("Iteration set to " + newValue);
         });
                 
         speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setSpeed(newValue.intValue());
-            System.out.println("new speed set");
+            logger.debug("new speed set: " + newValue.intValue());
         });
         
         
         //Checkboxes
         centroidPathKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Show centroid paths: " + newValue.toString());
+            logger.debug("Show centroid paths: " + newValue.toString());
             visualizer.setShowPaths(newValue);
         });
         
         clusterCentersKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Show cluster centers: " + newValue.toString());
+            logger.debug("Show cluster centers: " + newValue.toString());
             visualizer.setShowCenters(newValue);
         });
         
         dataPointsKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Show data points: " + newValue.toString());
+            logger.debug("Show data points: " + newValue.toString());
             visualizer.setShowData(newValue);
         });
         
         voronoiLinesKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Show voronoi: " + newValue.toString());
+            logger.debug("Show voronoi: " + newValue.toString());
             visualizer.setShowVornoi(newValue);
         });
                
@@ -289,6 +284,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
         
+        //TODO Mike
+        ArrayList<Point> points = new ArrayList<>();
+        try {
+            points = getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Point p : points)
+            System.out.println(p.toString());
         
     }
     

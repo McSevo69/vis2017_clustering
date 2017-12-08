@@ -59,20 +59,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         
         loadLogger();                               
-        launch(args);
-        
-        System.out.println("I'm awake.");
-
-        ArrayList<Point> points = new ArrayList<>();
-        try {
-            points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        for (Point p : points)
-            System.out.println(p.toString());
-        
+        launch(args);      
     }
 
     @Override
