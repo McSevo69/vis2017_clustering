@@ -50,17 +50,34 @@ public class VisualizerFX implements IVisualizer {
     private int cSize = 5;
     
     public VisualizerFX () {
+        this.iteration = 0;
+        this.mode = Mode.MANUAL;
         
+        this.data = null;
+        this.speed = 0;
+        this.algorithm = null;
+        
+        this.showPaths = false;
+        this.showData = true;
+        this.showCenters = true;
+        this.showVoronoi = false;
+        
+        this.colorValueChunk = 360;
     }
     
     public VisualizerFX (Data data) {
         this.iteration = 0;
+        this.mode = Mode.MANUAL;
+
+        this.data = data;
         this.speed = data.getN();
         this.algorithm = data.getAlgorithm();
-        this.mode = Mode.MANUAL;
+
         this.showPaths = false;
-        this.data = data;
-        
+        this.showData = true;
+        this.showCenters = true;
+        this.showVoronoi = false;
+
         setColorValueChunk();
     }
     
@@ -70,6 +87,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void setIteration (int iteration) {
         this.iteration = iteration;
+        draw();
     }
     
     public int getIteration () {
@@ -82,26 +100,33 @@ public class VisualizerFX implements IVisualizer {
     
     public void setMode (Mode mode) {
         this.mode = mode;
+        draw();
     }
     
     public void setShowPaths (boolean showPaths) {
         this.showPaths = showPaths;
+        draw();
     }
     
     public void setShowCenters (boolean showCenters) {
         this.showCenters = showCenters;
+        draw();
     }
     
     public void setShowData (boolean showData) {
         this.showData = showData;
+        draw();
     }
 
     public void setShowVornoi (boolean showVoronoi) {
         this.showVoronoi = showVoronoi;
+        draw();
     }
 
     public void setData (Data data) {
         this.data = data;
+        this.speed = data.getN();
+        this.algorithm = data.getAlgorithm();
         setColorValueChunk();
     }
     
@@ -220,20 +245,25 @@ public class VisualizerFX implements IVisualizer {
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         
+        System.out.println("showPaths:   " + showPaths);
+        System.out.println("showData:    " + showData);
+        System.out.println("showCenters: " + showCenters);
+        System.out.println("showVoronoi: " + showVoronoi);
+        
         if (data.getAlgorithm() == Algorithm.KMEANS) {
-            if (true) {
+            if (showPaths) {
                 drawIterationPath();
             }
             
-            if (true) {
+            if (showData) {
                 drawIterationData();
             }
             
-            if (true) {
+            if (showCenters) {
                 drawIterationCenters();
             }
             
-            if (true) {
+            if (showVoronoi) {
                 drawIterationVoronoi();
             }
         } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
