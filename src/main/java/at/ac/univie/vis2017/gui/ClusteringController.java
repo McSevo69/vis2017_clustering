@@ -59,6 +59,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -87,7 +88,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Canvas kmeansCanvasStart;
     @FXML Canvas kmeansCanvasMiddle;
     @FXML Canvas kmeansCanvasEnd;
-    @FXML Accordion kmeansAccordion;
     @FXML TitledPane kmeansDataGenPane;
     @FXML Pane kmeansParentPane;
     @FXML AnchorPane anchorPaneMain;
@@ -101,9 +101,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML ImageView iterateManualModeKMeansImage;
     @FXML Spinner<Integer> iterationKmeansSpinner;
     @FXML Slider speedKmeansSlider;
+    @FXML CheckBox centroidPathKmeansCheckBox;
+    @FXML CheckBox clusterCentersKmeansCheckBox;
+    @FXML CheckBox dataPointsKmeansCheckBox;
+    @FXML CheckBox voronoiLinesKmeansCheckBox;
 
     private Main application;
-    //private DataFrame kmeansDataFrame;
     private ArrayList<Point> initialStatePoints;
     private VisualizerFX visualizer;
     
@@ -236,9 +239,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             System.out.println("new speed set");
         });
         
-        
-        kmeansAccordion.expandedPaneProperty().set(kmeansDataGenPane);
-                
+               
         GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
         //visualizer.drawBorder(gc);

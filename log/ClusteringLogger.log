@@ -1,4 +1,4 @@
-21:34:52.891 [JavaFX Application Thread] FATAL vis2017.gui.Main:93 - Fatal error
+14:54:00.820 [JavaFX Application Thread] FATAL vis2017.gui.Main:101 - Fatal error
 javafx.fxml.LoadException: 
 /C:/Users/Severin/Documents/Studium/VIS/MS3/vis2017_clustering/target/classes/fxml/ClusteringGUI.fxml
 
@@ -11,8 +11,8 @@ javafx.fxml.LoadException:
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3124) ~[jfxrt.jar:?]
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3104) ~[jfxrt.jar:?]
 	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3097) ~[jfxrt.jar:?]
-	at at.ac.univie.vis2017.gui.Main.showMainWindow(Main.java:74) ~[classes/:?]
-	at at.ac.univie.vis2017.gui.Main.start(Main.java:69) ~[classes/:?]
+	at at.ac.univie.vis2017.gui.Main.showMainWindow(Main.java:76) ~[classes/:?]
+	at at.ac.univie.vis2017.gui.Main.start(Main.java:71) ~[classes/:?]
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$161(LauncherImpl.java:863) ~[jfxrt.jar:?]
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$174(PlatformImpl.java:326) ~[jfxrt.jar:?]
 	at com.sun.javafx.application.PlatformImpl.lambda$null$172(PlatformImpl.java:295) ~[jfxrt.jar:?]
@@ -23,6 +23,6 @@ javafx.fxml.LoadException:
 	at com.sun.glass.ui.win.WinApplication.lambda$null$147(WinApplication.java:177) ~[jfxrt.jar:?]
 	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_151]
 Caused by: java.lang.NullPointerException
-	at at.ac.univie.vis2017.gui.ClusteringController.initialize(ClusteringController.java:187) ~[classes/:?]
+	at at.ac.univie.vis2017.gui.ClusteringController.initialize(ClusteringController.java:240) ~[classes/:?]
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548) ~[jfxrt.jar:?]
 	... 18 more
