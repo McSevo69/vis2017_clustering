@@ -219,30 +219,37 @@ public class VisualizerFX implements IVisualizer {
     
     
     public void drawIterationData() {
+        if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             drawPoint(p);
         }
     }
 
     public void drawIterationCenters () {
+        if (data.getIterationCenters(0) == null) return;
         for (Point p : data.getIterationCenters(iteration)) {
             drawCenter(p);
         }
     }
     
     public void drawIterationPaths () {
+        if (data.getIterationCenters(0) == null) return;
         for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
             for (int j = 1; j <= iteration; ++j) {
                 Point curr = data.getIterationCenters(j).get(i);
                 Point past = data.getIterationCenters(j-1).get(i);
+//                gc.setStroke(Color.hsb(curr.getClusterNumber()*colorValueChunk,1,1));
+                gc.setStroke(Color.BLACK);
                 gc.strokeLine(past.getX()+cSize/2, past.getY()+cSize/2, curr.getX()+cSize/2, curr.getY()+cSize/2);
             }
         }
     }
     
     public void drawIterationVoronoi () {
+        if (data.getIterationCenters(0) == null) return;
+
         ArrayList<Point> voronoiPoints = new ArrayList<Point>();
-        
+
         for (int i = 0; i < data.getK(); ++i) {
             Point c1 = data.getIterationCenters(iteration).get(i);
 
@@ -263,8 +270,17 @@ public class VisualizerFX implements IVisualizer {
             gc.strokeOval(p.getX(), p.getY(), pSize, pSize);
         }
     }
+
+    /*
+    phuksz has TODO what phuksz has TODO:
+    - add auto functionality
+    - add snapshot-function for the snapshot-panels
+    - complete voronoi-visualization (http://765.blogspot.co.at/2009/09/how-to-draw-voronoi-diagram.html)
     
+    longterm:
+    - add visualizations for other algorithms
     
+    */
     public void draw () {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
