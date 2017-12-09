@@ -91,7 +91,10 @@ public class VisualizerFX implements IVisualizer {
     public void setIteration (int iteration) {
         this.pointIterator = 0;
         
-        this.iteration = iteration;
+        if (iteration < data.getIterations()) {
+            this.iteration = iteration;
+        }
+        
         draw();
     }
     
@@ -274,12 +277,12 @@ public class VisualizerFX implements IVisualizer {
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
-        
+        /*
         System.out.println("showPaths:   " + showPaths);
         System.out.println("showData:    " + showData);
         System.out.println("showCenters: " + showCenters);
         System.out.println("showVoronoi: " + showVoronoi);
-        
+        */
         if (data != null) {
             if (data.getAlgorithm() == Algorithm.KMEANS) {
                 if (showPaths) {
