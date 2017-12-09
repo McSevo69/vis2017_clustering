@@ -30,6 +30,7 @@ public class VisualizerFX implements IVisualizer {
     private Canvas canvas;
     
     private int iteration;
+    private int pointIterator;
     private int speed;
     private Algorithm algorithm;
     private Mode mode;
@@ -51,6 +52,7 @@ public class VisualizerFX implements IVisualizer {
     
     public VisualizerFX () {
         this.iteration = 0;
+        this.pointIterator = 0;
         this.mode = Mode.MANUAL;
         
         this.data = null;
@@ -67,6 +69,7 @@ public class VisualizerFX implements IVisualizer {
     
     public VisualizerFX (Data data) {
         this.iteration = 0;
+        this.pointIterator = 0;
         this.mode = Mode.MANUAL;
 
         this.data = data;
@@ -86,6 +89,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setIteration (int iteration) {
+        this.pointIterator = 0;
+        
         this.iteration = iteration;
         draw();
     }
@@ -95,7 +100,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setSpeed (int speed) {
-        this.speed = speed;
+        System.out.println(speed);
+        this.speed = (int) ((speed/100.0) * data.getN());
     }
     
     public void setMode (Mode mode) {
@@ -141,15 +147,31 @@ public class VisualizerFX implements IVisualizer {
     
     public void iterate () {
         if (iteration < data.getIterations() - 1) {
-            iteration++;
+            if (pointIterator+speed < data.getN()) {
+                pointIterator += speed;
+            } else {
+                iteration++;
+                pointIterator = 0;
+            }
         }
+        
+        System.out.println(iteration + "." + pointIterator + " - " + speed);
+        
         draw();
     }
     
     public void stepback () {
         if (iteration > 0) {
-            iteration--;
+            if (pointIterator-speed > 0) {
+                pointIterator -= speed;
+            } else {
+                iteration--;
+                pointIterator = data.getN() - speed;
+            }
         }
+        
+        System.out.println(iteration + "." + pointIterator + " - " + speed);
+
         draw();
     }
     
@@ -179,6 +201,7 @@ public class VisualizerFX implements IVisualizer {
         
     }
     
+    
     public void drawPoint(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
         gc.fillOval(p.getX(), p.getY(), pSize, pSize);
@@ -191,25 +214,31 @@ public class VisualizerFX implements IVisualizer {
         gc.fillRect(p.getX(), p.getY(), cSize, cSize);
         gc.strokeRect(p.getX(), p.getY(), cSize, cSize);
     }
-
+    
+    
     public void drawIterationData() {
-        if (data != null) {
-            for (Point p : data.getIterationData(iteration)) {
-                drawPoint(p);
-            }
+        for (Point p : data.getIterationData(iteration)) {
+            drawPoint(p);
         }
     }
 
     public void drawIterationCenters () {
-        if (data != null) {
-            for (Point p : data.getIterationCenters(iteration)) {
-                drawCenter(p);
-            }
+        for (Point p : data.getIterationCenters(iteration)) {
+            drawCenter(p);
         }
     }
     
-    public void drawIterationPath () {
-        
+    public void drawIterationPaths () {
+        System.out.println("231");
+        for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
+            System.out.println("i: " + i);
+            for (int j = 1; j <= iteration; ++j) {
+                System.out.println("j: " + j);
+                Point curr = data.getIterationCenters(j).get(i);
+                Point past = data.getIterationCenters(j-1).get(i);
+                gc.strokeLine(past.getX()+cSize/2, past.getY()+cSize/2, curr.getX()+cSize/2, curr.getY()+cSize/2);
+            }
+        }
     }
     
     public void drawIterationVoronoi () {
@@ -238,6 +267,7 @@ public class VisualizerFX implements IVisualizer {
         }
     }
     
+    
     public void draw () {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -250,32 +280,34 @@ public class VisualizerFX implements IVisualizer {
         System.out.println("showCenters: " + showCenters);
         System.out.println("showVoronoi: " + showVoronoi);
         
-        if (data.getAlgorithm() == Algorithm.KMEANS) {
-            if (showPaths) {
-                drawIterationPath();
-            }
-            
-            if (showData) {
-                drawIterationData();
-            }
-            
-            if (showCenters) {
-                drawIterationCenters();
-            }
-            
-            if (showVoronoi) {
-                drawIterationVoronoi();
-            }
-        } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
-            
-        } else if (data.getAlgorithm() == Algorithm.OPTICS) {
+        if (data != null) {
+            if (data.getAlgorithm() == Algorithm.KMEANS) {
+                if (showPaths) {
+                    drawIterationPaths();
+                }
 
-        } else if (data.getAlgorithm() == Algorithm.KMEDIANS) {
-            
-        } else if (data.getAlgorithm() == Algorithm.KMEDOIDS) {
-            
-        } else {
-            throw new IllegalArgumentException("not a known algorithm");
+                if (showData) {
+                    drawIterationData();
+                }
+
+                if (showCenters) {
+                    drawIterationCenters();
+                }
+
+                if (showVoronoi) {
+                    drawIterationVoronoi();
+                }
+            } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
+
+            } else if (data.getAlgorithm() == Algorithm.OPTICS) {
+
+            } else if (data.getAlgorithm() == Algorithm.KMEDIANS) {
+
+            } else if (data.getAlgorithm() == Algorithm.KMEDOIDS) {
+
+            } else {
+                throw new IllegalArgumentException("not a known algorithm");
+            }
         }
     }
 
