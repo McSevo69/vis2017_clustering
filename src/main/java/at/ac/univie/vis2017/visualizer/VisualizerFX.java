@@ -107,7 +107,6 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setSpeed (int speed) {
-        System.out.println(speed);
         this.speed = (int) ((speed/100.0) * data.getN());
     }
     
@@ -162,8 +161,6 @@ public class VisualizerFX implements IVisualizer {
             }
         }
         
-        System.out.println(iteration + "." + pointIterator + " - " + speed);
-        
         draw();
     }
     
@@ -177,8 +174,6 @@ public class VisualizerFX implements IVisualizer {
             }
         }
         
-        System.out.println(iteration + "." + pointIterator + " - " + speed);
-
         draw();
     }
     
@@ -236,11 +231,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationPaths () {
-        System.out.println("231");
         for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
-            System.out.println("i: " + i);
             for (int j = 1; j <= iteration; ++j) {
-                System.out.println("j: " + j);
                 Point curr = data.getIterationCenters(j).get(i);
                 Point past = data.getIterationCenters(j-1).get(i);
                 gc.strokeLine(past.getX()+cSize/2, past.getY()+cSize/2, curr.getX()+cSize/2, curr.getY()+cSize/2);
@@ -256,8 +248,6 @@ public class VisualizerFX implements IVisualizer {
 
             for (int j = i+1; j < data.getK(); ++j) {
                 Point c2 = data.getIterationCenters(iteration).get(j);
-                
-                System.out.println(i + ":" + j);
                 
                 voronoiPoints.add(
                         new Point(
