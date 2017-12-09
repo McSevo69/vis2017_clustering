@@ -20,6 +20,8 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -49,6 +51,8 @@ public class VisualizerFX implements IVisualizer {
     
     private int pSize = 5;
     private int cSize = 5;
+    
+    Logger logger = LogManager.getLogger(VisualizerFX.class);
     
     public VisualizerFX () {
         this.iteration = 0;
@@ -278,6 +282,11 @@ public class VisualizerFX implements IVisualizer {
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         /*
+        logger.debug("showPaths:   " + showPaths);
+        logger.debug("showData:    " + showData);
+        logger.debug("showCenters: " + showCenters);
+        logger.debug("showVoronoi: " + showVoronoi);
+
         System.out.println("showPaths:   " + showPaths);
         System.out.println("showData:    " + showData);
         System.out.println("showCenters: " + showCenters);
