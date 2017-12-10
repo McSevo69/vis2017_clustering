@@ -81,7 +81,7 @@ public class Point {
 
     // compute distance between two points
     public static double getDistanceBetweenPoints(Point p1, Point p2) {
-
+        // compute distance between 2 dimensional points
         return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + ((p1.getY() - p2.getY()) * (p1.getY() - p2.getY())));
     }
 }

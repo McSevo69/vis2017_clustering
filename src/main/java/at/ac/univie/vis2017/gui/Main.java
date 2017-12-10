@@ -3,6 +3,8 @@
  */
 package at.ac.univie.vis2017.gui;
 
+import at.ac.univie.vis2017.clustering_algorithms.DBSCAN;
+import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
 import at.ac.univie.vis2017.util.Point;
 import at.ac.univie.vis2017.gui.ClusteringController;
 import javafx.application.Application;
@@ -17,7 +19,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Main Application. This class handles navigation and user session.
@@ -57,7 +61,71 @@ public class Main extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
+
+
+        /*
+        #############################################################################################
+        #############################################################################################
+        Test Clustering Algorithms
+        #############################################################################################
+        #############################################################################################
+         */
+
+        //TODO Mike
+        ArrayList<Point> dbscan1points = new ArrayList<>();
+        ArrayList<Point> dbscan2points = new ArrayList<>();
+        ArrayList<Point> dbscan3points = new ArrayList<>();
+
+
+
+        // read data from file
+        try {
+            dbscan1points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
+            //dbscan2points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan2.txt");
+            //dbscan3points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan3.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //for (Point p : points)
+        //System.out.println(p.toString());
+
+
+
+        // get number of points
+        int n_dbscan1 = dbscan1points.size();
+        //int n_dbscan2 = dbscan2points.size();
+        //int n_dbscan3 = dbscan3points.size();
+        System.out.println("Number Points = " + n_dbscan1);
+        //System.out.println(n_dbscan2);
+        //System.out.println(n_dbscan3);
+
+        // set number of target clusters
+        int eps_value = 3;
+        int minPts = 2;
+
+
+
+        // test dbscan
+        DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
+
+        dbscanTest.clusterData();
+
+
+
+
+
+
+
+
+        KMEANS kmeansTest = new KMEANS(4, 100, dbscan1points);
+
+        kmeansTest.setClusterCenters("random");
+
+
+
+
         loadLogger();                               
         launch(args);      
     }

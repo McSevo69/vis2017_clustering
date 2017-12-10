@@ -120,7 +120,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
-    public ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
+    public static ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
 
         // create ArrayList where Points are saved
         ArrayList<Point> data = new ArrayList<>();
@@ -137,7 +137,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             br.close();
         }
         catch (IOException e) {
-            logger.error("ERROR: unable to read file " + filePath);
+            //logger.error("ERROR: unable to read file " + filePath);
             e.printStackTrace();
         }
 
@@ -283,18 +283,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.setPrefWidth(kmeansParentPane.getMaxHeight());
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
-        
-        //TODO Mike
-        ArrayList<Point> points = new ArrayList<>();
-        try {
-            points = getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        for (Point p : points)
-            System.out.println(p.toString());
-        
     }
     
 }

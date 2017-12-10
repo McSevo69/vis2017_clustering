@@ -13,11 +13,19 @@ import java.util.ArrayList;
  * @author phuksz
  */
 public class Data {
+
+    //number of data points
     private int n;
+    // number of clusters
     private int k;
+    // algorithm
     private Algorithm algorithm;
+    // original data points
     private ArrayList<ArrayList<Point>> data = new ArrayList<>();
+    // centers for kmeans, kmedians or kedoids
     private ArrayList<ArrayList<Point>> centers = new ArrayList<>();
+    // number of cluster each poiunt is assigned to
+    private ArrayList<Integer> clusterNumber = new ArrayList<>();
     
     public Data() {
         this.n = 0;
@@ -25,6 +33,7 @@ public class Data {
         this.algorithm = null;
         this.data = null;
         this.centers = null;
+        this.clusterNumber = null;
     }
     
     public Data (int n, Algorithm algorithm) {
@@ -35,7 +44,6 @@ public class Data {
     public Data(int n, Algorithm algorithm, ArrayList<Point> initData) {
         this.n = n;
         this.algorithm = algorithm;
-
         this.data.add(initData);
     }
 
@@ -59,7 +67,6 @@ public class Data {
                 return false;
             }
         }
-        
         return true;
     }
 
