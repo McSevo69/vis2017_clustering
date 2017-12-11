@@ -128,10 +128,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
 
         // get extent of data to randomly set the initial points
-        extent.add(1000000.0);      //minX
-        extent.add(-1000000.0);     //maxX
-        extent.add(1000000.0);      //minY
-        extent.add(-1000000.0);     //maxY
+        extent.add(Double.MAX_VALUE);      //minX
+        extent.add(Double.MIN_NORMAL);     //maxX
+        extent.add(Double.MAX_VALUE);      //minY
+        extent.add(Double.MIN_VALUE);     //maxY
 
         // assign min and max x from points
         for(Point p : points) {

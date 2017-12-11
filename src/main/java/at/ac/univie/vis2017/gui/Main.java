@@ -108,9 +108,9 @@ public class Main extends Application {
 
 
         // test dbscan
-        DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
+        //DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
 
-        dbscanTest.clusterData();
+        //dbscanTest.clusterData();
 
 
 
@@ -122,12 +122,15 @@ public class Main extends Application {
         KMEANS kmeansTest = new KMEANS(4, 100, dbscan1points);
 
         kmeansTest.setClusterCenters("random");
+        kmeansTest.clusterData();
 
 
 
 
-        loadLogger();                               
-        launch(args);      
+
+
+        loadLogger();
+        launch(args);
     }
 
     @Override

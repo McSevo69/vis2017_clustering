@@ -14,7 +14,7 @@ public class KMEANS {
     // number of clusters (minimum is 2)
     private int numberClusters = 2;
     // maximum number of iterations
-    private int maxIter = 100;
+    private int maxIter = 4;
     // initial data points
     ArrayList<Point> points = new ArrayList<>();
     // actual data centers for each iteration
@@ -23,9 +23,6 @@ public class KMEANS {
     ArrayList<Integer> clusterNumber;
     // prepare Data object for
     private Data dat;
-
-
-
 
 
 
@@ -80,7 +77,13 @@ public class KMEANS {
         this.dat = dat;
     }
 
+    public ArrayList<Point> getCenters() {
+        return centers;
+    }
 
+    public void setCenters(ArrayList<Point> centers) {
+        this.centers = centers;
+    }
 
 
 
@@ -107,6 +110,7 @@ public class KMEANS {
                 //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
                 Point p = new Point(randomValueX, randomValueY);
                 p.setCenterPointTrue();
+                p.setClusterNumber(i);
 
                 centers.add(p);
 
@@ -122,8 +126,66 @@ public class KMEANS {
     }
 
 
+    // function updates centroids after each iteration
+    public void updateCentroids(ArrayList<Point> newCenters) {
+
+        for (int i = 0; i < this.centers.size(); i++) {
+            this.centers.get(i).setX(newCenters.get(i).getX());
+            this.centers.get(i).setY(newCenters.get(i).getY());
+        }
+
+    }
+
+
+    // function assigns each point to closest cluster
+    public void findClosestClusterCenter() {
+
+        int numberPoints = this.points.size();
+        int numberClusters = this.getNumberClusters();
+
+
+        //System.out.println(numberClusters);
+
+        // search nearest cluster center for each point
+        for (int i = 0; i < numberPoints; i++) {
+
+            //
+            double minDistance = Double.MAX_VALUE;
+            double actualDistance = 0.0f;
+
+            for (int j = 0; j < numberClusters; j++) {
+
+                actualDistance = Point.getDistanceBetweenPoints(centers.get(j), points.get(i));
+
+                if (actualDistance < minDistance) {
+                    minDistance = actualDistance;
+                    points.get(i).setClusterNumber(j + 1);
+                }
+            }
+        }
+
+    }
+
+
+
+
 
     public void clusterData() {
+
+
+        // assign maxiter to local variable to save performance
+        int maxIterations = this.getMaxIter();
+
+        // iterate until maximum iteration or convergence (convergence not implemented yet)
+        for (int i = 0; i < 1; i++) {
+            System.out.println("iteration i: " + i);
+            findClosestClusterCenter();
+        }
+
+        // check if class labels are assigned
+        for (int i = 0; i < this.points.size(); i++) {
+            System.out.println(this.points.get(i));
+        }
 
     }
 
