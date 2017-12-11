@@ -114,12 +114,7 @@ public class Main extends Application {
 
 
 
-
-
-
-
-
-        KMEANS kmeansTest = new KMEANS(4, 100, dbscan1points);
+        KMEANS kmeansTest = new KMEANS(3, 100, dbscan1points);
 
         kmeansTest.setClusterCenters("random");
         kmeansTest.clusterData();

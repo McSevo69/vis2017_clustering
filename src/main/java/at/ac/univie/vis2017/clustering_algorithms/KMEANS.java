@@ -5,6 +5,7 @@ import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -126,15 +127,7 @@ public class KMEANS {
     }
 
 
-    // function updates centroids after each iteration
-    public void updateCentroids(ArrayList<Point> newCenters) {
 
-        for (int i = 0; i < this.centers.size(); i++) {
-            this.centers.get(i).setX(newCenters.get(i).getX());
-            this.centers.get(i).setY(newCenters.get(i).getY());
-        }
-
-    }
 
 
     // function assigns each point to closest cluster
@@ -149,7 +142,7 @@ public class KMEANS {
         // search nearest cluster center for each point
         for (int i = 0; i < numberPoints; i++) {
 
-            //
+
             double minDistance = Double.MAX_VALUE;
             double actualDistance = 0.0f;
 
@@ -169,6 +162,64 @@ public class KMEANS {
 
 
 
+    public ArrayList<Point> computeNewCentroids() {
+
+        // create array list for new centroids
+        ArrayList<Point> newCentroids = new ArrayList<>();
+
+        int numberClusters = this.getNumberClusters();
+        int numberPoints = this.points.size();
+
+
+        //System.out.println("NumberClusters = " + numberClusters);
+        //System.out.println("NumberPoints = " + numberPoints);
+
+        // find for each cluster a new centroid
+        for (int i = 0; i < numberClusters; i++) {
+
+            System.out.println("Cluster i = " + i);
+
+            // store values of interest for calculation of the new centers
+            double centroidX = 0, centroidY = 0;
+            int numberPointsInCluster = 0;
+
+            for (int j = 0; j < numberPoints; j++) {
+
+                if (this.getPoints().get(j).getClusterNumber() == i + 1) {
+
+                    centroidX += this.getPoints().get(j).getX();
+                    //System.out.println(centroidX);
+                    centroidY += this.getPoints().get(j).getY();
+                    numberPointsInCluster++;
+                }
+
+            }
+
+            System.out.println("NumberPointsInCluster = " + numberPointsInCluster);
+
+            // create new centroid point and add in list
+            Point p = new Point(centroidX / numberPointsInCluster, centroidY / numberPointsInCluster);
+            p.setCenterPointTrue();
+            newCentroids.add(p);
+
+        }
+
+        return newCentroids;
+    }
+
+
+    // function updates centroids after each iteration
+    public void updateCentroids(ArrayList<Point> newCenters) {
+
+        for (int i = 0; i < this.centers.size(); i++) {
+            this.centers.get(i).setX(newCenters.get(i).getX());
+            this.centers.get(i).setY(newCenters.get(i).getY());
+        }
+    }
+
+
+
+
 
     public void clusterData() {
 
@@ -177,15 +228,16 @@ public class KMEANS {
         int maxIterations = this.getMaxIter();
 
         // iterate until maximum iteration or convergence (convergence not implemented yet)
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println("iteration i: " + i);
             findClosestClusterCenter();
+            updateCentroids(computeNewCentroids());
+
+
+            System.out.println(this.getCenters());
         }
 
-        // check if class labels are assigned
-        for (int i = 0; i < this.points.size(); i++) {
-            System.out.println(this.points.get(i));
-        }
+
 
     }
 
