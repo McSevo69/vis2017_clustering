@@ -45,6 +45,7 @@ import java.io.InputStreamReader;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javafx.beans.property.ObjectProperty;
@@ -117,6 +118,43 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void setApp(Main application){
         this.application = application;
     }
+
+
+    // function finds the extent of the given dataset
+    public static ArrayList<Double> getExtentFromDataPoints(ArrayList<Point> points) {
+
+        // extent[0]=minX; extent[1]=maxX; extent[2]=minY; extent[3]=maxY;
+        ArrayList<Double> extent = new ArrayList<>();
+
+
+        // get extent of data to randomly set the initial points
+        extent.add(1000000.0);      //minX
+        extent.add(-1000000.0);     //maxX
+        extent.add(1000000.0);      //minY
+        extent.add(-1000000.0);     //maxY
+
+        // assign min and max x from points
+        for(Point p : points) {
+            if (p.getX() < extent.get(0))
+                extent.set(0, p.getX());
+            if (p.getX() > extent.get(1))
+                extent.set(1, p.getX());
+            if (p.getY() < extent.get(2))
+                extent.set(2, p.getY());
+            if (p.getY() > extent.get(3))
+                extent.set(3, p.getY());
+        }
+
+        //System.out.println(extent.size());
+
+        return extent;
+    }
+
+
+
+
+
+
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html

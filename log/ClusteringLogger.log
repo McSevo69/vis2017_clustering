@@ -1,28 +1,4 @@
-14:54:00.820 [JavaFX Application Thread] FATAL vis2017.gui.Main:101 - Fatal error
-javafx.fxml.LoadException: 
-/C:/Users/Severin/Documents/Studium/VIS/MS3/vis2017_clustering/target/classes/fxml/ClusteringGUI.fxml
-
-	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2601) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2579) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2441) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3214) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3175) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3148) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3124) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3104) ~[jfxrt.jar:?]
-	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3097) ~[jfxrt.jar:?]
-	at at.ac.univie.vis2017.gui.Main.showMainWindow(Main.java:76) ~[classes/:?]
-	at at.ac.univie.vis2017.gui.Main.start(Main.java:71) ~[classes/:?]
-	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$161(LauncherImpl.java:863) ~[jfxrt.jar:?]
-	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$174(PlatformImpl.java:326) ~[jfxrt.jar:?]
-	at com.sun.javafx.application.PlatformImpl.lambda$null$172(PlatformImpl.java:295) ~[jfxrt.jar:?]
-	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_151]
-	at com.sun.javafx.application.PlatformImpl.lambda$runLater$173(PlatformImpl.java:294) ~[jfxrt.jar:?]
-	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95) ~[jfxrt.jar:?]
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[jfxrt.jar:?]
-	at com.sun.glass.ui.win.WinApplication.lambda$null$147(WinApplication.java:177) ~[jfxrt.jar:?]
-	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_151]
-Caused by: java.lang.NullPointerException
-	at at.ac.univie.vis2017.gui.ClusteringController.initialize(ClusteringController.java:240) ~[classes/:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548) ~[jfxrt.jar:?]
-	... 18 more
+12:01:32.978 [JavaFX Application Thread] DEBUG vis2017.gui.ClusteringController:218 - setMode.MANUAL pressed
+12:01:33.571 [JavaFX Application Thread] DEBUG vis2017.gui.ClusteringController:224 - autoMode restarted
+12:01:33.573 [JavaFX Application Thread] DEBUG vis2017.gui.ClusteringController:196 - Iteration Spinner updated. New value: 0
+12:01:34.488 [JavaFX Application Thread] DEBUG vis2017.gui.ClusteringController:213 - setMode.AUTO pressed

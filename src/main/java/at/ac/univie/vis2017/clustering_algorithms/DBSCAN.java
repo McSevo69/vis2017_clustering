@@ -83,23 +83,7 @@ public class DBSCAN {
 
     public void clusterData() {
 
-        // get extent of data
-        double minX = 1000000;
-        double maxX = -1000000;
-        double minY = 1000000;
-        double maxY = -1000000;
 
-        // assign min and max x from points
-        for(Point p : points) {
-            if (p.getX() > maxX)
-                maxX = p.getX();
-            if (p.getX() < minX)
-                minX = p.getX();
-            if (p.getY() > maxY)
-                maxY = p.getY();
-            if (p.getY() < minY)
-                minY = p.getY();
-        }
 
 
 

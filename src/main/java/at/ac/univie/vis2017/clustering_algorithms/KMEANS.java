@@ -1,5 +1,6 @@
 package at.ac.univie.vis2017.clustering_algorithms;
 
+import at.ac.univie.vis2017.gui.ClusteringController;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
 
@@ -85,27 +86,10 @@ public class KMEANS {
 
     public void setClusterCenters(String strategy) {
 
-
-        // get extent of data to randomly set the initial points
-        double minX = 1000000;
-        double maxX = -1000000;
-        double minY = 1000000;
-        double maxY = -1000000;
-
-        // assign min and max x from points
-        for(Point p : points) {
-            if (p.getX() > maxX)
-                maxX = p.getX();
-            if (p.getX() < minX)
-                minX = p.getX();
-            if (p.getY() > maxY)
-                maxY = p.getY();
-            if (p.getY() < minY)
-                minY = p.getY();
-        }
+        ArrayList<Double> extent = ClusteringController.getExtentFromDataPoints(this.points);
 
         System.out.println("Extent");
-        System.out.println("Minx = " + minX + "; maxX = " + maxX + "; minY = " + minY + "; maxY = " + maxY);
+        System.out.println("Minx = " + extent.get(0) + "; maxX = " + extent.get(1)  + "; minY = " + extent.get(2)  + "; maxY = " + extent.get(3) );
 
         System.out.println("ClusterCenters");
         // initialize data randomly
@@ -114,10 +98,10 @@ public class KMEANS {
 
             for (int i = 0; i < this.numberClusters; i++) {
                 Random r = new Random();
-                double randomValueX = minX + (maxX - minX) * r.nextDouble();
-                double randomValueY = minY + (maxY - minY) * r.nextDouble();
+                double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
+                double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
 
-                System.out.println("Point " + i + "=" + randomValueX + "-" + randomValueY);
+                System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
             }
         }
 
