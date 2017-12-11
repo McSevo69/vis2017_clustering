@@ -46,6 +46,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javafx.beans.property.ObjectProperty;
@@ -118,6 +119,42 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void setApp(Main application){
         this.application = application;
     }
+
+
+
+    public static ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
+
+        // array list for data points
+        ArrayList<Point> data = new ArrayList<>();
+
+        // extent[0]=minX; extent[1]=maxX; extent[2]=minY; extent[3]=maxY;
+        ArrayList<Double> extent = new ArrayList<>();
+
+
+        // get extent of data to randomly set the initial points
+        extent.add(-1.0 * boundsX);         //minX
+        extent.add(boundsX);                //maxX
+        extent.add(-1.0 * boundsY);         //minY
+        extent.add(boundsY);                //maxY
+
+        for (int i = 0; i < nrObservations; i++) {
+            Random r = new Random();
+
+            // create random values within given bounds
+            double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
+            double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
+
+            // add new point to existing data set
+            data.add(new Point(randomValueX, randomValueY, 0.0, 0.0, 0));
+
+        }
+
+        return data;
+    }
+
+
+
+
 
 
     // function finds the extent of the given dataset
