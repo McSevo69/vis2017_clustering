@@ -86,6 +86,7 @@ public class KMEANS {
 
     public void setClusterCenters(String strategy) {
 
+        // get extent from data
         ArrayList<Double> extent = ClusteringController.getExtentFromDataPoints(this.points);
 
         System.out.println("Extent");
@@ -97,16 +98,27 @@ public class KMEANS {
 
 
             for (int i = 0; i < this.numberClusters; i++) {
+
+                // create random values for centers
                 Random r = new Random();
                 double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
                 double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
 
-                System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
+                //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
+                Point p = new Point(randomValueX, randomValueY);
+                p.setCenterPointTrue();
+
+                centers.add(p);
+
             }
         }
+/*
 
+        System.out.println("Number CenterPoints = " + centers.size());
 
-
+        for(Point p : centers) {
+            System.out.println(p);
+        }*/
     }
 
 

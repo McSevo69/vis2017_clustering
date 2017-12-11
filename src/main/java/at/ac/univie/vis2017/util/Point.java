@@ -11,7 +11,21 @@ public class Point {
     private double centerY;
     // cluster number
     private int clusterNumber = 0;
-    
+    // true if Point is centerpoint
+    private boolean isCenterPoint = false;
+
+    public boolean isCenterPoint() {
+        return isCenterPoint;
+    }
+
+    public void setCenterPoint(boolean centerPoint) {
+        isCenterPoint = centerPoint;
+    }
+
+    public void setCenterPointTrue() {
+        isCenterPoint = true;
+    }
+
     public Point (double x, double y) {
         this.x = x;
         this.y = y;
@@ -28,6 +42,17 @@ public class Point {
         this.clusterNumber = clusterNumber;
     }
 
+    /*@Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                ", centerX=" + centerX +
+                ", centerY=" + centerY +
+                ", clusterNumber=" + clusterNumber +
+                '}';
+    }*/
+
     @Override
     public String toString() {
         return "Point{" +
@@ -36,6 +61,7 @@ public class Point {
                 ", centerX=" + centerX +
                 ", centerY=" + centerY +
                 ", clusterNumber=" + clusterNumber +
+                ", isCenterPoint=" + isCenterPoint +
                 '}';
     }
 
