@@ -376,34 +376,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
             e.printStackTrace();
         }
 
-        //for (Point p : points)
-        //System.out.println(p.toString());
-
-
-
-        // get number of points
-        int n_dbscan1 = dbscan1points.size();
-        //int n_dbscan2 = dbscan2points.size();
-        //int n_dbscan3 = dbscan3points.size();
-        System.out.println("Number Points = " + n_dbscan1);
-        //System.out.println(n_dbscan2);
-        //System.out.println(n_dbscan3);
-
-        // set number of target clusters
-        int eps_value = 3;
-        int minPts = 2;
-
-
-
-        // test dbscan
-        //DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
 
 
 
         KMEANS kmeansTest = new KMEANS(3, 100, dbscan1points);
 
         kmeansTest.setClusterCenters("random");
-        //kmeansTest.clusterData();
+        Data d = kmeansTest.clusterData();
 
     }
     

@@ -34,14 +34,14 @@ public class KMEANS {
         this.maxIter = maxIter;
         this.points = points;
 
-        this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(points.size(), 0));
+        this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
         setClusterCenters("random");
 
 
         Algorithm algorithm = Algorithm.KMEANS;
-        dat = new Data();
+        dat = new Data(this.points.size(), numberClusters, algorithm);
 
     }
 
@@ -103,16 +103,16 @@ public class KMEANS {
         // get extent from data
         ArrayList<Double> extent = cc.getExtentFromDataPoints(this.points);
 
-        System.out.println("Extent");
-        System.out.println("Minx = " + extent.get(0) + "; maxX = " + extent.get(1)  + "; minY = " + extent.get(2)  + "; maxY = " + extent.get(3) );
+        //System.out.println("Extent");
+        //System.out.println("Minx = " + extent.get(0) + "; maxX = " + extent.get(1)  + "; minY = " + extent.get(2)  + "; maxY = " + extent.get(3) );
 
-        System.out.println("ClusterCenters");
+
         // initialize data randomly
         if(strategy.equals("random")) {
 
 
             for (int i = 0; i < this.numberClusters; i++) {
-
+                System.out.println(i);
                 // create random values for centers
                 Random r = new Random();
                 double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
@@ -221,11 +221,11 @@ public class KMEANS {
     // function updates centroids after each iteration
     public void updateCentroids(ArrayList<Point> newCenters) {
 
+        int numberClusters = this.getNumberClusters();
 
+        for (int i = 0; i < numberClusters; i++) {
 
-
-
-        for (int i = 0; i < this.centers.size(); i++) {
+            System.out.println(i);
             this.centers.get(i).setX(newCenters.get(i).getX());
             this.centers.get(i).setY(newCenters.get(i).getY());
         }
@@ -235,11 +235,11 @@ public class KMEANS {
 
 
 
-    public void clusterData() {
+    public Data clusterData() {
 
 
+        System.out.println(this.getCenters());
 
-        //dat.setIteration(0, this.points, this.centers);
 
         // assign maxiter to local variable to save performance
         int maxIterations = this.getMaxIter();
@@ -251,14 +251,12 @@ public class KMEANS {
             updateCentroids(computeNewCentroids());
 
 
-           // dat.addIteration(this.points, this.centers);
-
-
+            dat.addIteration(this.getPoints(), this.getCenters());
             System.out.println(this.getCenters());
         }
 
 
-
+        return this.dat;
     }
 
 
