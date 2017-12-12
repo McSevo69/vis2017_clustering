@@ -109,6 +109,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private Main application;
     private ArrayList<Point> initialStatePoints;
     private VisualizerFX visualizer;
+    private KMEANS kmeansAlgorithm;
+    private boolean kmeansLoaded = false;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -242,6 +244,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
+            
+            kmeansLoaded = true;            
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
         }
@@ -353,36 +357,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
 
-
-
-
-          /* #############################################################################################
-        #############################################################################################
-        Test Clustering Algorithms
-        #############################################################################################
-        #############################################################################################
-         */
-
-        //TODO Mike
-        ArrayList<Point> dbscan1points = new ArrayList<>();
-
-
-        // read data from file
-        try {
-            dbscan1points = getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
-            //dbscan2points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan2.txt");
-            //dbscan3points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan3.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-        KMEANS kmeansTest = new KMEANS(3, 100, dbscan1points);
-
-        kmeansTest.setClusterCenters("random");
-        Data d = kmeansTest.clusterData();
 
     }
     
