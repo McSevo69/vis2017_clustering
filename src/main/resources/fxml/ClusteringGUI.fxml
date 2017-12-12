@@ -121,7 +121,7 @@
                                                 <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
                                              </rowConstraints>
                                              <children>
-                                                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="119.0" text="Random Dataset" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Button mnemonicParsing="false" onAction="#randomDataKmeansPressed" prefHeight="30.0" prefWidth="119.0" text="Random Dataset" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                 <Button mnemonicParsing="false" onAction="#loadKmeansFile" prefHeight="30.0" prefWidth="118.0" text="Load from file" GridPane.halignment="CENTER" />
                                              </children>
                                           </GridPane>

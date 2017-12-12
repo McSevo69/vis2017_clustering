@@ -121,8 +121,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.application = application;
     }
 
-
-
     public ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
 
         // array list for data points
@@ -153,11 +151,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         return data;
     }
 
-
-
-
-
-
     // function finds the extent of the given dataset
     public ArrayList<Double> getExtentFromDataPoints(ArrayList<Point> points) {
 
@@ -187,12 +180,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
         return extent;
     }
-
-
-
-
-
-
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
@@ -299,6 +286,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizer.setMode(Mode.AUTO);
         logger.debug("autoMode restarted");
         updateKmeansIteration();      
+    }
+    
+    public void randomDataKmeansPressed() {
+        ArrayList<Point> randomPoints = createRandomData(162, 140.0, 140.0);
+        logger.debug("File loaded successfully");
+        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), randomPoints);
     }
     
     @Override
