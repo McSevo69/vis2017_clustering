@@ -100,6 +100,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML ImageView stepBackManualModeKMeansImage;
     //@FXML ImageView iterateManualModeKMeansImage;
     @FXML Spinner<Integer> iterationKmeansSpinner;
+    @FXML Spinner<Integer> kOfKmeansSpinner;
     @FXML Slider speedKmeansSlider;
     @FXML CheckBox centroidPathKmeansCheckBox;
     @FXML CheckBox clusterCentersKmeansCheckBox;
@@ -111,6 +112,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private VisualizerFX visualizer;
     private KMEANS kmeansAlgorithm;
     private boolean kmeansLoaded = false;
+    private int kOfKmeans = 3;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -264,6 +266,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
+        if (kmeansLoaded) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            Data dat = kmeansAlgorithm.clusterData();
+            visualizer.setData(dat);
+            kmeansLoaded = false;
+        }
         visualizer.iterate();
         logger.debug("iterateKmeans pressed");
         updateKmeansIteration();
@@ -276,6 +284,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void autoModePlayKmeans() {
+        if (kmeansLoaded) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            Data dat = kmeansAlgorithm.clusterData();
+            visualizer.setData(dat);
+            kmeansLoaded = false;
+        }
         visualizer.setMode(Mode.AUTO);
         logger.debug("setMode.AUTO pressed");
     }
@@ -293,9 +307,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansPressed() {
-        ArrayList<Point> randomPoints = createRandomData(162, 140.0, 140.0);
+        this.initialStatePoints  = createRandomData(162, 140.0, 140.0);
         logger.debug("Random data generated");
-        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), randomPoints);
+        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        kmeansLoaded = true;
     }
     
     @Override
@@ -308,6 +323,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setIteration(newValue);
             logger.debug("Iteration set to " + newValue);
+        });
+        
+        kOfKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
+            kOfKmeans = newValue;
+            logger.debug("kOfKmeans set to " + newValue);
         });
                 
         speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {

@@ -175,7 +175,11 @@
                                              <children>
                                                 <ChoiceBox prefHeight="28.0" prefWidth="89.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                                 <ChoiceBox prefHeight="28.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                                <Spinner prefHeight="26.0" prefWidth="89.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                                                <Spinner fx:id="kOfKmeansSpinner" prefHeight="26.0" prefWidth="89.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                                    <valueFactory>
+                                                        <SpinnerValueFactory.IntegerSpinnerValueFactory max="8" min="3" />
+                                                    </valueFactory>
+                                                </Spinner>                                                    
                                                 <Label text="k:" />
                                                 <Label text="Strategy:" GridPane.rowIndex="1" />
                                                 <Label text="Initialization:" GridPane.rowIndex="2" />
