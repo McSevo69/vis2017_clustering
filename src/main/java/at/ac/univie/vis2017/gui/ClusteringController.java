@@ -290,7 +290,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void randomDataKmeansPressed() {
         ArrayList<Point> randomPoints = createRandomData(162, 140.0, 140.0);
-        logger.debug("File loaded successfully");
+        logger.debug("Random data generated");
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), randomPoints);
     }
     
