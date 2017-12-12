@@ -31,6 +31,7 @@
  */
 package at.ac.univie.vis2017.gui;
 
+import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
 import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
@@ -122,7 +123,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
 
 
-    public static ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
+    public ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
 
         // array list for data points
         ArrayList<Point> data = new ArrayList<>();
@@ -158,7 +159,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
 
     // function finds the extent of the given dataset
-    public static ArrayList<Double> getExtentFromDataPoints(ArrayList<Point> points) {
+    public ArrayList<Double> getExtentFromDataPoints(ArrayList<Point> points) {
 
         // extent[0]=minX; extent[1]=maxX; extent[2]=minY; extent[3]=maxY;
         ArrayList<Double> extent = new ArrayList<>();
@@ -195,7 +196,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
-    public static ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
+    public ArrayList<Point> getDataFromTxt(String filePath) throws IOException {
 
         // create ArrayList where Points are saved
         ArrayList<Point> data = new ArrayList<>();
@@ -358,6 +359,58 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.setPrefWidth(kmeansParentPane.getMaxHeight());
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
+
+
+
+
+          /* #############################################################################################
+        #############################################################################################
+        Test Clustering Algorithms
+        #############################################################################################
+        #############################################################################################
+         */
+
+        //TODO Mike
+        ArrayList<Point> dbscan1points = new ArrayList<>();
+
+
+        // read data from file
+        try {
+            dbscan1points = getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
+            //dbscan2points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan2.txt");
+            //dbscan3points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan3.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //for (Point p : points)
+        //System.out.println(p.toString());
+
+
+
+        // get number of points
+        int n_dbscan1 = dbscan1points.size();
+        //int n_dbscan2 = dbscan2points.size();
+        //int n_dbscan3 = dbscan3points.size();
+        System.out.println("Number Points = " + n_dbscan1);
+        //System.out.println(n_dbscan2);
+        //System.out.println(n_dbscan3);
+
+        // set number of target clusters
+        int eps_value = 3;
+        int minPts = 2;
+
+
+
+        // test dbscan
+        //DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
+
+
+
+        KMEANS kmeansTest = new KMEANS(3, 100, dbscan1points);
+
+        kmeansTest.setClusterCenters("random");
+        //kmeansTest.clusterData();
 
     }
     

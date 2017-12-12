@@ -1,8 +1,10 @@
 package at.ac.univie.vis2017.clustering_algorithms;
 
 import at.ac.univie.vis2017.gui.ClusteringController;
+import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
+import com.sun.javaws.jnl.ResourcesDesc;
 
 
 import java.lang.reflect.Array;
@@ -34,7 +36,14 @@ public class KMEANS {
         this.points = points;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(points.size(), 0));
+
+        // set cluster centers before first iteration
+        setClusterCenters("random");
+
+
+        Algorithm algorithm = Algorithm.KMEANS;
         dat = new Data();
+
     }
 
 
@@ -90,8 +99,10 @@ public class KMEANS {
 
     public void setClusterCenters(String strategy) {
 
+        ClusteringController cc = new ClusteringController();
+
         // get extent from data
-        ArrayList<Double> extent = ClusteringController.getExtentFromDataPoints(this.points);
+        ArrayList<Double> extent = cc.getExtentFromDataPoints(this.points);
 
         System.out.println("Extent");
         System.out.println("Minx = " + extent.get(0) + "; maxX = " + extent.get(1)  + "; minY = " + extent.get(2)  + "; maxY = " + extent.get(3) );
@@ -211,6 +222,10 @@ public class KMEANS {
     // function updates centroids after each iteration
     public void updateCentroids(ArrayList<Point> newCenters) {
 
+
+
+
+
         for (int i = 0; i < this.centers.size(); i++) {
             this.centers.get(i).setX(newCenters.get(i).getX());
             this.centers.get(i).setY(newCenters.get(i).getY());
@@ -224,14 +239,20 @@ public class KMEANS {
     public void clusterData() {
 
 
+
+        //dat.setIteration(0, this.points, this.centers);
+
         // assign maxiter to local variable to save performance
         int maxIterations = this.getMaxIter();
 
         // iterate until maximum iteration or convergence (convergence not implemented yet)
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < maxIterations; i++) {
             System.out.println("iteration i: " + i);
             findClosestClusterCenter();
             updateCentroids(computeNewCentroids());
+
+
+           // dat.addIteration(this.points, this.centers);
 
 
             System.out.println(this.getCenters());
