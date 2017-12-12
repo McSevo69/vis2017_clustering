@@ -247,7 +247,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
             
-            kmeansLoaded = true;            
+            kmeansLoaded = true; 
+            iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+            logger.debug("Iteration Spinner updated. New value: " + 0);
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
         }
@@ -311,6 +313,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Random data generated");
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         kmeansLoaded = true;
+        iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+        logger.debug("Iteration Spinner updated. New value: " + 0);
     }
     
     @Override
