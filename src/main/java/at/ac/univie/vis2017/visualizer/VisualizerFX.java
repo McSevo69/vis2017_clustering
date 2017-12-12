@@ -188,6 +188,9 @@ public class VisualizerFX implements IVisualizer {
     
     public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
         
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
         double height = gc.getCanvas().getHeight();
         double width = gc.getCanvas().getWidth();
         double canvasHeight = 500;
