@@ -333,17 +333,18 @@ public class VisualizerFX implements IVisualizer {
         */
         if (data != null) {
             if (data.getAlgorithm() == Algorithm.KMEANS) {
-                if (showPaths) {
-                    drawIterationPaths();
-                }
-
+                
                 if (showData) {
                     drawIterationData();
                 }
-
+                
                 if (showCenters) {
                     drawIterationCenters();
                 }
+                
+                if (showPaths) {
+                    drawIterationPaths();
+                }           
 
                 if (showVoronoi) {
                     drawIterationVoronoi();
