@@ -249,9 +249,17 @@ public class KMEANS {
             System.out.println("iteration i: " + i);
             findClosestClusterCenter();
             updateCentroids(computeNewCentroids());
+            
+            ArrayList<Point> iterationBuf = new ArrayList<>();
+            for (Point p : getPoints())
+                iterationBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+            
+            ArrayList<Point> centersBuf = new ArrayList<>();
+            for (Point p : getCenters())
+                centersBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
 
 
-            dat.addIteration(this.getPoints(), this.getCenters());
+            dat.addIteration(iterationBuf, centersBuf);
             System.out.println(this.getCenters());
         }
 
