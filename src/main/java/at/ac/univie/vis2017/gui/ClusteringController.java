@@ -253,11 +253,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
             
             logger.debug("File loaded successfully");
+            visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
             visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
-            visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
-            visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
+            visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);            
                         
             kmeansLoaded = true; 
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
@@ -323,8 +323,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void randomDataKmeansPressed() {
         this.initialStatePoints  = createRandomData(162, 140.0, 140.0);
         logger.debug("Random data generated");
-        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
+        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);        
         kmeansLoaded = true;
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         logger.debug("Iteration Spinner updated. New value: " + 0);
