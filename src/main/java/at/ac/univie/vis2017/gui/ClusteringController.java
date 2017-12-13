@@ -60,6 +60,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -106,6 +107,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML CheckBox clusterCentersKmeansCheckBox;
     @FXML CheckBox dataPointsKmeansCheckBox;
     @FXML CheckBox voronoiLinesKmeansCheckBox;
+    @FXML ChoiceBox kmeansUpdateStratChoiceBox;
+    @FXML ChoiceBox kmeansInitChoiceBox;
 
     private Main application;
     private ArrayList<Point> initialStatePoints;
@@ -360,6 +363,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("Show voronoi: " + newValue.toString());
             visualizer.setShowVornoi(newValue);
         });
+        
+        kmeansUpdateStratChoiceBox.getSelectionModel().selectFirst();
+        kmeansInitChoiceBox.getSelectionModel().selectFirst();
                
         GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
