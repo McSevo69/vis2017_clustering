@@ -25,6 +25,8 @@
 	
 	<logger name="at.ac.univie.vis2017.gui.ClusteringController" level="DEBUG"/>
 	<logger name="at.ac.univie.vis2017.visualizer.VisualizerFX" level="DEBUG"/>
+	<logger name="at.ac.univie.vis2017.util.Algorithm" level="DEBUG"/>
+	<logger name="at.ac.univie.vis2017.util.Data" level="DEBUG"/>
 	
     </loggers>
 </configuration>

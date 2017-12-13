@@ -5,7 +5,10 @@
  */
 package at.ac.univie.vis2017.util;
 
+import at.ac.univie.vis2017.gui.ClusteringController;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import java.lang.IllegalArgumentException;
 
 /**
@@ -29,6 +32,8 @@ public class Data {
     
     private double maxX;
     private double maxY;
+    
+    Logger logger = LogManager.getLogger(Data.class);
     
     public Data() {
         this.n = 0;
@@ -65,6 +70,7 @@ public class Data {
     }
     
     public boolean checkData () {
+        logger.debug("checkData called");
         for (ArrayList<Point> a : data) {
             if (a.size() != n) {
                 return false;
@@ -74,24 +80,29 @@ public class Data {
     }
 
     public void addIteration (ArrayList<Point> newData) {
+        logger.debug("addIteration called");
         data.add(newData);
     }
     
     public void addIteration (ArrayList<Point> newData, ArrayList<Point> newCenters) {
+        logger.debug("addIteration including centers called");
         data.add(newData);
         centers.add(newCenters);
     }
 
     public void setIteration (int iteration, ArrayList<Point> newData) {
+        logger.debug("setIteration called");
         data.set(iteration, newData);
     }
     
     public void setIteration (int iteration, ArrayList<Point> newData, ArrayList<Point> newCenters) {
+        logger.debug("setIteration including centers called");
         data.set(iteration, newData);
         centers.set(iteration, newCenters);
     }
 
     public ArrayList<ArrayList<Point>> getIteration (int iteration) {
+        logger.debug("getIteration called");
         ArrayList<ArrayList<Point>> buf = new ArrayList<ArrayList<Point>>();
         buf.add(data.get(iteration));
         buf.add(centers.get(iteration));
@@ -99,42 +110,52 @@ public class Data {
     }
     
     public ArrayList<Point> getIterationData (int iteration) {
+        logger.debug("getIterationData called");
         return data.get(iteration);
     }
 
     public ArrayList<Point> getIterationCenters (int iteration) {
+        logger.debug("getIterationCenters called");
         return centers.get(iteration);
     }
 
     public int getIterations () {
+        logger.debug("getIterations = " + data.size());
         return data.size();
     }
     
     public Algorithm getAlgorithm () {
+        logger.debug("geAlgorithm = " + algorithm);
         return algorithm;
     }
     
     public int getN () {
+        logger.debug("getN = " + n);
         return n;
     }
     
     public int getK () {
+        logger.debug("getK = " + k);
         return k;
     }
     
     public void setMaxX (double maxX) {
+        logger.debug("setMaxX = " + maxX);
         this.maxX = maxX;
     }
     
     public double getMaxX () {
+        logger.debug("getMaxX = " + maxX);
         return this.maxX;
     }
     
     public void setMaxY (double maxY) {
+        logger.debug("setMaxY = " + maxY);
         this.maxY = maxY;
     }
 
     public double getMaxY () {
+        logger.debug("getMaxY = " + maxY);
         return this.maxY;
     }
     

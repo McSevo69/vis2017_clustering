@@ -217,7 +217,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public String loadFromFile() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Load dataset from file");
-        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         chooser.getExtensionFilters().addAll(
         new FileChooser.ExtensionFilter("Dataset", "*.txt"));
         

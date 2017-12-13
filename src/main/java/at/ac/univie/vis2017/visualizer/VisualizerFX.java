@@ -160,6 +160,8 @@ public class VisualizerFX implements IVisualizer {
             }
         }
         
+        logger.debug("Iteration displayed: " + iteration);
+        
         draw();
     }
     
@@ -186,7 +188,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     private double normalizeX (double x) {
-        System.out.println(x + "/" + maxX + " * " + canvas.getWidth());
+        //System.out.println(x + "/" + maxX + " * " + canvas.getWidth());
         return (x/maxX) * canvas.getWidth();
     }
     
@@ -218,7 +220,7 @@ public class VisualizerFX implements IVisualizer {
     public void drawPoint(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
 
-        System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
+        //System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
 //        gc.fillOval(p.getX(), p.getY(), pSize, pSize);
         gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
 //        gc.fillOval((p.getX()/maxX)*canvas.getWidth(), (p.getY()/maxY)*canvas.getHeight(), pSize, pSize);
@@ -228,7 +230,7 @@ public class VisualizerFX implements IVisualizer {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
         gc.setStroke(Color.BLACK);
         
-        System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
+        //System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
 
         gc.fillRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
         gc.strokeRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
