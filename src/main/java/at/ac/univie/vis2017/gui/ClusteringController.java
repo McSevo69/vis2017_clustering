@@ -130,14 +130,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.application = application;
     }
     
-    public ArrayList<Point> createGaussianRandomData(int nrClusters, int nrObservations) {
+    public ArrayList<Point> createGaussianRandomData(int nrObservations) {
         ArrayList<Point> data = new ArrayList<>();
         
         double meanX, meanY; 
-        double variance = 5.0f;        
+        double variance;        
         RandomGaussian rg = new RandomGaussian();
+        Random r = new Random();
+        
+        int nrClusters = (int) (3 + (8 - 3) * r.nextDouble());
         for (int i = 0; i < nrClusters; i++) {
-            Random r = new Random();
+            r = new Random();
             meanX = 30 + (120 - 30) * r.nextDouble();
             meanY = 30 + (120 - 30) * r.nextDouble();
             variance = 6 + (10 - 6) * r.nextDouble();
@@ -344,7 +347,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void randomDataKmeansPressed() {
         //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
-        this.initialStatePoints  = createGaussianRandomData(6, 90);
+        this.initialStatePoints  = createGaussianRandomData(90);
         logger.debug("Random data generated");
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
