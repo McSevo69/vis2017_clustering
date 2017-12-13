@@ -205,7 +205,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         try {
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(" ");
-                data.add(new Point(Double.parseDouble(row[1]), Double.parseDouble(row[2]), 0.0, 0.0, 0));
+                data.add(new Point(Double.parseDouble(row[1]), Double.parseDouble(row[2])));
             }
             br.close();
         }
