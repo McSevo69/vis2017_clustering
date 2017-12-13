@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
  * @author phuksz
  */
 public class VisualizerFX implements IVisualizer {
-    private Canvas canvas;
+    private Canvas canvas = null;
     
     private int iteration;
     private int pointIterator;
@@ -51,6 +51,9 @@ public class VisualizerFX implements IVisualizer {
     
     private int pSize = 5;
     private int cSize = 5;
+    
+    private double maxX = 150;
+    private double maxY = 150;
     
     Logger logger = LogManager.getLogger(VisualizerFX.class);
     
@@ -75,17 +78,13 @@ public class VisualizerFX implements IVisualizer {
         this.iteration = 0;
         this.pointIterator = 0;
         this.mode = Mode.MANUAL;
-
-        this.data = data;
-        this.speed = data.getN();
-        this.algorithm = data.getAlgorithm();
+        
+        setData(data);
 
         this.showPaths = false;
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
-
-        setColorValueChunk();
     }
     
     public void setAlgorithm (Algorithm algorithm) {
@@ -186,6 +185,15 @@ public class VisualizerFX implements IVisualizer {
         colorValueChunk = 360.0 / data.getK();
     }
     
+    private double normalizeX (double x) {
+        System.out.println(x + "/" + maxX + " * " + canvas.getWidth());
+        return (x/maxX) * canvas.getWidth();
+    }
+    
+    private double normalizeY (double y) {
+        return (y/maxY) * canvas.getHeight();
+    }
+
     public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
         
         gc.setFill(Color.WHITE);
@@ -195,7 +203,7 @@ public class VisualizerFX implements IVisualizer {
         double width = gc.getCanvas().getWidth();
         //double canvasHeight = 500;
         //double canvasWidth = 500;
-        double normalize = 140.0;
+        double normalize = 150.0;
         
         gc.setFill(Color.BLACK);
                 
@@ -209,15 +217,23 @@ public class VisualizerFX implements IVisualizer {
     
     public void drawPoint(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
-        gc.fillOval(p.getX(), p.getY(), pSize, pSize);
+
+        System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
+//        gc.fillOval(p.getX(), p.getY(), pSize, pSize);
+        gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
+//        gc.fillOval((p.getX()/maxX)*canvas.getWidth(), (p.getY()/maxY)*canvas.getHeight(), pSize, pSize);
     }
     
     public void drawCenter(Point p) {
         gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
         gc.setStroke(Color.BLACK);
+        
+        System.out.println(normalizeX(p.getX()) + ":" + normalizeY(p.getY()));
 
-        gc.fillRect(p.getX(), p.getY(), cSize, cSize);
-        gc.strokeRect(p.getX(), p.getY(), cSize, cSize);
+        gc.fillRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
+        gc.strokeRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
+//        gc.fillRect((p.getX()/maxX)*canvas.getWidth(), (p.getY()/maxY)*canvas.getHeight(), cSize, cSize);
+//        gc.strokeRect((p.getX()/maxX)*canvas.getWidth(), (p.getY()/maxY)*canvas.getHeight(), cSize, cSize);
     }
     
     
@@ -243,7 +259,11 @@ public class VisualizerFX implements IVisualizer {
                 Point past = data.getIterationCenters(j-1).get(i);
 //                gc.setStroke(Color.hsb(curr.getClusterNumber()*colorValueChunk,1,1));
                 gc.setStroke(Color.BLACK);
-                gc.strokeLine(past.getX()+cSize/2, past.getY()+cSize/2, curr.getX()+cSize/2, curr.getY()+cSize/2);
+                gc.strokeLine(
+                        normalizeX(past.getX())+cSize/2, 
+                        normalizeY(past.getY())+cSize/2, 
+                        normalizeX(curr.getX())+cSize/2, 
+                        normalizeY(curr.getY())+cSize/2);
             }
         }
     }
@@ -270,7 +290,7 @@ public class VisualizerFX implements IVisualizer {
         
         for (Point p : voronoiPoints) {
             gc.setFill(Color.BLACK);
-            gc.strokeOval(p.getX(), p.getY(), pSize, pSize);
+            gc.strokeOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
         }
     }
 
@@ -285,6 +305,9 @@ public class VisualizerFX implements IVisualizer {
     
     */
     public void draw () {
+        if (canvas == null) {
+            throw new RuntimeException("no canvas set!");
+        }
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         

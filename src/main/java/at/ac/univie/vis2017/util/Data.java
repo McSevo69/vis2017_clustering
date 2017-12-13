@@ -27,6 +27,9 @@ public class Data {
     // number of cluster each poiunt is assigned to
     private ArrayList<Integer> clusterNumber = new ArrayList<>();
     
+    private double maxX;
+    private double maxY;
+    
     public Data() {
         this.n = 0;
         this.k = 0;
@@ -117,6 +120,22 @@ public class Data {
     
     public int getK () {
         return k;
+    }
+    
+    public void setMaxX (double maxX) {
+        this.maxX = maxX;
+    }
+    
+    public double getMaxX () {
+        return this.maxX;
+    }
+    
+    public void setMaxY (double maxY) {
+        this.maxY = maxY;
+    }
+
+    public double getMaxY () {
+        return this.maxY;
     }
     
     public static Data getTestData () {
