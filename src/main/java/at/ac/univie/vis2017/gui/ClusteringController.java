@@ -32,6 +32,7 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
+import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
 import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
@@ -249,6 +250,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
+            visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
             
             kmeansLoaded = true; 
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
@@ -315,6 +317,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.initialStatePoints  = createRandomData(162, 140.0, 140.0);
         logger.debug("Random data generated");
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
         kmeansLoaded = true;
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         logger.debug("Iteration Spinner updated. New value: " + 0);
