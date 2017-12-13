@@ -224,23 +224,24 @@ public class VisualizerFX implements IVisualizer {
             gc.setFill(Color.BLACK);
         }
 
-        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
+//        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
         gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
     }
     
     public void drawCenter(Point p) {
         if (iteration < 0) return;
         
-        gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+        gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
         gc.setStroke(Color.BLACK);
         
-        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
+//        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
         gc.fillRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
         gc.strokeRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
     }
     
     
     public void drawIterationData() {
+        logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             drawPoint(p);
@@ -248,6 +249,7 @@ public class VisualizerFX implements IVisualizer {
     }
 
     public void drawIterationCenters () {
+        logger.debug("executing drawIterationCenters");
         if (data.getIterationCenters(0) == null) return;
         for (Point p : data.getIterationCenters(iteration)) {
             drawCenter(p);
@@ -255,6 +257,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationPaths () {
+        logger.debug("executing drawIterationPaths");
         if (data.getIterationCenters(0) == null) return;
         for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
             for (int j = 1; j <= iteration; ++j) {
@@ -272,6 +275,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationVoronoi () {
+        logger.debug("executing drawIterationVoronoi");
         if (data.getIterationCenters(0) == null) return;
 
         ArrayList<Point> voronoiPoints = new ArrayList<Point>();
@@ -316,12 +320,12 @@ public class VisualizerFX implements IVisualizer {
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
+        
+        logger.debug("showPaths is set to:   " + showPaths);
+        logger.debug("showData is set to:    " + showData);
+        logger.debug("showCenters is set to: " + showCenters);
+        logger.debug("showVoronoi is set to: " + showVoronoi);
         /*
-        logger.debug("showPaths:   " + showPaths);
-        logger.debug("showData:    " + showData);
-        logger.debug("showCenters: " + showCenters);
-        logger.debug("showVoronoi: " + showVoronoi);
-
         System.out.println("showPaths:   " + showPaths);
         System.out.println("showData:    " + showData);
         System.out.println("showCenters: " + showCenters);
