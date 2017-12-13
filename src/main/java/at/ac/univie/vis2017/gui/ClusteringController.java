@@ -35,6 +35,7 @@ import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
+import at.ac.univie.vis2017.util.RandomGaussian;
 import at.ac.univie.vis2017.visualizer.IVisualizer.Mode;
 import at.ac.univie.vis2017.visualizer.VisualizerFX;
 
@@ -128,6 +129,27 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void setApp(Main application){
         this.application = application;
     }
+    
+    public ArrayList<Point> createGaussianRandomData(int nrClusters, int nrObservations) {
+        ArrayList<Point> data = new ArrayList<>();
+        
+        double meanX, meanY; 
+        double variance = 5.0f;        
+        RandomGaussian rg = new RandomGaussian();
+        for (int i = 0; i < nrClusters; i++) {
+            Random r = new Random();
+            meanX = 30 + (120 - 30) * r.nextDouble();
+            meanY = 30 + (120 - 30) * r.nextDouble();
+            variance = 6 + (10 - 6) * r.nextDouble();
+            for (int j = 0; j < nrObservations; j++) {
+                double randomValueX = rg.getGaussian(meanX, variance);
+                double randomValueY = rg.getGaussian(meanY, variance);
+                data.add(new Point(randomValueX, randomValueY));
+            }
+        }
+        
+        return data;
+    }
 
     public ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
 
@@ -154,7 +176,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
 
             // add new point to existing data set
-            data.add(new Point(randomValueX, randomValueY, 0.0, 0.0, 0));
+            data.add(new Point(randomValueX, randomValueY));
 
         }
 
@@ -321,10 +343,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansPressed() {
-        this.initialStatePoints  = createRandomData(162, 140.0, 140.0);
+        //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
+        this.initialStatePoints  = createGaussianRandomData(6, 90);
         logger.debug("Random data generated");
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
-        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);        
+        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        
         kmeansLoaded = true;
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         logger.debug("Iteration Spinner updated. New value: " + 0);

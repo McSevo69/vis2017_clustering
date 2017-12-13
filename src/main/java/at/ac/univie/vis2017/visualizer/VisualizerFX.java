@@ -211,7 +211,7 @@ public class VisualizerFX implements IVisualizer {
                 
         for (Point point : is) {
             gc.setStroke(Color.WHITE);
-            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, 5, 5);
+            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, pSize, pSize);
         }
         
     }
