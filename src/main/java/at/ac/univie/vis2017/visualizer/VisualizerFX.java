@@ -193,15 +193,15 @@ public class VisualizerFX implements IVisualizer {
         
         double height = gc.getCanvas().getHeight();
         double width = gc.getCanvas().getWidth();
-        double canvasHeight = 500;
-        double canvasWidth = 500;
+        //double canvasHeight = 500;
+        //double canvasWidth = 500;
         double normalize = 140.0;
         
         gc.setFill(Color.BLACK);
                 
         for (Point point : is) {
             gc.setStroke(Color.WHITE);
-            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, 5*width/canvasWidth, 5*height/canvasHeight);
+            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, 5, 5);
         }
         
     }

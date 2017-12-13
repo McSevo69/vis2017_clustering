@@ -60,6 +60,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -100,15 +101,21 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML ImageView stepBackManualModeKMeansImage;
     //@FXML ImageView iterateManualModeKMeansImage;
     @FXML Spinner<Integer> iterationKmeansSpinner;
+    @FXML Spinner<Integer> kOfKmeansSpinner;
     @FXML Slider speedKmeansSlider;
     @FXML CheckBox centroidPathKmeansCheckBox;
     @FXML CheckBox clusterCentersKmeansCheckBox;
     @FXML CheckBox dataPointsKmeansCheckBox;
     @FXML CheckBox voronoiLinesKmeansCheckBox;
+    @FXML ChoiceBox kmeansUpdateStratChoiceBox;
+    @FXML ChoiceBox kmeansInitChoiceBox;
 
     private Main application;
     private ArrayList<Point> initialStatePoints;
     private VisualizerFX visualizer;
+    private KMEANS kmeansAlgorithm;
+    private boolean kmeansLoaded = false;
+    private int kOfKmeans = 3;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -242,6 +249,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);
+            
+            kmeansLoaded = true; 
+            iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+            logger.debug("Iteration Spinner updated. New value: " + 0);
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
         }
@@ -260,6 +271,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
+        if (kmeansLoaded) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            Data dat = kmeansAlgorithm.clusterData();
+            visualizer.setData(dat);
+            kmeansLoaded = false;
+        }
         visualizer.iterate();
         logger.debug("iterateKmeans pressed");
         updateKmeansIteration();
@@ -272,6 +289,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void autoModePlayKmeans() {
+        if (kmeansLoaded) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            Data dat = kmeansAlgorithm.clusterData();
+            visualizer.setData(dat);
+            kmeansLoaded = false;
+        }
         visualizer.setMode(Mode.AUTO);
         logger.debug("setMode.AUTO pressed");
     }
@@ -289,9 +312,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansPressed() {
-        ArrayList<Point> randomPoints = createRandomData(162, 140.0, 140.0);
+        this.initialStatePoints  = createRandomData(162, 140.0, 140.0);
         logger.debug("Random data generated");
-        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), randomPoints);
+        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        kmeansLoaded = true;
+        iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+        logger.debug("Iteration Spinner updated. New value: " + 0);
     }
     
     @Override
@@ -304,6 +330,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setIteration(newValue);
             logger.debug("Iteration set to " + newValue);
+        });
+        
+        kOfKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
+            kOfKmeans = newValue;
+            logger.debug("kOfKmeans set to " + newValue);
         });
                 
         speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -332,6 +363,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("Show voronoi: " + newValue.toString());
             visualizer.setShowVornoi(newValue);
         });
+        
+        kmeansUpdateStratChoiceBox.getSelectionModel().selectFirst();
+        kmeansInitChoiceBox.getSelectionModel().selectFirst();
                
         GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
         
@@ -353,57 +387,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
 
-
-
-
-          /* #############################################################################################
-        #############################################################################################
-        Test Clustering Algorithms
-        #############################################################################################
-        #############################################################################################
-         */
-
-        //TODO Mike
-        ArrayList<Point> dbscan1points = new ArrayList<>();
-
-
-        // read data from file
-        try {
-            dbscan1points = getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan1.txt");
-            //dbscan2points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan2.txt");
-            //dbscan3points = ClusteringController.getDataFromTxt("/Users/michaeltrimmel/IdeaProjects/vis2017_clustering/src/main/data/dbscan3.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //for (Point p : points)
-        //System.out.println(p.toString());
-
-
-
-        // get number of points
-        int n_dbscan1 = dbscan1points.size();
-        //int n_dbscan2 = dbscan2points.size();
-        //int n_dbscan3 = dbscan3points.size();
-        System.out.println("Number Points = " + n_dbscan1);
-        //System.out.println(n_dbscan2);
-        //System.out.println(n_dbscan3);
-
-        // set number of target clusters
-        int eps_value = 3;
-        int minPts = 2;
-
-
-
-        // test dbscan
-        //DBSCAN dbscanTest = new DBSCAN(minPts, eps_value, dbscan1points);
-
-
-
-        KMEANS kmeansTest = new KMEANS(3, 100, dbscan1points);
-
-        kmeansTest.setClusterCenters("random");
-        //kmeansTest.clusterData();
 
     }
     
