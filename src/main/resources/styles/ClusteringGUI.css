@@ -1,7 +1,6 @@
 #Window {
  -fx-padding: 0;
- -fx-background-image: url("../images/noise.png"), 
-      url("../images/title.png");
+ -fx-background-image: url("../images/noise.png");
  -fx-background-repeat: repeat, no-repeat;
  -fx-background-position: left top, left 19px top 15px ;
  -fx-background-color: radial-gradient(center 70% 5%, radius 90%, #767a7b,#2b2f32);
