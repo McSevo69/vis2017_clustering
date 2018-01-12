@@ -206,12 +206,15 @@ public class KMEANS {
             }
 
             System.out.println("NumberPointsInCluster = " + numberPointsInCluster);
-
-            // create new centroid point and add in list
-            Point p = new Point(centroidX / numberPointsInCluster, centroidY / numberPointsInCluster);
-            p.setCenterPointTrue();
-            newCentroids.add(p);
-
+            
+            if (numberPointsInCluster > 0) {
+                // create new centroid point and add in list
+                Point p = new Point(centroidX / numberPointsInCluster, centroidY / numberPointsInCluster);
+                p.setCenterPointTrue();
+                newCentroids.add(p);
+            } else {
+                this.setNumberClusters(getNumberClusters()-1);
+            }
         }
 
         return newCentroids;
