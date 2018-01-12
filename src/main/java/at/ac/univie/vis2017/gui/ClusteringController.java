@@ -99,6 +99,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML ImageView restartAutoModeKmeansImage;
     @FXML ImageView pauseAutoModeKmeansImage;
     @FXML ImageView playAutoModeKmeansImage;
+    @FXML ImageView skipToStartImage;
+    @FXML ImageView stepBackImage;
+    @FXML ImageView stepForwardImage;
     //@FXML ImageView restartManualModeKMeansImage;
     //@FXML ImageView stepBackManualModeKMeansImage;
     //@FXML ImageView iterateManualModeKMeansImage;
@@ -116,7 +119,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private ArrayList<Point> initialStatePoints;
     private VisualizerFX visualizer;
     private KMEANS kmeansAlgorithm;
-    private boolean kmeansLoaded = false;
     private int kOfKmeans = 3;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
@@ -284,13 +286,36 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);            
                         
-            kmeansLoaded = true; 
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
             logger.debug("Iteration Spinner updated. New value: " + 0);
+            
+            logger.debug("Controls are deactivated.");
+            deactivateControls();
+            
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
         }
         
+    }
+       
+    public void deactivateControls() {
+        skipToStartImage.setDisable(true);
+        skipToStartImage.setOpacity(0.6);
+        stepBackImage.setDisable(true);
+        stepBackImage.setOpacity(0.6);
+        stepForwardImage.setDisable(true);
+        stepForwardImage.setOpacity(0.6);
+        iterationKmeansSpinner.setDisable(true);
+    }
+    
+    public void activateControls() {
+        skipToStartImage.setDisable(false);
+        skipToStartImage.setOpacity(1);
+        stepBackImage.setDisable(false);
+        stepBackImage.setOpacity(1);
+        stepForwardImage.setDisable(false);
+        stepForwardImage.setOpacity(1);
+        iterationKmeansSpinner.setDisable(false);
     }
     
     public void restartManualKmeans() {
@@ -305,15 +330,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
-        if (kmeansLoaded) {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-            Data dat = kmeansAlgorithm.clusterData();
-            visualizer.setData(dat);
-            kmeansLoaded = false;
-        }
-        visualizer.iterate();
+        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        Data dat = kmeansAlgorithm.clusterData();
+        visualizer.setData(dat);
         logger.debug("iterateKmeans pressed");
-        updateKmeansIteration();
+        logger.debug("Controls are activated.");
+        activateControls();
+        restartManualKmeans();
     }
     
     public void stepBackKmeans() {
@@ -322,13 +345,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
         updateKmeansIteration();
     }
     
+    public void forwardKmeans() {
+        visualizer.iterate();
+        logger.debug("forwardKmeans pressed");
+        updateKmeansIteration();
+    }
+    
     public void autoModePlayKmeans() {
-        if (kmeansLoaded) {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-            Data dat = kmeansAlgorithm.clusterData();
-            visualizer.setData(dat);
-            kmeansLoaded = false;
-        }
+        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        Data dat = kmeansAlgorithm.clusterData();
+        visualizer.setData(dat);
         visualizer.setMode(Mode.AUTO);
         logger.debug("setMode.AUTO pressed");
     }
@@ -351,10 +377,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Random data generated");
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
-        
-        kmeansLoaded = true;
+
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         logger.debug("Iteration Spinner updated. New value: " + 0);
+        
+        logger.debug("Controls are deactivated.");
+        deactivateControls();
+        
     }
     
     @Override
@@ -363,6 +392,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
         restartAutoModeKmeansImage.setImage(new Image("images/Restart_32px.png"));
         pauseAutoModeKmeansImage.setImage(new Image("images/Pause_32px.png"));
         playAutoModeKmeansImage.setImage(new Image("images/Play_32px.png"));
+        skipToStartImage.setImage(new Image("images/Skip to Start_32px.png"));
+        stepBackImage.setImage(new Image("images/Back_32px.png"));
+        stepForwardImage.setImage(new Image("images/Forward_32px.png"));
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setIteration(newValue);
@@ -424,6 +456,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //kmeansParentPane.widthProperty().
         //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
 
+        deactivateControls();
 
     }
     
