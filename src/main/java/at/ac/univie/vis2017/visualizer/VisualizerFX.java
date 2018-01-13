@@ -94,7 +94,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setIteration (int iteration) {
-        this.pointIterator = 0;
+        logger.debug("called setIteration");
+//        this.pointIterator = 0;
         
         if (iteration < data.getIterations()) {
             this.iteration = iteration;
@@ -175,6 +176,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void stepback () {
         if (iteration > 0) {
+            logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
             if (pointIterator-speed > 0) {
                 logger.debug("line 179");
                 pointIterator -= speed;
@@ -191,6 +193,8 @@ public class VisualizerFX implements IVisualizer {
                 logger.debug("line 191");
                 pointIterator = 0;
             }
+        } else {
+            logger.debug("line 195");
         }
         
         logger.debug(
@@ -243,9 +247,9 @@ public class VisualizerFX implements IVisualizer {
     }
     
     
-    public void drawPoint(Point p) {
+    public void drawPoint(Point p, double opaque) {
         if (iteration >= 0) {
-            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,1,1));
+            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
         } else {
             gc.setFill(Color.BLACK);
         }
@@ -270,13 +274,20 @@ public class VisualizerFX implements IVisualizer {
         logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
-            drawPoint(p);
+            if (pointIterator == 0) {
+                drawPoint (p, 1);
+            } else {
+                drawPoint(p, 0.3);
+            }
         }
         
-        if (data.getIterationData(iteration+1) == null) return;
+        if (data.getIterationData(iteration+1) == null) {
+            logger.debug("no " + iteration + "+1 found!");
+            return;
+        }
         ArrayList<Point> points = data.getIterationData(iteration+1);
         for (int i = 0; i < pointIterator && i < points.size(); ++i) {
-            drawPoint(points.get(i));
+            drawPoint(points.get(i), 1);
         }
     }
 
