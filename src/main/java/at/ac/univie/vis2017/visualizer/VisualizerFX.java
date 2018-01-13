@@ -94,8 +94,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setIteration (int iteration) {
-        logger.debug("called setIteration");
-//        this.pointIterator = 0;
+        this.pointIterator = 0;
         
         if (iteration < data.getIterations()) {
             this.iteration = iteration;
@@ -185,7 +184,7 @@ public class VisualizerFX implements IVisualizer {
                 logger.debug("pointIterator: " + pointIterator);
                 logger.debug("speed: " + speed);
                 iteration--;
-                pointIterator = data.getN() - speed;
+                pointIterator = data.getN();
             }
         } else if (pointIterator > 0) {
             if (pointIterator-speed > 0) {
@@ -279,7 +278,7 @@ public class VisualizerFX implements IVisualizer {
             if (pointIterator == 0) {
                 drawPoint (p, 1);
             } else {
-                drawPoint(p, 0.3);
+                drawPoint(p, 0.1);
             }
         }
         
@@ -290,6 +289,11 @@ public class VisualizerFX implements IVisualizer {
         ArrayList<Point> points = data.getIterationData(iteration+1);
         for (int i = 0; i < pointIterator && i < points.size(); ++i) {
             drawPoint(points.get(i), 1);
+
+            if (i > pointIterator-speed) {
+                gc.setFill(Color.BLACK);
+                gc.strokeOval(normalizeX(points.get(i).getX()), normalizeY(points.get(i).getY()), pSize, pSize);
+            }
         }
     }
 
