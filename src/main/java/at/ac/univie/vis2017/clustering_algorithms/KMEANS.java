@@ -38,6 +38,7 @@ public class KMEANS {
 
         // set cluster centers before first iteration
         setClusterCenters("random");
+        findClosestClusterCenter();
 
 
         Algorithm algorithm = Algorithm.KMEANS;
@@ -250,8 +251,9 @@ public class KMEANS {
         // iterate until maximum iteration or convergence (convergence not implemented yet)
         for (int i = 0; i < maxIterations; i++) {
             System.out.println("iteration i: " + i);
-            findClosestClusterCenter();
+            
             updateCentroids(computeNewCentroids());
+            findClosestClusterCenter();
             
             ArrayList<Point> iterationBuf = new ArrayList<>();
             for (Point p : getPoints())
