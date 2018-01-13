@@ -331,6 +331,7 @@ public class VisualizerFX implements IVisualizer {
             throw new RuntimeException("no canvas set!");
         }
         gc.setFill(Color.WHITE);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
