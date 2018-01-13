@@ -6,7 +6,7 @@
     
     <appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
-                <PatternLayout pattern="%d{HH:mm:ss:SSS} %-5level - %msg%n"/>
+                <PatternLayout pattern="%d{HH:mm:ss:SSS} %-5level %logger{3}:%L - %msg%n"/>
         </Console>
         <RollingFile name="RollingFile" fileName="log/${filename}.log" filePattern="log/${date:yyyy-MM}/${filename}-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{3}:%L - %msg%n"/>
@@ -22,6 +22,11 @@
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFile"/>
     </root>
+	
+	<logger name="at.ac.univie.vis2017.gui.ClusteringController" level="INFO"/>
+	<logger name="at.ac.univie.vis2017.visualizer.VisualizerFX" level="DEBUG"/>
+	<logger name="at.ac.univie.vis2017.util.Algorithm" level="DEBUG"/>
+	<logger name="at.ac.univie.vis2017.util.Data" level="DEBUG"/>
 	
     </loggers>
 </configuration>

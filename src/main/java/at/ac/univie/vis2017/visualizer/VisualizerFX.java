@@ -178,10 +178,12 @@ public class VisualizerFX implements IVisualizer {
         if (iteration > 0) {
             logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
             if (pointIterator-speed > 0) {
-                logger.debug("line 179");
+                logger.debug("pointIterator: " + pointIterator);
+                logger.debug("speed: " + speed);
                 pointIterator -= speed;
             } else {
-                logger.debug("line 182");
+                logger.debug("pointIterator: " + pointIterator);
+                logger.debug("speed: " + speed);
                 iteration--;
                 pointIterator = data.getN() - speed;
             }
