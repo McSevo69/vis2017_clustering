@@ -33,7 +33,9 @@ public class VisualizerFX implements IVisualizer {
     
     private int iteration;
     private int pointIterator;
-    private int speed;
+    private int speed;                  // until now a value between 0 and 100. 
+                                        //better: value between 0 and data.size
+
     private Algorithm algorithm;
     private Mode mode;
     
@@ -107,6 +109,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void setSpeed (int speed) {
         this.speed = (int) ((speed/100.0) * data.getN());
+        logger.debug("speed in setSpeed: " + this.speed);
     }
     
     public void setMode (Mode mode) {
@@ -160,7 +163,12 @@ public class VisualizerFX implements IVisualizer {
             }
         }
         
-        logger.debug("Iteration displayed: " + iteration);
+        logger.debug(
+                "Iteration, speed, pointIterator: " + 
+                iteration + ", " + 
+                speed + ", " + 
+                pointIterator
+        );
         
         draw();
     }
@@ -180,6 +188,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void restart () {
         iteration = 0;
+        pointIterator = 0;
         draw();
     }
     
@@ -245,6 +254,12 @@ public class VisualizerFX implements IVisualizer {
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             drawPoint(p);
+        }
+        
+        if (data.getIterationData(iteration+1) == null) return;
+        ArrayList<Point> points = data.getIterationData(iteration+1);
+        for (int i = 0; i < pointIterator && i < points.size(); ++i) {
+            drawPoint(points.get(i));
         }
     }
 
