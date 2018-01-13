@@ -307,9 +307,9 @@
                                                                      </rowConstraints>
                                                                      <children>
                                                                         <Label prefHeight="18.0" prefWidth="123.0" text="Navigation Linkage:" />
-                                                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                                                                        <ImageView fx:id="linkageImage" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#changeNavigationLinkage" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                                                                            <image>
-                                                                              <Image url="@../images/Broken%20Link_32px.png" />
+                                                                              <Image url="@../images/Broken_Link_32px.png" />
                                                                            </image>
                                                                            <GridPane.margin>
                                                                               <Insets />

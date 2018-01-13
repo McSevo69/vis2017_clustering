@@ -99,6 +99,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML ImageView skipToStartImage;
     @FXML ImageView stepBackImage;
     @FXML ImageView stepForwardImage;
+    @FXML ImageView linkageImage;
     //@FXML ImageView restartManualModeKMeansImage;
     //@FXML ImageView stepBackManualModeKMeansImage;
     //@FXML ImageView iterateManualModeKMeansImage;
@@ -117,6 +118,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private VisualizerFX visualizer;
     private KMEANS kmeansAlgorithm;
     private int kOfKmeans = 3;
+    private boolean isLinked = false;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -392,6 +394,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
     }
     
+    public void changeNavigationLinkage() {
+        logger.debug("ChangeNavigation called");
+        if (isLinked) {
+            linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
+            isLinked = false;
+        } else {
+            linkageImage.setImage(new Image("images/Link_32px.png"));
+            isLinked = true;
+        }        
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
                 
@@ -401,6 +414,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         skipToStartImage.setImage(new Image("images/Skip to Start_32px.png"));
         stepBackImage.setImage(new Image("images/Back_32px.png"));
         stepForwardImage.setImage(new Image("images/Forward_32px.png"));
+        linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue)) {
