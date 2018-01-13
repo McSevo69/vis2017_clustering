@@ -435,12 +435,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("Show data points: " + newValue.toString());
             visualizer.setShowData(newValue);
         });
-        
-        voronoiLinesKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            logger.debug("Show voronoi: " + newValue.toString());
-            visualizer.setShowVornoi(newValue);
-        });
-        
+                
         kmeansUpdateStratChoiceBox.getSelectionModel().selectFirst();
         kmeansInitChoiceBox.getSelectionModel().selectFirst();
                

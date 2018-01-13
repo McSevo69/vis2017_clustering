@@ -71,36 +71,77 @@
                                             </columnConstraints>
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
                                               <RowConstraints maxHeight="-Infinity" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <GridPane GridPane.rowIndex="1">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="120.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
-                                                   <children>
-                                                      <Button maxHeight="32.0" maxWidth="100.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#iterateKmeans" prefHeight="32.0" prefWidth="100.0" text="Iterate" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-                                                         <GridPane.margin>
-                                                            <Insets right="10.0" />
-                                                         </GridPane.margin>
-                                                      </Button>
-                                                      <Button maxHeight="32.0" maxWidth="100.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#stepBackKmeans" prefHeight="32.0" prefWidth="100.0" text="Step back" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                                                      <Button maxHeight="32.0" maxWidth="100.0" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" onAction="#restartManualKmeans" prefHeight="32.0" prefWidth="100.0" text="Restart" />
-                                                   </children>
-                                                </GridPane>
                                                 <Pane fx:id="kmeansParentPane1" maxHeight="870.0" maxWidth="836.0" prefHeight="816.0" prefWidth="834.0">
                                                    <children>
                                                       <Canvas fx:id="kmeansCanvasMain1" height="387.0" styleClass="canvas" width="427.0" />
                                                    </children>
                                                    <GridPane.margin>
-                                                      <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                    </GridPane.margin>
                                                 </Pane>
+                                                <GridPane GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <GridPane GridPane.columnIndex="1">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <children>
+                                                            <ImageView fx:id="skipToStartImage1" disable="true" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#restartManualKmeans" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/Skip%20to%20Start_32px.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                            <ImageView fx:id="stepBackImage1" disable="true" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#stepBackKmeans" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                                               <image>
+                                                                  <Image url="@../images/Back_32px.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                            <ImageView fx:id="stepForwardImage1" disable="true" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#forwardKmeans" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                                               <image>
+                                                                  <Image url="@../images/Forward_32px.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane prefHeight="100.0" prefWidth="450.0" GridPane.rowIndex="2">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="10.0" />
+                                                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Button alignment="CENTER" maxHeight="46.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#iterateKmeans" prefHeight="40.0" text="(Re-)Compute" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                         <padding>
+                                                            <Insets left="10.0" />
+                                                         </padding>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
                                              </children>
                                           </GridPane>
                                           <GridPane layoutX="464.0" maxWidth="-Infinity" prefHeight="800.0" prefWidth="187.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -108,23 +149,23 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints fillHeight="false" minHeight="0.0" valignment="TOP" vgrow="NEVER" />
+                                                <RowConstraints minHeight="0.0" valignment="TOP" vgrow="NEVER" />
                                               <RowConstraints fillHeight="false" minHeight="0.0" valignment="TOP" vgrow="NEVER" />
-                                              <RowConstraints fillHeight="false" minHeight="0.0" valignment="TOP" vgrow="NEVER" />
+                                              <RowConstraints fillHeight="false" valignment="TOP" vgrow="NEVER" />
                                               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" valignment="TOP" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <TitledPane animated="false" text="Data Generator">
+                                                <TitledPane animated="false" minHeight="0.0" text="Data Generator">
                                                    <content>
-                                                      <AnchorPane fx:id="scrollPaneDataGen1" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
+                                                      <AnchorPane fx:id="scrollPaneDataGen1" maxHeight="120.0" minHeight="0.0" minWidth="0.0" prefWidth="186.0">
                                                          <children>
-                                                            <GridPane layoutX="54.7" layoutY="43.7" prefHeight="96.0" prefWidth="116.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <GridPane layoutX="7.699999999999999" layoutY="-5.300000000000001" minHeight="150.0" prefHeight="120.0" prefWidth="172.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                                                                <columnConstraints>
                                                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                                                                </columnConstraints>
                                                                <rowConstraints>
-                                                                  <RowConstraints maxHeight="58.999996185302734" minHeight="10.0" prefHeight="39.999996185302734" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
+                                                                  <RowConstraints maxHeight="58.999996185302734" minHeight="40.0" prefHeight="39.999996185302734" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
                                                                </rowConstraints>
                                                                <children>
                                                                   <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#randomDataKmeansPressed" prefHeight="30.0" prefWidth="80.0" text="Random Dataset" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -135,9 +176,9 @@
                                                       </AnchorPane>
                                                    </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false" text="Parameters" GridPane.rowIndex="1">
+                                                <TitledPane animated="false" minHeight="0.0" text="Parameters" GridPane.rowIndex="1">
                                                    <content>
-                                                      <AnchorPane fx:id="scrollPaneParameters1" minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                                      <AnchorPane fx:id="scrollPaneParameters1" minHeight="0.0" minWidth="0.0" prefHeight="176.0">
                                                          <children>
                                                             <GridPane prefHeight="112.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <columnConstraints>
@@ -148,6 +189,7 @@
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                </rowConstraints>
                                                                <children>
                                                                   <Spinner fx:id="kOfKmeansSpinner1" prefHeight="26.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
@@ -175,6 +217,16 @@
                                                                         </FXCollections>
                                                                      </items>
                                                                   </ChoiceBox>
+                                                                  <Label layoutX="10.0" layoutY="94.0" text="Algorithm:" GridPane.rowIndex="3" />
+                                                                  <ChoiceBox fx:id="algorithmChoiceBoxMain" layoutX="95.0" layoutY="89.0" prefHeight="28.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                                                     <items>
+                                                                        <FXCollections fx:factory="observableArrayList">
+                                                                           <String fx:value="K-means" />
+                                                                           <String fx:value="K-medians" />
+                                                                           <String fx:value="K-medoids" />
+                                                                        </FXCollections>
+                                                                     </items>
+                                                                  </ChoiceBox>
                                                                </children>
                                                             </GridPane>
                                                          </children>
@@ -183,22 +235,23 @@
                                                 </TitledPane>
                                                 <TitledPane animated="false" text="Visualizer Settings" GridPane.rowIndex="2">
                                                    <content>
-                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                                      <AnchorPane minHeight="245.0" minWidth="0.0" prefWidth="200.0">
                                                          <children>
-                                                            <GridPane layoutX="-0.3000000000000007" layoutY="32.7" prefHeight="200.0" prefWidth="167.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <GridPane layoutX="-0.3000000000000007" layoutY="32.7" prefHeight="200.0" prefWidth="167.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                <columnConstraints>
                                                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                                </columnConstraints>
                                                                <rowConstraints>
                                                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="50.0" minHeight="49.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                                                                </rowConstraints>
                                                                <children>
-                                                                  <Slider fx:id="speedKmeansSlider1" min="1.0" showTickLabels="true" showTickMarks="true" value="100.0" GridPane.rowIndex="2" />
-                                                                  <GridPane prefHeight="40.0" prefWidth="157.0" GridPane.rowIndex="4">
+                                                                  <Slider fx:id="speedKmeansSlider1" min="1.0" showTickLabels="true" showTickMarks="true" value="100.0" GridPane.rowIndex="3" />
+                                                                  <GridPane prefHeight="40.0" prefWidth="157.0" GridPane.rowIndex="5">
                                                                      <columnConstraints>
                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -225,9 +278,8 @@
                                                                         </ImageView>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <Label text="Auto mode:" GridPane.rowIndex="3" />
-                                                                  <Label text="Iteration:" />
-                                                                  <Label text="Speed:" GridPane.rowIndex="1" />
+                                                                  <Label text="Auto mode:" GridPane.rowIndex="4" />
+                                                                  <Label text="Speed:" GridPane.rowIndex="2" />
                                                                   <GridPane>
                                                                     <columnConstraints>
                                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -242,6 +294,27 @@
                                                                               <SpinnerValueFactory.IntegerSpinnerValueFactory max="100" min="0" />
                                                                            </valueFactory>
                                                                         </Spinner>
+                                                                        <Label text="Iteration:" />
+                                                                     </children>
+                                                                  </GridPane>
+                                                                  <GridPane layoutX="10.0" layoutY="10.0" GridPane.rowIndex="1">
+                                                                     <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="141.0" minWidth="10.0" prefWidth="123.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="41.0" />
+                                                                     </columnConstraints>
+                                                                     <rowConstraints>
+                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                                     </rowConstraints>
+                                                                     <children>
+                                                                        <Label prefHeight="18.0" prefWidth="123.0" text="Navigation Linkage:" />
+                                                                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                                                                           <image>
+                                                                              <Image url="@../images/Broken%20Link_32px.png" />
+                                                                           </image>
+                                                                           <GridPane.margin>
+                                                                              <Insets />
+                                                                           </GridPane.margin>
+                                                                        </ImageView>
                                                                      </children>
                                                                   </GridPane>
                                                                </children>
@@ -250,16 +323,15 @@
                                                       </AnchorPane>
                                                    </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false" prefHeight="200.0" text="Filter" GridPane.rowIndex="3">
+                                                <TitledPane alignment="TOP_LEFT" animated="false" minHeight="0.0" text="Filter" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                                                    <content>
-                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                                      <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="200.0">
                                                          <children>
-                                                            <GridPane layoutX="34.7" layoutY="47.7" prefHeight="114.0" prefWidth="171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <GridPane layoutX="21.7" layoutY="1.6999999999999993" prefHeight="122.0" prefWidth="164.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                                                <columnConstraints>
                                                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" />
                                                                </columnConstraints>
                                                                <rowConstraints>
-                                                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -268,7 +340,6 @@
                                                                   <CheckBox fx:id="clusterCentersKmeansCheckBox1" mnemonicParsing="false" selected="true" text="Cluster centers" GridPane.rowIndex="1" />
                                                                   <CheckBox fx:id="centroidPathKmeansCheckBox1" mnemonicParsing="false" text="Centroid paths" GridPane.rowIndex="2" />
                                                                   <CheckBox fx:id="dataPointsKmeansCheckBox1" mnemonicParsing="false" selected="true" text="Data points" />
-                                                                  <CheckBox fx:id="voronoiLinesKmeansCheckBox1" mnemonicParsing="false" text="Voronois lines" GridPane.rowIndex="3" />
                                                                </children>
                                                             </GridPane>
                                                          </children>
@@ -315,7 +386,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <GridPane GridPane.columnIndex="1">
@@ -388,9 +459,9 @@
                               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" valignment="TOP" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TitledPane animated="false" text="Data Generator">
+                              <TitledPane animated="false" minHeight="0.0" text="Data Generator">
                                  <content>
-                                    <AnchorPane fx:id="scrollPaneDataGen" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
+                                    <AnchorPane fx:id="scrollPaneDataGen" minHeight="90.0" minWidth="0.0" prefHeight="104.0" prefWidth="185.0">
                                        <children>
                                           <GridPane layoutX="54.7" layoutY="43.7" prefHeight="96.0" prefWidth="116.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <columnConstraints>
@@ -411,7 +482,7 @@
                               </TitledPane>
                               <TitledPane animated="false" text="Parameters" GridPane.rowIndex="1">
                                  <content>
-                                    <AnchorPane fx:id="scrollPaneParameters" minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                    <AnchorPane fx:id="scrollPaneParameters" minHeight="0.0" minWidth="0.0" prefHeight="175.0" prefWidth="200.0">
                                        <children>
                                           <GridPane prefHeight="112.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <columnConstraints>
@@ -422,6 +493,7 @@
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
                                                 <Spinner fx:id="kOfKmeansSpinner" prefHeight="26.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
@@ -449,22 +521,31 @@
                                                       </FXCollections>
                                                    </items>
                                                 </ChoiceBox>
+                                                <Label layoutX="10.0" layoutY="99.0" text="Algorithm:" GridPane.rowIndex="3" />
+                                                <ChoiceBox fx:id="kmeansInitChoiceBox2" layoutX="92.0" layoutY="94.0" prefHeight="28.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="Random" />
+                                                         <String fx:value="Farthest" />
+                                                         <String fx:value="I'll choose" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ChoiceBox>
                                              </children>
                                           </GridPane>
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" prefHeight="200.0" text="Filter" GridPane.rowIndex="3">
+                              <TitledPane animated="false" text="Filter" GridPane.rowIndex="3">
                                  <content>
-                                    <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                    <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="200.0">
                                        <children>
-                                          <GridPane layoutX="34.7" layoutY="47.7" prefHeight="114.0" prefWidth="171.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <GridPane layoutX="21.7" layoutY="21.7" prefHeight="122.0" prefWidth="164.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" />
                                              </columnConstraints>
                                              <rowConstraints>
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -473,7 +554,6 @@
                                                 <CheckBox fx:id="clusterCentersKmeansCheckBox" mnemonicParsing="false" selected="true" text="Cluster centers" GridPane.rowIndex="1" />
                                                 <CheckBox fx:id="centroidPathKmeansCheckBox" mnemonicParsing="false" text="Centroid paths" GridPane.rowIndex="2" />
                                                 <CheckBox fx:id="dataPointsKmeansCheckBox" mnemonicParsing="false" selected="true" text="Data points" />
-                                                <CheckBox fx:id="voronoiLinesKmeansCheckBox" mnemonicParsing="false" text="Voronois lines" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
                                        </children>
@@ -482,7 +562,7 @@
                               </TitledPane>
                               <TitledPane animated="false" text="Visualizer Settings" GridPane.rowIndex="2">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                                    <AnchorPane minWidth="0.0" prefHeight="205.0" prefWidth="185.0">
                                        <children>
                                           <GridPane layoutX="-0.3000000000000007" layoutY="32.7" prefHeight="200.0" prefWidth="167.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <columnConstraints>
@@ -491,9 +571,9 @@
                                              <rowConstraints>
                                                 <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                                 <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="50.0" minHeight="49.0" prefHeight="49.0" vgrow="SOMETIMES" />
                                                 <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
                                                 <Slider fx:id="speedKmeansSlider" min="1.0" showTickLabels="true" showTickMarks="true" value="100.0" GridPane.rowIndex="2" />
@@ -553,10 +633,7 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <ToolBar prefHeight="40.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-                    <items>
-                      <Button mnemonicParsing="false" text="Button" />
-                    </items>
+                  <ToolBar maxHeight="30.0" prefHeight="30.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
