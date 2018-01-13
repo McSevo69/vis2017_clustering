@@ -227,7 +227,7 @@ public class VisualizerFX implements IVisualizer {
         return (y/maxY) * canvas.getHeight();
     }
 
-    public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
+    /*public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
         
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -245,7 +245,7 @@ public class VisualizerFX implements IVisualizer {
             gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, pSize, pSize);
         }
         
-    }
+    }*/
     
     
     public void drawPoint(Point p, double opaque) {
@@ -282,9 +282,16 @@ public class VisualizerFX implements IVisualizer {
             }
         }
         
-        if (data.getIterationData(iteration+1) == null) {
+        if (iteration<0) return;
+        
+        try {        
+            if (data.getIterationData(iteration+1) == null) {
+                logger.debug("no " + iteration + "+1 found!");
+                return;
+            }
+        } catch (java.lang.IndexOutOfBoundsException ex) {
             logger.debug("no " + iteration + "+1 found!");
-            return;
+            return;   
         }
         ArrayList<Point> points = data.getIterationData(iteration+1);
         for (int i = 0; i < pointIterator && i < points.size(); ++i) {
@@ -299,7 +306,12 @@ public class VisualizerFX implements IVisualizer {
 
     public void drawIterationCenters () {
         logger.debug("executing drawIterationCenters");
-        if (data.getIterationCenters(0) == null) return;
+        try {
+            if (data.getIterationCenters(0) == null) return;
+        } catch (java.lang.IndexOutOfBoundsException ex) {
+            return;
+        }
+        
         for (Point p : data.getIterationCenters(iteration)) {
             drawCenter(p);
         }
@@ -349,6 +361,12 @@ public class VisualizerFX implements IVisualizer {
             gc.strokeOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
         }
     }
+    
+    public void clearCanvas() {
+        gc.setFill(Color.WHITE);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
 
     /*
     phuksz has TODO what phuksz has TODO:
@@ -364,9 +382,8 @@ public class VisualizerFX implements IVisualizer {
         if (canvas == null) {
             throw new RuntimeException("no canvas set!");
         }
-        gc.setFill(Color.WHITE);
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        clearCanvas();
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;

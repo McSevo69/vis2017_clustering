@@ -88,9 +88,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     //@FXML Tab opticsTab;  
     @FXML SwingNode kmeansNode;
     @FXML Canvas kmeansCanvasMain;
-    @FXML Canvas kmeansCanvasStart;
-    @FXML Canvas kmeansCanvasMiddle;
-    @FXML Canvas kmeansCanvasEnd;
     @FXML TitledPane kmeansDataGenPane;
     @FXML Pane kmeansParentPane;
     @FXML AnchorPane anchorPaneMain;
@@ -282,13 +279,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("File loaded successfully");
             visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
             visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
-            visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
-            visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
-            visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
-            visualizer.drawInitialState(kmeansCanvasEnd.getGraphicsContext2D(), initialStatePoints);            
-                        
+            //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
             logger.debug("Iteration Spinner updated. New value: " + 0);
+            
+            visualizer.clearCanvas();
+            visualizer.drawIterationData();
             
             logger.debug("Controls are deactivated.");
             deactivateControls();
@@ -337,6 +334,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
+        iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+        logger.debug("Iteration Spinner updated. New value: " + 0);
         activateControls();
         restartManualKmeans();
     }
@@ -380,10 +379,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Random data generated");
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
         visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
-        visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
-
+        //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
+        
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         logger.debug("Iteration Spinner updated. New value: " + 0);
+        
+        visualizer.clearCanvas();
+        visualizer.drawIterationData();
         
         logger.debug("Controls are deactivated.");
         deactivateControls();
