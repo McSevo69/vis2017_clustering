@@ -397,8 +397,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepForwardImage.setImage(new Image("images/Forward_32px.png"));
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
-            visualizer.setIteration(newValue);
-            logger.debug("Iteration set to " + newValue);
+            if (!newValue.equals(oldValue)) {
+                visualizer.setIteration(newValue);
+                logger.debug("Iteration set to " + newValue);
+            }
         });
         
         kOfKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {

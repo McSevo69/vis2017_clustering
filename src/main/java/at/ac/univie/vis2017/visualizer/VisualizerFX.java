@@ -176,10 +176,12 @@ public class VisualizerFX implements IVisualizer {
     public void stepback () {
         if (iteration > 0) {
             if (pointIterator-speed > 0) {
-                logger.debug("line 179");
+                logger.debug("pointIterator: " + pointIterator);
+                logger.debug("speed: " + speed);
                 pointIterator -= speed;
             } else {
-                logger.debug("line 182");
+                logger.debug("pointIterator: " + pointIterator);
+                logger.debug("speed: " + speed);
                 iteration--;
                 pointIterator = data.getN() - speed;
             }
