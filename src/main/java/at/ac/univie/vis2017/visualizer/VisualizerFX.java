@@ -154,7 +154,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void iterate () {
-        if (iteration < data.getIterations() - 1) {
+        if (iteration <= data.getIterations() - 1) {
             if (pointIterator+speed < data.getN()) {
                 pointIterator += speed;
             } else {
@@ -176,12 +176,29 @@ public class VisualizerFX implements IVisualizer {
     public void stepback () {
         if (iteration > 0) {
             if (pointIterator-speed > 0) {
+                logger.debug("line 179");
                 pointIterator -= speed;
             } else {
+                logger.debug("line 182");
                 iteration--;
                 pointIterator = data.getN() - speed;
             }
+        } else if (pointIterator > 0) {
+            if (pointIterator-speed > 0) {
+                logger.debug("line 188");
+                pointIterator -= speed;
+            } else {
+                logger.debug("line 191");
+                pointIterator = 0;
+            }
         }
+        
+        logger.debug(
+                "Iteration, speed, pointIterator: " + 
+                iteration + ", " + 
+                speed + ", " + 
+                pointIterator
+        );
         
         draw();
     }
