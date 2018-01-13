@@ -281,6 +281,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             logger.debug("File loaded successfully");
             visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
+            visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
             visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasStart.getGraphicsContext2D(), initialStatePoints);
             visualizer.drawInitialState(kmeansCanvasMiddle.getGraphicsContext2D(), initialStatePoints);
@@ -333,6 +334,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
+        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
         activateControls();
@@ -355,6 +357,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
+        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         visualizer.setMode(Mode.AUTO);
         logger.debug("setMode.AUTO pressed");
     }
@@ -376,6 +379,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.initialStatePoints  = createGaussianRandomData(90);
         logger.debug("Random data generated");
         visualizer.setData(new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints));
+        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
 
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
