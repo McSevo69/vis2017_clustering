@@ -415,7 +415,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         computeButtonMinor.setDisable(true);
         randomDataMinorButton.setDisable(true);
         loadFromFileMinorButton.setDisable(true);
-        deactivateFilters();
     }
     
     public void activateControlsMinor() {
@@ -624,6 +623,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         logger.debug("Controls are deactivated.");
         deactivateControlsMinor();
+        randomDataMinorButton.setDisable(false);
+        loadFromFileMinorButton.setDisable(false);
         computeButtonMinor.setDisable(false);
                 
     }
@@ -633,6 +634,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (isLinked) {
             linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
             activateControlsMinor();
+            if (initialStatePointsMinor == null) {
+                deactivateFiltersMinor();
+                kOfKmeansSpinnerMinor.setDisable(true);                
+            }
             isLinked = false;            
         } else {
             linkageImage.setImage(new Image("images/Link_32px.png"));
