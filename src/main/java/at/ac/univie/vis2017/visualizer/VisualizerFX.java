@@ -35,13 +35,17 @@ public class VisualizerFX implements IVisualizer {
             logger.debug("in autothread run");
             while (true) {
                 if (mode == Mode.AUTO) {
-                    logger.debug("auto");
-                    iterate ();
                     try {
-                        sleep(10);
-                    } catch (InterruptedException e) {
-                        logger.debug(e.getMessage());
+                        iterate ();
+                    } catch (IndexOutOfBoundsException e) {
+                        mode = Mode.MANUAL;
                     }
+                }
+                
+                try {
+                    sleep(700);
+                } catch (InterruptedException e) {
+                    logger.debug(e.getMessage());
                 }
             }
         }
@@ -190,6 +194,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void iterate () {
+        if (iteration > data.getIterations()) throw new IndexOutOfBoundsException(iteration + " is out of bounds " + data.getIterations());
+
         if (beforeComputation) {
             beforeComputation = false;
         }
@@ -214,6 +220,8 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void stepback () {
+        if (iteration < 0) throw new IndexOutOfBoundsException(iteration + " is out of bounds.");
+        
         if (iteration > 0) {
             logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
             if (pointIterator-speed > 0) {

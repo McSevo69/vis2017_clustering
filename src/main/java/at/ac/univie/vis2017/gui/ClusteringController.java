@@ -548,10 +548,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void autoModePlayKmeans() {
-        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-        Data dat = kmeansAlgorithm.clusterData();
-        visualizer.setData(dat);
-        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         visualizer.setMode(Mode.AUTO);
         logger.debug("setMode.AUTO pressed");
     }
