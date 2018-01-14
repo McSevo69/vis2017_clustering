@@ -372,6 +372,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             logger.debug("Controls are deactivated.");
             deactivateControlsMinor();
+            randomDataMinorButton.setDisable(false);
+            loadFromFileMinorButton.setDisable(false);
             computeButtonMinor.setDisable(false);
             
         } catch (IOException ex) {
@@ -494,6 +496,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (isLinked) {
             Data datCopy = new Data(dat);
             visualizerMinor.setData(datCopy);
+            visualizerMinor.setAfterComputation();
             visualizerMinor.setSpeed(speedKmeansSlider.valueProperty().intValue());
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
             logger.debug("IterationSpinnerMinor updated. New value: " + 0);
