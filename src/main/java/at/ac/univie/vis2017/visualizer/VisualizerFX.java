@@ -29,7 +29,25 @@ import org.apache.logging.log4j.Logger;
  * @author phuksz
  */
 public class VisualizerFX implements IVisualizer {
-    private Canvas canvas = null;
+
+    public class AutoThread extends Thread {
+        public void run(){
+            logger.debug("in autothread run");
+            while (true) {
+                if (mode == Mode.AUTO) {
+                    logger.debug("auto");
+                    iterate ();
+                    try {
+                        sleep(10);
+                    } catch (InterruptedException e) {
+                        logger.debug(e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+  private Canvas canvas = null;
     
     private int iteration;
     private int pointIterator;
@@ -46,6 +64,7 @@ public class VisualizerFX implements IVisualizer {
     private boolean showVoronoi;
     
     private Data data;
+    private AutoThread thread;
     
     private GraphicsContext gc;
     private double colorValueChunk; // the space of 360 degrees is divided into
@@ -75,6 +94,9 @@ public class VisualizerFX implements IVisualizer {
         this.showVoronoi = false;
         
         this.colorValueChunk = 360;
+        
+        thread = new AutoThread();
+        thread.start();
     }
     
     public VisualizerFX (Data data) {
@@ -88,6 +110,9 @@ public class VisualizerFX implements IVisualizer {
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
+        
+        thread = new AutoThread();
+        thread.start();
     }
     
     public void setAfterComputation () {
@@ -99,7 +124,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void setIteration (int iteration) {
-        this.pointIterator = 0;
+//        this.pointIterator = 0;
         
         if (iteration < data.getIterations()) {
             this.iteration = iteration;
@@ -119,6 +144,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void setMode (Mode mode) {
         this.mode = mode;
+        logger.debug("mode is set to: " + mode.toString());
         draw();
     }
     
@@ -157,6 +183,10 @@ public class VisualizerFX implements IVisualizer {
     
     public void setCanvas (Canvas canvas) {
         this.canvas = canvas;
+    }
+    
+    public void pause () {
+        
     }
     
     public void iterate () {
