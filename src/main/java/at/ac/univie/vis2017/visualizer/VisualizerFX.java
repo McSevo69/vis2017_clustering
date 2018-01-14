@@ -38,6 +38,7 @@ public class VisualizerFX implements IVisualizer {
 
     private Algorithm algorithm;
     private Mode mode;
+    private boolean beforeComputation;
     
     private boolean showPaths;
     private boolean showCenters;
@@ -89,6 +90,10 @@ public class VisualizerFX implements IVisualizer {
         this.showVoronoi = false;
     }
     
+    public void setAfterComputation () {
+        beforeComputation = false;
+    }
+    
     public void setAlgorithm (Algorithm algorithm) {
         this.algorithm = algorithm;
     }
@@ -138,6 +143,7 @@ public class VisualizerFX implements IVisualizer {
     }
 
     public void setData (Data data) {
+        this.beforeComputation = true;
         this.data = data;
         this.speed = data.getN();
         this.algorithm = data.getAlgorithm();
@@ -154,6 +160,10 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void iterate () {
+        if (beforeComputation) {
+            beforeComputation = false;
+        }
+        
         if (iteration <= data.getIterations() - 1) {
             if (pointIterator+speed < data.getN()) {
                 pointIterator += speed;
@@ -249,10 +259,10 @@ public class VisualizerFX implements IVisualizer {
     
     
     public void drawPoint(Point p, double opaque) {
-        if (iteration >= 0) {
-            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
-        } else {
+        if (beforeComputation) {
             gc.setFill(Color.BLACK);
+        } else {
+            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
         }
 
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
@@ -276,7 +286,7 @@ public class VisualizerFX implements IVisualizer {
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (pointIterator == 0) {
-                drawPoint (p, 1);
+                drawPoint (p, 0.6);
             } else {
                 drawPoint(p, 0.1);
             }
@@ -295,7 +305,7 @@ public class VisualizerFX implements IVisualizer {
         }
         ArrayList<Point> points = data.getIterationData(iteration+1);
         for (int i = 0; i < pointIterator && i < points.size(); ++i) {
-            drawPoint(points.get(i), 1);
+            drawPoint(points.get(i), 0.6);
 
             if (i > pointIterator-speed) {
                 gc.setFill(Color.BLACK);

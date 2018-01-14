@@ -482,6 +482,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
+        visualizer.setAfterComputation();
         visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
@@ -506,6 +507,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
         Data dat = kmeansAlgorithmMinor.clusterData();
         visualizerMinor.setData(dat);
+        visualizerMinor.setAfterComputation();
         visualizerMinor.setSpeed(speedKmeansSliderMinor.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
