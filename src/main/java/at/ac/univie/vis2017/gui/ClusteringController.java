@@ -621,6 +621,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         logger.debug("Controls are deactivated.");
         deactivateControlsMinor();
+        randomDataMinorButton.setDisable(false);
+        loadFromFileMinorButton.setDisable(false);
         computeButtonMinor.setDisable(false);
                 
     }
