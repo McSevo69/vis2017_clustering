@@ -146,6 +146,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private int kOfKmeans = 3;
     private int kOfKmeansMinor = 3;
     private boolean isLinked = true;
+    private String distanceFunction;
     
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
