@@ -44,6 +44,23 @@ public class Data {
         this.clusterNumber = null;
     }
     
+    public Data(int n, int k, Algorithm algo, ArrayList<ArrayList<Point>> data,
+            ArrayList<ArrayList<Point>> centers, ArrayList<Integer> clusterNum) {
+
+        this.n = n;
+        this.k = k;
+        this.algorithm = algo;
+        this.data = data;
+        this.centers = centers;
+        this.clusterNumber = clusterNum;      
+        
+    }
+    
+    public Data(Data datCopy) {
+        this(datCopy.getN(), datCopy.getK(), datCopy.getAlgorithm(), datCopy.getData(),
+                datCopy.getCenters(), datCopy.getClusterNumber());
+    }
+    
     public Data (int n, Algorithm algorithm) {
         this.n = n;
         this.algorithm = algorithm;
@@ -137,6 +154,21 @@ public class Data {
     public int getK () {
         logger.debug("getK = " + k);
         return k;
+    }
+    
+    public ArrayList<ArrayList<Point>> getData() {
+        logger.debug("into getData");
+        return data;
+    }
+    
+    public ArrayList<ArrayList<Point>> getCenters() {
+        logger.debug("into getCenters");
+        return centers;
+    }
+    
+    public ArrayList<Integer> getClusterNumber() {
+        logger.debug("into getClusterNumber");
+        return clusterNumber;
     }
     
     public void setMaxX (double maxX) {

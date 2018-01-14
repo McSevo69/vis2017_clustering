@@ -10,6 +10,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class KMEANS {
 
@@ -26,8 +28,7 @@ public class KMEANS {
     // prepare Data object for
     private Data dat;
 
-
-
+    Logger logger = LogManager.getLogger(KMEANS.class);
 
     public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points) {
         this.numberClusters = numberClusters;
@@ -95,8 +96,6 @@ public class KMEANS {
         this.centers = centers;
     }
 
-
-
     public void setClusterCenters(String strategy) {
 
         ClusteringController cc = new ClusteringController();
@@ -138,9 +137,6 @@ public class KMEANS {
     }
 
 
-
-
-
     // function assigns each point to closest cluster
     public void findClosestClusterCenter() {
 
@@ -170,9 +166,6 @@ public class KMEANS {
 
     }
 
-
-
-
     public ArrayList<Point> computeNewCentroids() {
 
         // create array list for new centroids
@@ -188,7 +181,7 @@ public class KMEANS {
         // find for each cluster a new centroid
         for (int i = 0; i < numberClusters; i++) {
 
-            System.out.println("Cluster i = " + i);
+            logger.trace("Cluster i = " + i);
 
             // store values of interest for calculation of the new centers
             double centroidX = 0, centroidY = 0;
@@ -206,7 +199,7 @@ public class KMEANS {
 
             }
 
-            System.out.println("NumberPointsInCluster = " + numberPointsInCluster);
+            logger.trace("NumberPointsInCluster = " + numberPointsInCluster);
             
             if (numberPointsInCluster > 0) {
                 // create new centroid point and add in list
@@ -229,14 +222,11 @@ public class KMEANS {
 
         for (int i = 0; i < numberClusters; i++) {
 
-            System.out.println(i);
+            logger.trace(i);
             this.centers.get(i).setX(newCenters.get(i).getX());
             this.centers.get(i).setY(newCenters.get(i).getY());
         }
     }
-
-
-
 
 
     public Data clusterData() {
@@ -250,7 +240,7 @@ public class KMEANS {
 
         // iterate until maximum iteration or convergence (convergence not implemented yet)
         for (int i = 0; i < maxIterations; i++) {
-            System.out.println("iteration i: " + i);
+            logger.trace("iteration i: " + i);
             
             updateCentroids(computeNewCentroids());
             findClosestClusterCenter();
@@ -265,7 +255,7 @@ public class KMEANS {
 
 
             dat.addIteration(iterationBuf, centersBuf);
-            System.out.println(this.getCenters());
+            logger.trace(this.getCenters());
         }
 
 
