@@ -106,8 +106,26 @@ public class Point {
     }
 
     // compute distance between two points
-    public static double getDistanceBetweenPoints(Point p1, Point p2) {
-        // compute distance between 2 dimensional points
-        return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + ((p1.getY() - p2.getY()) * (p1.getY() - p2.getY())));
+    public static double getDistanceBetweenPoints(Point p1, Point p2, String type) {
+
+        if (type == "euclidean") {
+            return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) + ((p1.getY() - p2.getY()) * (p1.getY() - p2.getY())));
+
+
+        } else if (type == "manhattan") {
+
+            return Math.abs(p1.getX() - p2.getX()) + Math.abs(p1.getY() - p2.getY());
+
+        } else if (type == "mehalanobis") {
+
+            System.out.println("Mehalanobis distance not implemented yet");
+            return 1;
+
+        } else {
+            System.out.println("Invalid distance string");
+            return 1;
+        }
+
+
     }
 }
