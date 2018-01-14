@@ -30,27 +30,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class VisualizerFX implements IVisualizer {
 
-    public class AutoThread extends Thread {
-        public void run(){
-            logger.debug("in autothread run");
-            while (true) {
-                if (mode == Mode.AUTO) {
-                    try {
-                        iterate ();
-                    } catch (IndexOutOfBoundsException e) {
-                        mode = Mode.MANUAL;
-                    }
-                }
-                
-                try {
-                    sleep(700);
-                } catch (InterruptedException e) {
-                    logger.debug(e.getMessage());
-                }
-            }
-        }
-    }
-
   private Canvas canvas = null;
     
     private int iteration;
@@ -68,7 +47,6 @@ public class VisualizerFX implements IVisualizer {
     private boolean showVoronoi;
     
     private Data data;
-    private AutoThread thread;
     
     private GraphicsContext gc;
     private double colorValueChunk; // the space of 360 degrees is divided into
@@ -99,8 +77,6 @@ public class VisualizerFX implements IVisualizer {
         
         this.colorValueChunk = 360;
         
-        thread = new AutoThread();
-        thread.start();
     }
     
     public VisualizerFX (Data data) {
@@ -114,9 +90,6 @@ public class VisualizerFX implements IVisualizer {
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
-        
-        thread = new AutoThread();
-        thread.start();
     }
     
     public void setAfterComputation () {
@@ -150,6 +123,10 @@ public class VisualizerFX implements IVisualizer {
         this.mode = mode;
         logger.debug("mode is set to: " + mode.toString());
         draw();
+    }
+    
+    public Mode getMode () {
+        return mode;
     }
     
     public void setShowPaths (boolean showPaths) {

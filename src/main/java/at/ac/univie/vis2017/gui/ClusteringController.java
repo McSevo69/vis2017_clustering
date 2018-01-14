@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.Thread.sleep;
 
 
 import java.net.URL;
@@ -148,12 +149,37 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isLinked = true;
     private String distanceFunction;
     
+    public class AutoThread extends Thread {
+        public void run(){
+            logger.debug("in autothread run");
+            while (true) {
+                if (visualizer.getMode() == Mode.AUTO) {
+                    try {
+                        forwardKmeans();
+                    } catch (IndexOutOfBoundsException e) {
+                        autoModePauseKmeans();
+                    }
+                }
+                
+                try {
+                    sleep(700);
+                } catch (InterruptedException e) {
+                    logger.debug(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private AutoThread thread;
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
     public ClusteringController() {
         this.visualizer = new VisualizerFX();
         this.visualizerMinor = new VisualizerFX();
         this.initialStatePoints = new ArrayList<>();
+
+        thread = new AutoThread();
+        thread.start();
     }
     
     public void setApp(Main application){
