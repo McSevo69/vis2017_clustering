@@ -27,6 +27,7 @@ public class KMEANS {
     ArrayList<Integer> clusterNumber;
     // prepare Data object for
     private Data dat;
+    private String distanceFunction = "euclidean";
 
     Logger logger = LogManager.getLogger(KMEANS.class);
 
@@ -39,7 +40,7 @@ public class KMEANS {
 
         // set cluster centers before first iteration
         setClusterCenters("random");
-        findClosestClusterCenter();
+        findClosestClusterCenter(distanceFunction);
 
 
         Algorithm algorithm = Algorithm.KMEANS;
@@ -47,6 +48,14 @@ public class KMEANS {
 
     }
 
+
+    public String getDistanceFunction() {
+        return distanceFunction;
+    }
+
+    public void setDistanceFunction(String distanceFunction) {
+        this.distanceFunction = distanceFunction;
+    }
 
     public int getNumberClusters() {
         return numberClusters;
@@ -138,7 +147,7 @@ public class KMEANS {
 
 
     // function assigns each point to closest cluster
-    public void findClosestClusterCenter() {
+    public void findClosestClusterCenter(String distanceType) {
 
         int numberPoints = this.points.size();
         int numberClusters = this.getNumberClusters();
@@ -155,7 +164,7 @@ public class KMEANS {
 
             for (int j = 0; j < numberClusters; j++) {
 
-                actualDistance = Point.getDistanceBetweenPoints(centers.get(j), points.get(i));
+                actualDistance = Point.getDistanceBetweenPoints(centers.get(j), points.get(i), distanceType);
 
                 if (actualDistance < minDistance) {
                     minDistance = actualDistance;
@@ -243,7 +252,7 @@ public class KMEANS {
             logger.trace("iteration i: " + i);
             
             updateCentroids(computeNewCentroids());
-            findClosestClusterCenter();
+            findClosestClusterCenter(this.getDistanceFunction());
             
             ArrayList<Point> iterationBuf = new ArrayList<>();
             for (Point p : getPoints())
