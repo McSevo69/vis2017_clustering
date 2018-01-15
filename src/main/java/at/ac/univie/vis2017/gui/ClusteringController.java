@@ -333,7 +333,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("Controls are deactivated.");
             deactivateControls();
             computeButton.setDisable(false);
-            isComputed = false;
             
             if (isLinked) {
                 this.initialStatePointsMinor = new ArrayList<Point>();
@@ -719,7 +718,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Controls are deactivated.");
         deactivateControls();
         computeButton.setDisable(false);
-        isComputed = false;
         
         if (isLinked) {
             this.initialStatePointsMinor = new ArrayList<Point>();
