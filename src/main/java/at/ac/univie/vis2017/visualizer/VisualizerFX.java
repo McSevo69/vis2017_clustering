@@ -503,9 +503,9 @@ public class VisualizerFX implements IVisualizer {
 
     }*/
     
-    public void bindProperties(Canvas canvas, Pane parent, GraphicsContext gc) {
+    public void bindProperties(Canvas canvas, Pane parent) {
         this.canvas = canvas;
-        this.gc = gc;
+        this.gc = canvas.getGraphicsContext2D();
         canvas.widthProperty().bind(parent.widthProperty());
         canvas.heightProperty().bind(parent.heightProperty());
         canvas.widthProperty().addListener(evt -> draw());

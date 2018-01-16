@@ -59,6 +59,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -67,6 +68,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -136,6 +138,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Button computeButtonMinor;
     @FXML Button loadFromFileMinorButton;
     @FXML Button randomDataMinorButton;
+    @FXML GridPane smallMultiplesGridPane;
 
     private Main application;
     private ArrayList<Point> initialStatePoints;
@@ -449,6 +452,30 @@ public class ClusteringController extends AnchorPane implements Initializable {
         playAutoModeKmeansImageMinor.setOpacity(0.6);
     }
     
+    public void fillSmallMultiples(Data dat) {
+        int iterations = kmeansAlgorithm.getMaxIter();
+        List<VisualizerFX> multiples = new ArrayList<>();
+        int columsPerRow = 5;
+        int maxRows = iterations/columsPerRow;       
+        
+        for (int i=0; i<maxRows; i++) {
+            for (int j=0; j<columsPerRow; j++) {
+                multiples.add(new VisualizerFX(dat));
+                //smallMultiplesGridPane.add(new Label("Label number: " + (i*columsPerRow+j)), j, i); <- works well
+                Pane newPane = new Pane();
+                newPane.getChildren().add(new Canvas());
+                smallMultiplesGridPane.add(newPane, j, i);
+                smallMultiplesGridPane.setMargin(newPane, new Insets(5,5,5,5));
+                smallMultiplesGridPane.setMinHeight(150);
+                Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columsPerRow+j);
+                multiples.get(i*columsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
+                multiples.get(i*columsPerRow+j).setIteration(i*columsPerRow+j);
+                multiples.get(i*columsPerRow+j).draw();
+            }
+        }   
+        
+    }
+    
     public void activateControlsMinor() {
         skipToStartImageMinor.setDisable(false);
         skipToStartImageMinor.setOpacity(1);
@@ -528,6 +555,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         activateControls();
         restartManualKmeans();
         activateFilters();
+        
+        fillSmallMultiples(dat);
         
         if (isLinked) {
             Data datCopy = new Data(dat);
@@ -906,13 +935,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kmeansUpdateStratChoiceBoxMinor.getSelectionModel().selectFirst();
         kmeansInitChoiceBoxMinor.getSelectionModel().selectFirst();
         kmeansAlgorithmChoiceBoxMinor.getSelectionModel().selectFirst();
-               
-        GraphicsContext gc = kmeansCanvasMain.getGraphicsContext2D();
-        GraphicsContext gc2 = kmeansCanvasMinor.getGraphicsContext2D();
-        
+                       
         //visualizer.drawBorder(gc);
-        visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane, gc);
-        visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor, gc2);
+        visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane);
+        visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
 //        visualizer.drawShapes(gc);
 
         visualizer.setData(Data.getTestData());
