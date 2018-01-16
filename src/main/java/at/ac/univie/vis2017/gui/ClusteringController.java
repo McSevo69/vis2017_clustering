@@ -461,6 +461,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         for (int i=0; i<dat.getIterations(); i++) {
             multiples.get(i).setData(dat);
             multiples.get(i).setIteration(i);
+            multiples.get(i).setAfterComputation();
             multiples.get(i).draw();         
         }
         
@@ -923,6 +924,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         centroidPathKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("Show centroid paths: " + newValue.toString());
             visualizer.setShowPaths(newValue);
+            for (VisualizerFX vis : multiples) vis.setShowPaths(newValue);
         });
         
         centroidPathKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -933,6 +935,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         clusterCentersKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("Show cluster centers: " + newValue.toString());
             visualizer.setShowCenters(newValue);
+            for (VisualizerFX vis : multiples) vis.setShowCenters(newValue);
         });
         
         clusterCentersKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -943,6 +946,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         dataPointsKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("Show data points: " + newValue.toString());
             visualizer.setShowData(newValue);
+            for (VisualizerFX vis : multiples) vis.setShowData(newValue);
         });
         
         dataPointsKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
