@@ -154,12 +154,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private int kOfKmeansMinor = 3;
     private boolean isLinked = true;           
     private boolean isComputedMinor = false;
+    private boolean isComputed = false;
     private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
     private Thread autoModeMainThread;
     private Thread autoModeMinorThread;
     private final int MAX_DURATION = 2000;
+    private List<VisualizerFX> multiples;
 
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -169,6 +171,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.initialStatePoints = new ArrayList<>();
         this.autoModeMainThread = new Thread();
         this.autoModeMinorThread = new Thread();
+        this.multiples = new ArrayList<>();
     }
     
     public void setApp(Main application){
@@ -337,6 +340,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("Controls are deactivated.");
             deactivateControls();
             computeButton.setDisable(false);
+            isComputed = false;
             
             if (isLinked) {
                 this.initialStatePointsMinor = new ArrayList<Point>();
@@ -453,15 +457,24 @@ public class ClusteringController extends AnchorPane implements Initializable {
         playAutoModeKmeansImageMinor.setOpacity(0.6);
     }
     
-    public void fillSmallMultiples(Data dat) {
-        int iterations = kmeansAlgorithm.getMaxIter();
-        List<VisualizerFX> multiples = new ArrayList<>();
+    public void updateSmallMultipleVisualizer(Data dat) {
+        for (int i=0; i<dat.getIterations(); i++) {
+            multiples.get(i).setData(dat);
+            multiples.get(i).setIteration(i);
+            multiples.get(i).draw();         
+        }
+        
+    }
+    
+    public void initSmallMultiples() {
+        int maxIterations = 100;
+        
         int columnsPerRow = 5;
-        int maxRows = iterations/columnsPerRow;       
+        int maxRows = maxIterations/columnsPerRow;       
         
         for (int i=0; i<maxRows; i++) {
             for (int j=0; j<columnsPerRow; j++) {
-                multiples.add(new VisualizerFX(dat));
+                multiples.add(new VisualizerFX());
                 //smallMultiplesGridPane.add(new Label("Label number: " + (i*columsPerRow+j)), j, i); <- works well
                 Pane newPane = new Pane();
                 newPane.getChildren().add(new Canvas());
@@ -470,14 +483,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 smallMultiplesGridPane.setMinHeight(150);
                 Node children = smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
                 children.setOnMouseClicked(evt -> {
-                    int rowIndex = smallMultiplesGridPane.getRowIndex(children);
-                    int columnIndex = smallMultiplesGridPane.getColumnIndex(children);
-                    iterationKmeansSpinner.valueFactoryProperty().get().setValue(rowIndex*columnsPerRow+columnIndex);
-                    });
+                    if (isComputed) {
+                        int rowIndex = smallMultiplesGridPane.getRowIndex(children);
+                        int columnIndex = smallMultiplesGridPane.getColumnIndex(children);
+                        iterationKmeansSpinner.valueFactoryProperty().get().setValue(rowIndex*columnsPerRow+columnIndex);
+                    }
+                });
                 Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
                 multiples.get(i*columnsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
-                multiples.get(i*columnsPerRow+j).setIteration(i*columnsPerRow+j);
-                multiples.get(i*columnsPerRow+j).draw();
             }
         }   
         
@@ -563,7 +576,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         restartManualKmeans();
         activateFilters();
         
-        fillSmallMultiples(dat);
+        isComputed = true;
+        updateSmallMultipleVisualizer(dat);
         
         if (isLinked) {
             Data datCopy = new Data(dat);
@@ -754,6 +768,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Controls are deactivated.");
         deactivateControls();
         computeButton.setDisable(false);
+        isComputed = false;
         
         if (isLinked) {
             this.initialStatePointsMinor = new ArrayList<Point>();
@@ -968,6 +983,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         deactivateControls();
         deactivateControlsMinor();
         deactivateFiltersMinor();
+        
+        initSmallMultiples();
 
     }
     
