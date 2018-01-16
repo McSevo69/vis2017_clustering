@@ -472,7 +472,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 children.setOnMouseClicked(evt -> {
                     int rowIndex = smallMultiplesGridPane.getRowIndex(children);
                     int columnIndex = smallMultiplesGridPane.getColumnIndex(children);
-                    visualizer.setIteration(rowIndex*columnsPerRow+columnIndex);
+                    iterationKmeansSpinner.valueFactoryProperty().get().setValue(rowIndex*columnsPerRow+columnIndex);
                     });
                 Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
                 multiples.get(i*columnsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
