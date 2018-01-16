@@ -61,6 +61,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -455,11 +456,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void fillSmallMultiples(Data dat) {
         int iterations = kmeansAlgorithm.getMaxIter();
         List<VisualizerFX> multiples = new ArrayList<>();
-        int columsPerRow = 5;
-        int maxRows = iterations/columsPerRow;       
+        int columnsPerRow = 5;
+        int maxRows = iterations/columnsPerRow;       
         
         for (int i=0; i<maxRows; i++) {
-            for (int j=0; j<columsPerRow; j++) {
+            for (int j=0; j<columnsPerRow; j++) {
                 multiples.add(new VisualizerFX(dat));
                 //smallMultiplesGridPane.add(new Label("Label number: " + (i*columsPerRow+j)), j, i); <- works well
                 Pane newPane = new Pane();
@@ -467,10 +468,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 smallMultiplesGridPane.add(newPane, j, i);
                 smallMultiplesGridPane.setMargin(newPane, new Insets(5,5,5,5));
                 smallMultiplesGridPane.setMinHeight(150);
-                Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columsPerRow+j);
-                multiples.get(i*columsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
-                multiples.get(i*columsPerRow+j).setIteration(i*columsPerRow+j);
-                multiples.get(i*columsPerRow+j).draw();
+                Node children = smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
+                children.setOnMouseClicked(evt -> {
+                    int rowIndex = smallMultiplesGridPane.getRowIndex(children);
+                    int columnIndex = smallMultiplesGridPane.getColumnIndex(children);
+                    visualizer.setIteration(rowIndex*columnsPerRow+columnIndex);
+                    });
+                Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
+                multiples.get(i*columnsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
+                multiples.get(i*columnsPerRow+j).setIteration(i*columnsPerRow+j);
+                multiples.get(i*columnsPerRow+j).draw();
             }
         }   
         
