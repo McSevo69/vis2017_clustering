@@ -140,6 +140,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Button loadFromFileMinorButton;
     @FXML Button randomDataMinorButton;
     @FXML GridPane smallMultiplesGridPane;
+    @FXML Label stepTwoLabel;
 
     private Main application;
     private ArrayList<Point> initialStatePoints;
@@ -162,6 +163,23 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private Thread autoModeMinorThread;
     private final int MAX_DURATION = 2000;
     private List<VisualizerFX> multiples;
+    private String labelTwoText = "while convergence == false\n" +
+                            "    for p : points\n" +
+                            "        for c : centroids\n" +
+                            "            if d(p,c) minimal\n" +
+                            "                set_c.add(p)\n" +
+                            "            endif\n" +
+                            "        endfor\n" +
+                            "    endfor\n" +
+                            "    \n" +
+                            "    for c : centroids\n" +
+                            "        c.position = mean (set_c)\n" +
+                            "    endfor\n" +
+                            "    \n" +
+                            "    if set_c == set_c0 for all c\n" +
+                            "        convergence = true\n" +
+                            "    endif\n" +
+                            "endwhile";
 
     Logger logger = LogManager.getLogger(ClusteringController.class);
 
@@ -328,7 +346,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
             visualizer.setData(data);
-            visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
+            visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
@@ -350,7 +368,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 
                 Data datCopy = new Data(data);
                 visualizerMinor.setData(datCopy);
-                visualizerMinor.setSpeed(speedKmeansSlider.valueProperty().intValue());
+                visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
  
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
                 logger.debug("IterationSpinnerMinor updated. New value: " + 0);
@@ -380,7 +398,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, buffer));
             visualizerMinor.setData(data);
-            visualizerMinor.setSpeed(speedKmeansSlider.valueProperty().intValue());
+            visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
@@ -568,7 +586,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
         visualizer.setAfterComputation();
-        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
+        visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
@@ -584,7 +602,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             Data datCopy = new Data(dat);
             visualizerMinor.setData(datCopy);
             visualizerMinor.setAfterComputation();
-            visualizerMinor.setSpeed(speedKmeansSlider.valueProperty().intValue());
+            visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
             logger.debug("IterationSpinnerMinor updated. New value: " + 0);
             restartManualKmeansMinor();
@@ -598,7 +616,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Data dat = kmeansAlgorithmMinor.clusterData();
         visualizerMinor.setData(dat);
         visualizerMinor.setAfterComputation();
-        visualizerMinor.setSpeed(speedKmeansSliderMinor.valueProperty().intValue());
+        visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
         logger.debug("iterateKmeans pressed");
         logger.debug("Controls are activated.");
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
@@ -757,7 +775,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Random data generated");
         Data dat = new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints);
         visualizer.setData(dat);
-        visualizer.setSpeed(speedKmeansSlider.valueProperty().intValue());
+        visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
         //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
@@ -779,7 +797,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 
             Data datCopy = new Data(dat);
             visualizerMinor.setData(datCopy);
-            visualizerMinor.setSpeed(speedKmeansSlider.valueProperty().intValue());
+            visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
 
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
             logger.debug("IterationSpinnerMinor updated. New value: " + 0);
@@ -799,7 +817,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         logger.debug("Random data generated");
         Data dat = new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, initialStatePointsMinor);
         visualizerMinor.setData(dat);
-        visualizerMinor.setSpeed(speedKmeansSliderMinor.valueProperty().intValue());
+        visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
         //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
@@ -874,6 +892,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepBackImage.setImage(new Image("images/Back_32px.png"));
         stepForwardImage.setImage(new Image("images/Forward_32px.png"));
         linkageImage.setImage(new Image("images/Link_32px.png"));
+        
+        stepTwoLabel.setText(labelTwoText);
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue)) {
@@ -967,11 +987,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
 //        visualizer.drawShapes(gc);
 
-        visualizer.setData(Data.getTestData());
-        visualizer.draw();
-        
-        visualizerMinor.setData(Data.getTestData());
-        visualizerMinor.draw();
 
         //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
         //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
