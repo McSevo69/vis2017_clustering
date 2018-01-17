@@ -33,6 +33,7 @@ public class VisualizerFX implements IVisualizer {
   private Canvas canvas = null;
     
     private int iteration;
+    private int oldIteration;
     private int pointIterator;
     private int speed;                  // until now a value between 0 and 100. 
                                         //better: value between 0 and data.size
@@ -166,10 +167,6 @@ public class VisualizerFX implements IVisualizer {
         this.canvas = canvas;
     }
     
-    public void pause () {
-        
-    }
-    
     public void iterate () {
         if (iteration > data.getIterations()) throw new IndexOutOfBoundsException(iteration + " is out of bounds " + data.getIterations());
 
@@ -181,7 +178,7 @@ public class VisualizerFX implements IVisualizer {
             if (pointIterator+speed < data.getN()) {
                 pointIterator += speed;
             } else {
-                iteration++;
+                oldIteration = iteration++;
                 pointIterator = 0;
             }
         }
@@ -208,7 +205,7 @@ public class VisualizerFX implements IVisualizer {
             } else {
                 logger.debug("pointIterator: " + pointIterator);
                 logger.debug("speed: " + speed);
-                iteration--;
+                oldIteration = iteration--;
                 pointIterator = data.getN();
             }
         } else if (pointIterator > 0) {
@@ -299,11 +296,13 @@ public class VisualizerFX implements IVisualizer {
     public void drawIterationData() {
         logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
-        for (Point p : data.getIterationData(iteration)) {
-            if (pointIterator == 0) {
-                drawPoint (p, 0.6);
-            } else {
-                drawPoint(p, 0.1);
+        if (iteration != oldIteration) {
+            for (Point p : data.getIterationData(iteration)) {
+                if (pointIterator == 0) {
+                    drawPoint (p, 0.6);
+                } else {
+                    drawPoint(p, 0.1);
+                }
             }
         }
         
@@ -408,7 +407,9 @@ public class VisualizerFX implements IVisualizer {
             throw new RuntimeException("no canvas set!");
         }
         
-        clearCanvas();
+        if (iteration != oldIteration) {
+            clearCanvas();
+        }
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
@@ -431,7 +432,9 @@ public class VisualizerFX implements IVisualizer {
                 }
                 
                 if (showCenters) {
-                    drawIterationCenters();
+                    if (iteration == oldIteration) {
+                        drawIterationCenters();
+                    }
                 }
                 
                 if (showPaths) {
