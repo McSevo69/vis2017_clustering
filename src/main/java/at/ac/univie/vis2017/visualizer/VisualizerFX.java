@@ -50,6 +50,7 @@ public class VisualizerFX implements IVisualizer {
     private Data data;
     
     private GraphicsContext gc;
+    private Pane parentPane;
     private double colorValueChunk; // the space of 360 degrees is divided into
                                     // k equally sized chunks, where k is the
                                     // amount of clusters in the data.
@@ -388,8 +389,11 @@ public class VisualizerFX implements IVisualizer {
     
     public void clearCanvas() {
         gc.setFill(Color.WHITE);
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        //gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        //canvas = new Canvas();
+        //gc = canvas.getGraphicsContext2D();
+        //bindProperties(canvas, parentPane);
     }
 
     /*
@@ -509,6 +513,7 @@ public class VisualizerFX implements IVisualizer {
     public void bindProperties(Canvas canvas, Pane parent) {
         this.canvas = canvas;
         this.gc = canvas.getGraphicsContext2D();
+        this.parentPane = parent;
         canvas.widthProperty().bind(parent.widthProperty());
         canvas.heightProperty().bind(parent.heightProperty());
         canvas.widthProperty().addListener(evt -> draw());

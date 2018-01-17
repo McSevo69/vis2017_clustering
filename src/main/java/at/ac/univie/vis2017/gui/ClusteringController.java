@@ -60,6 +60,7 @@ import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -897,6 +898,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue)) {
+                kmeansCanvasMain = new Canvas(420, 420);
+                kmeansCanvasMain.setCache(false);
+                //kmeansCanvasMain.setCacheHint(CacheHint.SPEED);
+                kmeansParentPane.getChildren().clear();
+                kmeansParentPane.getChildren().add(kmeansCanvasMain);
+                visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane);
                 visualizer.setIteration(newValue);
                 logger.debug("Iteration set to " + newValue);
             }
@@ -904,6 +911,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue)) {
+                kmeansCanvasMinor = new Canvas(420, 420);
+                kmeansCanvasMinor.setCache(false);
+                //kmeansCanvasMinor.setCacheHint(CacheHint.SPEED);
+                kmeansParentPaneMinor.getChildren().clear();
+                kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
+                visualizer.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 visualizerMinor.setIteration(newValue);
                 logger.debug("IterationMinor set to " + newValue);
             }
