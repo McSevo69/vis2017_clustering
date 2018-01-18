@@ -587,8 +587,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void iterateKmeans() {
 /*
         if (initMode.equals("I'll choose")) {
-            //if (clustercenters valid)
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            if (clusterCenters.size() == kOfKmeans) {
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            }
         } else if (initMode.equals("Farthest")) {
             this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         } else if (initMode.equals("Random")) {
@@ -803,6 +804,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         deactivateControls();
         computeButton.setDisable(false);
         isComputed = false;
+        
+        clusterCenters.clear();
         
         if (isLinked) {
             this.initialStatePointsMinor = new ArrayList<Point>();
@@ -1071,8 +1074,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 p.setCenterPointTrue();
                 if (clusterCenters.size() < kOfKmeans) {
                     clusterCenters.add(p);
-                    kmeansCanvasMain.getGraphicsContext2D().setFill(Color.BLACK);
-                    kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 5, 5);
+
+                    kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
+                    kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 9, 9);
+                    
+                    kmeansCanvasMain.getGraphicsContext2D().setStroke(Color.BLACK);
+                    kmeansCanvasMain.getGraphicsContext2D().strokeRect(p.getX(), p.getY(), 9, 9);
                 } else {
                     tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
                     tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
