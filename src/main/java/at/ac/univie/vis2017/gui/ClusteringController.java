@@ -1026,11 +1026,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                String msg = "(x: " + event.getX() + ", y: " + event.getY() + ")";
-                mousePositionToolTip.setText(msg);
+                //TODO
+                boolean dummy = true;
+                if (dummy) {
+                    String msg = "(x: " + event.getX() + ", y: " + event.getY() + ")";
+                    mousePositionToolTip.setText(msg);
 
-                Node node = (Node) event.getSource();
-                mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+                    Node node = (Node) event.getSource();
+                    mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+                } else {
+                    mousePositionToolTip.hide();
+                }
             }
 
         });
