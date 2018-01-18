@@ -289,7 +289,7 @@ public class KMEANS {
                 logger.trace("iteration i: " + i);
 
                 // copy actual cluster centers to compute convergence
-                ArrayList<Point> actualCenters = new ArrayList<>();
+                ArrayList<Point> actualCenters;
                 actualCenters = this.getCenters();
 
                 System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
@@ -311,7 +311,7 @@ public class KMEANS {
 
 
 
-                ArrayList<Point> newCenters = new ArrayList<>();
+                ArrayList<Point> newCenters;
                 newCenters = this.getCenters();
 
                 old_Convergence = convergence;
@@ -334,7 +334,7 @@ public class KMEANS {
                 logger.trace("iteration i: " + i);
 
                 // copy actual cluster centers to compute convergence
-                ArrayList<Point> actualCenters = new ArrayList<>();
+                ArrayList<Point> actualCenters;
                 actualCenters = this.getCenters();
 
                 System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
@@ -350,7 +350,7 @@ public class KMEANS {
 
 
 
-                ArrayList<Point> newCenters = new ArrayList<>();
+                ArrayList<Point> newCenters;
                 newCenters = this.getCenters();
 
                 old_Convergence = convergence;
