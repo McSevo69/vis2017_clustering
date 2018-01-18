@@ -76,6 +76,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -188,6 +189,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.visualizer = new VisualizerFX();
         this.visualizerMinor = new VisualizerFX();
         this.initialStatePoints = new ArrayList<>();
+        this.clusterCenters = new ArrayList<>();
         this.autoModeMainThread = new Thread();
         this.autoModeMinorThread = new Thread();
         this.multiples = new ArrayList<>();
@@ -583,6 +585,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
+/*
         if (initMode.equals("I'll choose")) {
             //if (clustercenters valid)
             this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
@@ -593,7 +596,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         } else {
             
         }
-        
+*/
+        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
         visualizer.setAfterComputation();
@@ -1029,6 +1033,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         initSmallMultiples();
         
         Tooltip mousePositionToolTip = new Tooltip("");
+        Tooltip tooManyCentroidsTooltip = new Tooltip("");
         kmeansParentPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
 
             @Override
@@ -1053,8 +1058,29 @@ public class ClusteringController extends AnchorPane implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 mousePositionToolTip.hide();
+                tooManyCentroidsTooltip.hide();
             }
         });        
-    }
-    
+        
+        kmeansParentPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("mouse clicked");
+                Point p = new Point(event.getX(), event.getY());
+                p.setCenterPointTrue();
+                if (clusterCenters.size() < kOfKmeans) {
+                    clusterCenters.add(p);
+                    kmeansCanvasMain.getGraphicsContext2D().setFill(Color.BLACK);
+                    kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 5, 5);
+                } else {
+                    tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
+                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
+                }
+
+//                visualizer.drawPoint(p, 1);
+                System.out.println(clusterCenters);
+            }
+        });        
+    }    
 }

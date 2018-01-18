@@ -100,6 +100,11 @@ public class Data {
         logger.debug("addIteration called");
         data.add(newData);
     }
+
+    public void addCenters (ArrayList<Point> newCenters) {
+        logger.debug("addCenters called");
+        data.add(newCenters);
+    }
     
     public void addIteration (ArrayList<Point> newData, ArrayList<Point> newCenters) {
         logger.debug("addIteration including centers called");

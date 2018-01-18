@@ -193,6 +193,10 @@ public class VisualizerFX implements IVisualizer {
         setColorValueChunk();
     }
     
+    public Data getData () {
+        return data;
+    }
+    
     public void setGraphicsContext (GraphicsContext gc) {
         this.gc = gc;
         setCanvas(gc.getCanvas());
@@ -356,9 +360,16 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawCenter(Point p) {
+        logger.debug("drawCenter called");
         if (iteration < 0) return;
+        logger.debug("  not returned");
         
-        gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
+        if (beforeComputation) {
+            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,0,0.5)); // THAT'S DIRTY!!!
+        } else {
+            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
+        }
+
         gc.setStroke(Color.BLACK);
         
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
