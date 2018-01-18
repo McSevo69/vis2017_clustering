@@ -57,6 +57,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javafx.beans.property.ObjectProperty;
 import javafx.embed.swing.SwingNode;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -75,8 +76,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -1017,7 +1020,28 @@ public class ClusteringController extends AnchorPane implements Initializable {
         deactivateFiltersMinor();
         
         initSmallMultiples();
+        
+        Tooltip mousePositionToolTip = new Tooltip("");
+        kmeansParentPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
 
+            @Override
+            public void handle(MouseEvent event) {
+                String msg = "(x: " + event.getX() + ", y: " + event.getY() + ")";
+                mousePositionToolTip.setText(msg);
+
+                Node node = (Node) event.getSource();
+                mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+            }
+
+        });
+        
+        kmeansParentPane.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                mousePositionToolTip.hide();
+            }
+        });        
     }
     
 }

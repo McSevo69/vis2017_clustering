@@ -14,8 +14,12 @@ import ch.netzwerg.paleo.ColumnIds.StringColumnId;
 import ch.netzwerg.paleo.ColumnType;
 import ch.netzwerg.paleo.DataFrame;
 import java.util.ArrayList;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -79,6 +83,7 @@ public class VisualizerFX implements IVisualizer {
         
         this.colorValueChunk = 360;
         
+//        installTooltips ();
     }
     
     public VisualizerFX (Data data) {
@@ -92,8 +97,27 @@ public class VisualizerFX implements IVisualizer {
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
+
+//        installTooltips ();
     }
-    
+/*    
+    public void installTooltips () {
+        Tooltip mousePositionToolTip = new Tooltip("");
+        parentPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String msg = "(x: " + event.getX() + ", y: " + event.getY() + ")\n(sceneX: "
+                        + event.getSceneX() + ", sceneY: " + event.getSceneY() + ")\n(screenX: "
+                        + event.getScreenX() + ", screenY: " + event.getScreenY() + ")";
+                mousePositionToolTip.setText(msg);
+
+                Node node = (Node) event.getSource();
+                mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+            }
+
+        });
+    }
+*/    
     public void setAfterComputation () {
         beforeComputation = false;
     }
