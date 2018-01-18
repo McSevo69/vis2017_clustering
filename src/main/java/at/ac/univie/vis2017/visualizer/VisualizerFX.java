@@ -297,13 +297,11 @@ public class VisualizerFX implements IVisualizer {
     public void drawIterationData() {
         logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
-        if (iteration != oldIteration) {
-            for (Point p : data.getIterationData(iteration)) {
-                if (pointIterator == 0) {
-                    drawPoint (p, 0.6);
-                } else {
-                    drawPoint(p, 0.1);
-                }
+        for (Point p : data.getIterationData(iteration)) {
+            if (pointIterator == 0) {
+                drawPoint (p, 0.6);
+            } else {
+                drawPoint(p, 0.1);
             }
         }
         
@@ -411,9 +409,7 @@ public class VisualizerFX implements IVisualizer {
             throw new RuntimeException("no canvas set!");
         }
         
-        if (iteration != oldIteration) {
-            clearCanvas();
-        }
+        clearCanvas();
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
@@ -436,9 +432,7 @@ public class VisualizerFX implements IVisualizer {
                 }
                 
                 if (showCenters) {
-                    if (iteration == oldIteration) {
-                        drawIterationCenters();
-                    }
+                    drawIterationCenters();
                 }
                 
                 if (showPaths) {
