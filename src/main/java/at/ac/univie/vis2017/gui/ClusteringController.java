@@ -146,7 +146,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private VisualizerFX visualizerMinor;
     private KMEANS kmeansAlgorithm;
     private KMEANS kmeansAlgorithmMinor;
-
+    
+    private String strategy;
+    private String algorithm;
+    private String initMode;
+    private ArrayList<Point> clusterCenters;
 
     private int kOfKmeans = 3;
     private int kOfKmeansMinor = 3;
@@ -579,7 +583,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
-        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        if (initMode.equals("I'll choose")) {
+            //if (clustercenters valid)
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        } else if (initMode.equals("Farthest")) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        } else if (initMode.equals("Random")) {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+        } else {
+            
+        }
+        
         Data dat = kmeansAlgorithm.clusterData();
         visualizer.setData(dat);
         visualizer.setAfterComputation();
