@@ -10,6 +10,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +29,15 @@ public class KMEANS {
     ArrayList<Integer> clusterNumber;
     // prepare Data object for
     private Data dat;
+    // euclidean or manhattan
     private String distanceFunction = "euclidean";
+    // lloyd or macqueen
+    private String updateFunction = "lloyd";
+    // convergence
+    private double convergenceThreshold = 1e-3;
+
+
+
 
     Logger logger = LogManager.getLogger(KMEANS.class);
 
@@ -35,6 +45,9 @@ public class KMEANS {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
         this.points = points;
+        setUpdateFunction("lloyd");
+        this.setConvergenceThreshold(1e-3);
+
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
@@ -48,6 +61,25 @@ public class KMEANS {
 
     }
 
+
+
+
+
+    public double getConvergenceThreshold() {
+        return convergenceThreshold;
+    }
+
+    public void setConvergenceThreshold(double convergenceThreshold) {
+        this.convergenceThreshold = convergenceThreshold;
+    }
+
+    public String getUpdateFunction() {
+        return updateFunction;
+    }
+
+    public void setUpdateFunction(String updateFunction) {
+        this.updateFunction = updateFunction;
+    }
 
     public String getDistanceFunction() {
         return distanceFunction;
@@ -240,39 +272,109 @@ public class KMEANS {
 
     public Data clusterData() {
 
+        double convergence = 1e10;
+        double old_Convergence = 1e100;
+        //double threshold = this.getConvergenceThreshold();
 
-        System.out.println(this.getCenters());
-
-
-        // assign maxiter to local variable to save performance
+        //System.out.println(this.getCenters());
         int maxIterations = this.getMaxIter();
-
-        // iterate until maximum iteration or convergence (convergence not implemented yet)
-        for (int i = 0; i < maxIterations; i++) {
-            logger.trace("iteration i: " + i);
-            
-            updateCentroids(computeNewCentroids());
-            findClosestClusterCenter(this.getDistanceFunction());
-            
-            ArrayList<Point> iterationBuf = new ArrayList<>();
-            for (Point p : getPoints())
-                iterationBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
-            
-            ArrayList<Point> centersBuf = new ArrayList<>();
-            for (Point p : getCenters())
-                centersBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+        int i = 0;
 
 
-            dat.addIteration(iterationBuf, centersBuf);
-            logger.trace(this.getCenters());
+        if(this.getUpdateFunction() == "lloyd") {
+
+            // iterate until maxiter or convergence
+            while((i < maxIterations) && (Math.abs(Math.abs(convergence) - Math.abs(old_Convergence)) > this.getConvergenceThreshold())) {
+
+                logger.trace("iteration i: " + i);
+
+                // copy actual cluster centers to compute convergence
+                ArrayList<Point> actualCenters;
+                actualCenters = this.getCenters();
+
+                System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
+
+
+                updateCentroids(computeNewCentroids());
+                findClosestClusterCenter(this.getDistanceFunction());
+
+                ArrayList<Point> iterationBuf = new ArrayList<>();
+                for (Point p : getPoints())
+                    iterationBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+
+                ArrayList<Point> centersBuf = new ArrayList<>();
+                for (Point p : getCenters())
+                    centersBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+
+
+                dat.addIteration(iterationBuf, centersBuf);
+
+
+
+                ArrayList<Point> newCenters;
+                newCenters = this.getCenters();
+
+                old_Convergence = convergence;
+                convergence = 0.0;
+
+                for (int j = 0; j < this.getNumberClusters(); j++){
+                    convergence += Math.sqrt(actualCenters.get(j).getX() + newCenters.get(j).getX() * actualCenters.get(j).getY() + newCenters.get(j).getY());
+                }
+
+                System.out.println("Convergence = " + convergence);
+
+                logger.trace(this.getCenters());
+
+                i += 1;
+            }
+
+        } else if(this.getUpdateFunction() == "macqueen"){
+            while((i < maxIterations) && (Math.abs(Math.abs(convergence) - Math.abs(old_Convergence)) > this.getConvergenceThreshold())) {
+
+                logger.trace("iteration i: " + i);
+
+                // copy actual cluster centers to compute convergence
+                ArrayList<Point> actualCenters;
+                actualCenters = this.getCenters();
+
+                System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
+
+
+
+                // update macqueen
+
+
+
+
+
+
+
+
+                ArrayList<Point> newCenters;
+                newCenters = this.getCenters();
+
+                old_Convergence = convergence;
+                convergence = 0.0;
+
+                for (int j = 0; j < this.getNumberClusters(); j++){
+                    convergence += Math.sqrt(actualCenters.get(j).getX() + newCenters.get(j).getX() * actualCenters.get(j).getY() + newCenters.get(j).getY());
+                }
+
+                System.out.println("Convergence = " + convergence);
+
+                logger.trace(this.getCenters());
+
+                i += 1;
+
+            }
         }
+
+
+
 
 
         return this.dat;
     }
-
-
-
 
 
 }
