@@ -246,6 +246,7 @@ public class KMEANS {
                 // create new centroid point and add in list
                 Point p = new Point(centroidX / numberPointsInCluster, centroidY / numberPointsInCluster);
                 p.setCenterPointTrue();
+                p.setClusterSize(numberPointsInCluster);
                 newCentroids.add(p);
             } else {
                 this.setNumberClusters(getNumberClusters()-1);

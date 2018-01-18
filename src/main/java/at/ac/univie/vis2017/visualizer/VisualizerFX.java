@@ -631,14 +631,6 @@ public class VisualizerFX implements IVisualizer {
                 }
             }
         }
-        String a = new String("");
-        for (int i = 0; i < canvas.getWidth(); ++i) {
-            for (int j = 0; j < canvas.getHeight(); ++j) {
-                if (points.get(i).get(j) >= 0) {
-                    System.out.println(i + ", " + j);
-                }
-            }
-        }
         
         return points;
     }
