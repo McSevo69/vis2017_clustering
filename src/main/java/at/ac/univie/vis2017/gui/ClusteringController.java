@@ -1141,7 +1141,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
             public void handle(MouseEvent event) {
                 Point p = new Point(event.getX(), event.getY());
                 p.setCenterPointTrue();
-                if (clusterCenters.size() < kOfKmeans) {
+                if (!initMode.equals("I'll choose")) {
+                    tooManyCentroidsTooltip.setText("Set initialization mode to \"I'll choose\"\n to set centroids manually");
+                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
+                } else if (clusterCenters.size() >= kOfKmeans) {
+                    tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
+                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
+                } else {
                     clusterCenters.add(p);
 
                     kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
@@ -1149,9 +1155,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     
                     kmeansCanvasMain.getGraphicsContext2D().setStroke(Color.BLACK);
                     kmeansCanvasMain.getGraphicsContext2D().strokeRect(p.getX(), p.getY(), 9, 9);
-                } else {
-                    tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
-                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
                 }
 
 //                visualizer.drawPoint(p, 1);
