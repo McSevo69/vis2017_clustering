@@ -37,8 +37,11 @@ public class VisualizerFX implements IVisualizer {
   private Canvas canvas = null;
     
     private int iteration;
-    private int oldIteration;
-    private int pointIterator;
+    private int oldIteration;           
+    private int pointIterator;          // iterates over the points during a 
+                                        // a single 
+    private int lastStep;               // size of the last step taken before
+                                        // we pass into new iteration
     private int speed;                  // until now a value between 0 and 100. 
                                         //better: value between 0 and data.size
 
@@ -142,7 +145,14 @@ public class VisualizerFX implements IVisualizer {
     
     public void setSpeed (int speed) {
         this.speed = (int) ((speed/100.0) * data.getN());
-        logger.debug("speed in setSpeed: " + this.speed);
+        /*
+        logger.debug("  " + data.getN() + " - " + "((int) " + data.getN() + "/" + this.speed + ") * " + this.speed);
+        logger.debug("= " + data.getN() + " - " + "((int) " + data.getN()/this.speed + ") * " + this.speed);
+        logger.debug("= " + data.getN() + " - " + (int) data.getN()/this.speed + " * " + this.speed);
+        logger.debug("= " + data.getN() + " - " + ((int) data.getN()/this.speed) * this.speed);
+        logger.debug("= " + (data.getN() - ((int) data.getN()/this.speed) * this.speed));
+        */
+        lastStep = data.getN() - (((int) (data.getN()/this.speed)) * this.speed);
     }
     
     public void setMode (Mode mode) {
@@ -199,13 +209,34 @@ public class VisualizerFX implements IVisualizer {
             beforeComputation = false;
         }
         
+/*
         if (iteration <= data.getIterations() - 1) {
             if (pointIterator+speed < data.getN()) {
                 pointIterator += speed;
             } else {
                 oldIteration = iteration++;
+                lastStep = data.getN() - pointIterator;
                 pointIterator = 0;
             }
+        }
+*/        
+        
+        if (speed == data.getN()) { // if s == x, no pointiterator
+            oldIteration = iteration++;
+            pointIterator = 0;
+//            lastStep = speed;
+        } else if (speed > 0 && speed < data.getN()) {
+            if (pointIterator == data.getN()) { // from (i, x) to (i+1, 0)
+                oldIteration = iteration++;
+                pointIterator = 0;
+            } else if (pointIterator+speed >= data.getN()) { // from (i, x-a) to (i, x)
+//                lastStep = data.getN() - pointIterator;
+                pointIterator = data.getN();
+            } else { // from (i, x-b) to (i, x-a)
+                pointIterator += speed;
+            }
+        } else {
+            
         }
         
         logger.debug(
@@ -221,6 +252,24 @@ public class VisualizerFX implements IVisualizer {
     public void stepback () {
         if (iteration < 0) throw new IndexOutOfBoundsException(iteration + " is out of bounds.");
         
+        if (speed == data.getN()) { // if s == x, no pointiterator
+            oldIteration = iteration--;
+            pointIterator = 0;
+        } else if (speed > 0 && speed < data.getN()) {
+            if (pointIterator == 0) { // from (i, 0) to (i-1, x)
+                oldIteration = iteration--;
+                pointIterator = data.getN();
+            } else if (pointIterator == data.getN()) { // from (i, x) to (i, x-s)
+                pointIterator -= lastStep;
+            } else if (pointIterator-speed >= 0) { // from (i, x-a) to (i, x-b)
+                pointIterator -= speed;
+            } else { // from (i, x-b) to (i, x-a)
+                pointIterator = 0;
+            }
+        } else {
+            
+        }
+/*
         if (iteration > 0) {
             logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
             if (pointIterator-speed > 0) {
@@ -244,7 +293,7 @@ public class VisualizerFX implements IVisualizer {
         } else {
             logger.debug("line 195");
         }
-        
+*/        
         logger.debug(
                 "Iteration, speed, pointIterator: " + 
                 iteration + ", " + 
@@ -344,11 +393,17 @@ public class VisualizerFX implements IVisualizer {
         for (int i = 0; i < pointIterator && i < points.size(); ++i) {
             drawPoint(points.get(i), 0.6);
 
-            if (i > pointIterator-speed) {
+            if (pointIterator == data.getN()) {
+                if (i > data.getN() - lastStep) {
+                    gc.setFill(Color.BLACK);
+                    gc.strokeOval(normalizeX(points.get(i).getX()), normalizeY(points.get(i).getY()), pSize, pSize);
+                }
+            } else if (i > pointIterator-speed) {
                 gc.setFill(Color.BLACK);
                 gc.strokeOval(normalizeX(points.get(i).getX()), normalizeY(points.get(i).getY()), pSize, pSize);
             }
         }
+
     }
 
     public void drawIterationCenters () {
