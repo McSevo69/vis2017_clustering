@@ -58,6 +58,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -173,7 +174,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private int autoModeSpeedMinor = 300;
     private Thread autoModeMainThread;
     private Thread autoModeMinorThread;
-    private final int MAX_DURATION = 2000;
+    private final int MAX_DURATION = 2500;
     private List<VisualizerFX> multiples;
     private String labelTwoText = "while convergence == false\n" +
                             "    for p : points\n" +
@@ -1027,12 +1028,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue) && newValue < maxIterationsMain) {
-                //kmeansCanvasMain = new Canvas(420, 420);
-                //kmeansCanvasMain.setCache(false);
-                //kmeansCanvasMain.setCacheHint(CacheHint.SPEED);
-                //kmeansParentPane.getChildren().clear();
-                //kmeansParentPane.getChildren().add(kmeansCanvasMain);
-                //visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane);
+                kmeansCanvasMain = new Canvas(420, 420);
+                kmeansCanvasMain.setCache(false);
+                kmeansCanvasMain.setCacheHint(CacheHint.SPEED);
+                kmeansParentPane.getChildren().clear();
+                kmeansParentPane.getChildren().add(kmeansCanvasMain);
+                visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane);
                 skipToStartImage.setDisable(false);
                 skipToStartImage.setOpacity(1);
                 stepBackImage.setDisable(false);
@@ -1055,12 +1056,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals(oldValue) && newValue < maxIterationsMinor) {
-                //kmeansCanvasMinor = new Canvas(420, 420);
-                //kmeansCanvasMinor.setCache(false);
-                //kmeansCanvasMinor.setCacheHint(CacheHint.SPEED);
-                //kmeansParentPaneMinor.getChildren().clear();
-                //kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
-                //visualizer.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
+                kmeansCanvasMinor = new Canvas(420, 420);
+                kmeansCanvasMinor.setCache(false);
+                kmeansCanvasMinor.setCacheHint(CacheHint.SPEED);
+                kmeansParentPaneMinor.getChildren().clear();
+                kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
+                visualizer.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 visualizerMinor.setIteration(newValue);
                 logger.debug("IterationMinor set to " + newValue);
             }
