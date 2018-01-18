@@ -1061,7 +1061,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansCanvasMinor.setCacheHint(CacheHint.SPEED);
                 kmeansParentPaneMinor.getChildren().clear();
                 kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
-                visualizer.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
+                visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 visualizerMinor.setIteration(newValue);
                 logger.debug("IterationMinor set to " + newValue);
             }
