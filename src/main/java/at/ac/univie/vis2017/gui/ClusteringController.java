@@ -32,7 +32,6 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
-import at.ac.univie.vis2017.clustering_algorithms.KMEDIANS;
 import at.ac.univie.vis2017.clustering_algorithms.KMEDOIDS;
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
@@ -54,27 +53,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import javafx.beans.property.ObjectProperty;
+
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -153,8 +147,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private VisualizerFX visualizerMinor;
     private KMEANS kmeansAlgorithm;
     private KMEANS kmeansAlgorithmMinor;
-    private KMEDIANS kmediansAlgorithm;
-    private KMEDOIDS kmedoidsAlgorithm;
+
+
     private int kOfKmeans = 3;
     private int kOfKmeansMinor = 3;
     private boolean isLinked = true;           
