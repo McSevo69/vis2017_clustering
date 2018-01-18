@@ -603,4 +603,35 @@ public class VisualizerFX implements IVisualizer {
         canvas.widthProperty().addListener(evt -> draw());
         canvas.heightProperty().addListener(evt -> draw());
     }
+    
+    public ArrayList<ArrayList<ArrayList<Double>>> hashCenters (Data data) {
+        return new ArrayList<ArrayList<ArrayList<Double>>>();
+    }
+    
+    public ArrayList<ArrayList<Integer>> hashPoints (Data data) {
+        ArrayList<ArrayList<Integer>> points = new ArrayList<ArrayList<Integer>>();
+        
+        for (int i = 0; i < canvas.getWidth(); ++i) {
+            points.add(new ArrayList<Integer>());
+            for (int j = 0; j < canvas.getHeight(); ++j) {
+                points.get(i).add(-1);
+            }
+        }
+        
+        for (Point p : data.getIterationData(0)) {
+            for (int i = 0; i < pSize; ++i) {
+                for (int j = 0; j < pSize; ++j) {
+                    // code: xxxx yyyy c
+                    // code: xxxx * 10000 + yyyy * 10 + c
+                    // xxxx = code / 100000
+                    // yyyy = (code / 10) % 10000
+                    // c   = % 10
+                    int code = (int) normalizeX(p.getX()) * 10000 + (int) normalizeY(p.getY()) * 10 + p.getClusterNumber();
+                    points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, (Integer) code);
+                }
+            }
+        }
+        
+        return points;
+    }
 }

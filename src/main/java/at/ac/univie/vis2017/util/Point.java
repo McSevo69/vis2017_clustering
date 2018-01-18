@@ -11,6 +11,7 @@ public class Point {
     private double centerY;
     // cluster number
     private int clusterNumber = 0;
+    private int clusterSize = 0;
     // true if Point is centerpoint
     private boolean isCenterPoint = false;
 
@@ -103,6 +104,14 @@ public class Point {
 
     public void setClusterNumber(int clusterNumber) {
         this.clusterNumber = clusterNumber;
+    }
+    
+    public int getClusterSize () {
+        return clusterSize;
+    }
+    
+    public void setClusterSize (int clusterSize) {
+        this.clusterSize = clusterSize;
     }
 
     // compute distance between two points
