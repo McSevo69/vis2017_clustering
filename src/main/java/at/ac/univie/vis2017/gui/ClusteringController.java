@@ -127,12 +127,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML CheckBox centroidPathKmeansCheckBoxMinor;
     @FXML CheckBox clusterCentersKmeansCheckBoxMinor;
     @FXML CheckBox dataPointsKmeansCheckBoxMinor;
-    @FXML ChoiceBox kmeansUpdateStratChoiceBox;
-    @FXML ChoiceBox kmeansInitChoiceBox;
-    @FXML ChoiceBox kmeansAlgorithmChoiceBox;
-    @FXML ChoiceBox kmeansUpdateStratChoiceBoxMinor;
-    @FXML ChoiceBox kmeansInitChoiceBoxMinor;
-    @FXML ChoiceBox kmeansAlgorithmChoiceBoxMinor;
+    @FXML ChoiceBox<String> kmeansUpdateStratChoiceBox;
+    @FXML ChoiceBox<String> kmeansInitChoiceBox;
+    @FXML ChoiceBox<String> kmeansAlgorithmChoiceBox;
+    @FXML ChoiceBox<String> kmeansUpdateStratChoiceBoxMinor;
+    @FXML ChoiceBox<String> kmeansInitChoiceBoxMinor;
+    @FXML ChoiceBox<String> kmeansAlgorithmChoiceBoxMinor;
     @FXML Button computeButton;
     @FXML Button computeButtonMinor;
     @FXML Button loadFromFileMinorButton;
@@ -152,6 +152,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private String algorithm;
     private String initMode;
     private ArrayList<Point> clusterCenters;
+    
+    private String strategyMinor;
+    private String algorithmMinor;
+    private String initModeMinor;
+    private ArrayList<Point> clusterCentersMinor;
 
     private int kOfKmeans = 3;
     private int kOfKmeansMinor = 3;
@@ -1002,6 +1007,36 @@ public class ClusteringController extends AnchorPane implements Initializable {
         dataPointsKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("Show data points Minor: " + newValue.toString());
             visualizerMinor.setShowData(newValue);
+        });
+        
+        kmeansUpdateStratChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Update-strat (Main) set to " + newValue);
+            this.strategy = newValue;
+        });
+        
+        kmeansInitChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Init-strat (Main) set to " + newValue);
+            this.initMode = newValue;
+        });
+        
+        kmeansAlgorithmChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Algorithm (Main) set to " + newValue);
+            this.algorithm = newValue;
+        });
+        
+        kmeansUpdateStratChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Update-strat (Minor) set to " + newValue);
+            this.strategyMinor = newValue;
+        });
+        
+        kmeansInitChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Init-strat (Minor) set to " + newValue);
+            this.initModeMinor = newValue;
+        });
+        
+        kmeansAlgorithmChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            logger.debug("Algorithm (Minor) set to " + newValue);
+            this.algorithmMinor = newValue;
         });
                 
         kmeansUpdateStratChoiceBox.getSelectionModel().selectFirst();
