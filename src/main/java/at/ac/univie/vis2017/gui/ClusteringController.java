@@ -485,31 +485,29 @@ public class ClusteringController extends AnchorPane implements Initializable {
         playAutoModeKmeansImageMinor.setOpacity(0.6);
     }
     
-    public void updateSmallMultipleVisualizer(Data dat) {
-        for (int i=0; i<dat.getIterations(); i++) {
-            multiples.get(i).setData(dat);
-            multiples.get(i).setIteration(i);
-            multiples.get(i).setAfterComputation();
-            multiples.get(i).draw();         
-        }
-        
+    public void clearSmallMultiples() {
+        multiples.clear();
+        smallMultiplesGridPane.getChildren().clear();
     }
     
-    public void initSmallMultiples() {
-        int maxIterations = 100;
+    public void updateSmallMultiples(Data dat) {
+        
+        clearSmallMultiples();
+        
+        int maxIterations = dat.getIterations();
         
         int columnsPerRow = 4;
-        int maxRows = maxIterations/columnsPerRow;       
+        int maxRows = maxIterations/columnsPerRow;
+        int res = maxIterations%columnsPerRow;
         
         for (int i=0; i<maxRows; i++) {
             for (int j=0; j<columnsPerRow; j++) {
                 multiples.add(new VisualizerFX());
-                //smallMultiplesGridPane.add(new Label("Label number: " + (i*columsPerRow+j)), j, i); <- works well
                 Pane newPane = new Pane();
                 newPane.getChildren().add(new Canvas());
                 smallMultiplesGridPane.add(newPane, j, i);
                 smallMultiplesGridPane.setMargin(newPane, new Insets(5,5,5,5));
-                smallMultiplesGridPane.setMinHeight(150);
+                smallMultiplesGridPane.setMinHeight(180);
                 Node children = smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
                 children.setOnMouseClicked(evt -> {
                     if (isComputed) {
@@ -521,7 +519,33 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columnsPerRow+j);
                 multiples.get(i*columnsPerRow+j).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
             }
-        }   
+        }
+        
+        for (int i=0; i<res; i++) {
+            multiples.add(new VisualizerFX());
+            Pane newPane = new Pane();
+            newPane.getChildren().add(new Canvas());
+            smallMultiplesGridPane.add(newPane, maxRows, i);
+            smallMultiplesGridPane.setMargin(newPane, new Insets(5,5,5,5));
+            smallMultiplesGridPane.setMinHeight(180);
+            Node children = smallMultiplesGridPane.getChildren().get(i*columnsPerRow+maxRows);
+            children.setOnMouseClicked(evt -> {
+                if (isComputed) {
+                    int rowIndex = smallMultiplesGridPane.getRowIndex(children);
+                    int columnIndex = smallMultiplesGridPane.getColumnIndex(children);
+                    iterationKmeansSpinner.valueFactoryProperty().get().setValue(rowIndex*columnsPerRow+columnIndex);
+                }
+            });
+            Pane parent = (Pane) smallMultiplesGridPane.getChildren().get(i*columnsPerRow+maxRows);
+            multiples.get(i*columnsPerRow+maxRows).bindProperties( (Canvas) newPane.getChildren().get(0), parent);
+        }
+        
+        for (int i=0; i<maxIterations; i++) {
+            multiples.get(i).setData(dat);
+            multiples.get(i).setIteration(i);
+            multiples.get(i).setAfterComputation();
+            multiples.get(i).draw();         
+        }
         
     }
     
@@ -620,7 +644,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         
         isComputed = true;
-        updateSmallMultipleVisualizer(dat);
+        updateSmallMultiples(dat);
         
         if (isLinked) {
             Data datCopy = new Data(dat);
@@ -1071,9 +1095,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         deactivateControls();
         deactivateControlsMinor();
         deactivateFiltersMinor();
-        
-        initSmallMultiples();
-        
+                
         Tooltip mousePositionToolTip = new Tooltip("");
         Tooltip tooManyCentroidsTooltip = new Tooltip("");
 
