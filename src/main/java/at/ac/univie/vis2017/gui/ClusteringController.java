@@ -32,7 +32,6 @@
 package at.ac.univie.vis2017.gui;
 
 import at.ac.univie.vis2017.clustering_algorithms.KMEANS;
-import at.ac.univie.vis2017.clustering_algorithms.KMEDOIDS;
 import at.ac.univie.vis2017.util.Algorithm;
 import at.ac.univie.vis2017.util.Data;
 import at.ac.univie.vis2017.util.Point;
