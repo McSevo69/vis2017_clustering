@@ -607,13 +607,15 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public ArrayList<ArrayList<ArrayList<String>>> hashCenters (Data data) {
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
         ArrayList<ArrayList<ArrayList<String>>> centers = new ArrayList<ArrayList<ArrayList<String>>>();
         
         for (int k = 0; k < data.getCenters().size(); ++k) {
             centers.add(new ArrayList<ArrayList<String>>());
-            for (int i = 0; i < canvas.getWidth(); ++i) {
+            for (int i = 0; i < width; ++i) {
                 centers.get(k).add(new ArrayList<String>());
-                for (int j = 0; j < canvas.getHeight(); ++j) {
+                for (int j = 0; j < height; ++j) {
                     centers.get(k).get(i).add(null);
                 }
             }
@@ -649,11 +651,13 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public ArrayList<ArrayList<String>> hashPoints (Data data) {
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
         ArrayList<ArrayList<String>> points = new ArrayList<ArrayList<String>>();
         
-        for (int i = 0; i < canvas.getWidth(); ++i) {
+        for (int i = 0; i < width; ++i) {
             points.add(new ArrayList<String>());
-            for (int j = 0; j < canvas.getHeight(); ++j) {
+            for (int j = 0; j < height; ++j) {
                 points.get(i).add(null);
             }
         }

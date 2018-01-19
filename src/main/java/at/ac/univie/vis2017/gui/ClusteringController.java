@@ -155,6 +155,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private ArrayList<Point> clusterCenters;
     private ArrayList<ArrayList<String>> hashedPoints;
     private ArrayList<ArrayList<ArrayList<String>>> hashedCenters;
+    private double canvasHeightOnHash;
+    private double canvasWidthOnHash;
     
     private int maxIterationsMain;
     private int maxIterationsMinor;
@@ -657,12 +659,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
         maxIterationsMain = dat.getIterations();
         hashedCenters = visualizer.hashCenters(dat);
-        
-        for (ArrayList<Point> list : dat.getCenters()) {
-            for (Point p : list) {
-                logger.debug(p.getClusterSize());
-            }
-        }
+        canvasWidthOnHash = kmeansCanvasMain.getWidth();
+        canvasHeightOnHash = kmeansCanvasMain.getHeight();
 
         visualizer.setData(dat);
         visualizer.setAfterComputation();
@@ -910,6 +908,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Data dat = new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints);
         visualizer.setData(dat);
         hashedPoints = visualizer.hashPoints(dat);
+        canvasWidthOnHash = kmeansCanvasMain.getWidth();
+        canvasHeightOnHash = kmeansCanvasMain.getHeight();
+        
         visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
         //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
@@ -1207,6 +1208,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 boolean dummy = false;
                 int x = (int) event.getX() - 1;
                 int y = (int) event.getY() - 1;
+
+                logger.debug(x + ":" + y);
+                
+                x = (int) (x * (canvasWidthOnHash / kmeansCanvasMain.getWidth()));
+                y = (int) (y * (canvasHeightOnHash / kmeansCanvasMain.getHeight()));
+                
+                logger.debug(canvasWidthOnHash + ":" + canvasHeightOnHash);
+                logger.debug(kmeansCanvasMain.getWidth() / canvasWidthOnHash + ":" + kmeansCanvasMain.getHeight() / canvasHeightOnHash);
+                logger.debug(x + ":" + y);
+                
                 String msg = "";
                 
                 try {
