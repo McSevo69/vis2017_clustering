@@ -713,36 +713,53 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void stepBackKmeans() {
-        visualizer.stepback();
-        //logger.debug("stepBackKmeans pressed");
-        updateKmeansIteration();
-               
-        if (isLinked) stepBackKmeansMinor();
+        stepBackImage.setDisable(true);
+        stepBackImage.setOpacity(0.6);
+        
+        if (visualizer.getIteration() > 0) {
+        
+            visualizer.stepback();
+            //logger.debug("stepBackKmeans pressed");
+            updateKmeansIteration();
+            
+            if (visualizer.getIteration() > 0) {
+                stepBackImage.setDisable(false);
+                stepBackImage.setOpacity(1);
+            }
+        }
         
         stepForwardImage.setDisable(false);
-        stepForwardImage.setOpacity(1);
+        stepForwardImage.setOpacity(1); 
         
-        if (visualizer.getIteration() == 0) {
-            stepBackImage.setDisable(true);
-            stepBackImage.setOpacity(0.6);
-        }
+        //if (isLinked) stepBackKmeansMinor();
     }
     
     public void stepBackKmeansMinor() {
-        visualizerMinor.stepback();
-        //logger.debug("stepBackKmeansMinor pressed");
-        updateKmeansIterationMinor();
-        stepForwardImageMinor.setDisable(false);
-        stepForwardImageMinor.setOpacity(1);
+        stepBackImageMinor.setDisable(true);
+        stepBackImageMinor.setOpacity(0.6);
         
-        if (visualizerMinor.getIteration() == 0) {
-            stepBackImageMinor.setDisable(true);
-            stepBackImageMinor.setOpacity(0.6);
+        if (visualizerMinor.getIteration() > 0) {
+        
+            visualizerMinor.stepback();
+            //logger.debug("stepBackKmeansMinor pressed");
+            updateKmeansIterationMinor();
+            
+            if (visualizerMinor.getIteration() > 0 && !isLinked) {
+                stepBackImageMinor.setDisable(false);
+                stepBackImageMinor.setOpacity(1);
+            }
+        }
+        
+        if (!isLinked) {
+            stepForwardImage.setDisable(false);
+            stepForwardImage.setOpacity(1);
         }
     }
     
     public void forwardKmeans() throws IndexOutOfBoundsException {
-        //logger.debug("forwardKmeans pressed");
+        stepForwardImage.setDisable(true);
+        stepForwardImage.setOpacity(0.6);
+        //logger.debug("forwardKmeans pressed");        
                 
         stepBackImage.setDisable(false);
         stepBackImage.setOpacity(1);
@@ -754,17 +771,22 @@ public class ClusteringController extends AnchorPane implements Initializable {
             updateKmeansIteration();
         }
         
-        if (isLinked) forwardKmeansMinor();
+        //if (isLinked) forwardKmeansMinor();
+        
+        stepForwardImage.setDisable(false);
+        stepForwardImage.setOpacity(1);
 
         if (visualizer.getIteration()+1 >= maxIterationsMain) {
             stepForwardImage.setDisable(true);
             stepForwardImage.setOpacity(0.6);
-            throw new IndexOutOfBoundsException();
+            //throw new IndexOutOfBoundsException();
         }       
         
     }
     
     public void forwardKmeansMinor() throws IndexOutOfBoundsException {
+        stepForwardImageMinor.setDisable(true);
+        stepForwardImageMinor.setOpacity(0.6);
         //logger.debug("forwardKmeansMinor pressed");
         if (!isLinked) {
             stepBackImageMinor.setDisable(false);
@@ -777,11 +799,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizerMinor.iterate();
             updateKmeansIterationMinor();
         }
+        
+        if (!isLinked) {        
+            stepForwardImageMinor.setDisable(false);
+            stepForwardImageMinor.setOpacity(1);
+        }
          
         if (visualizerMinor.getIteration()+1 >= maxIterationsMinor) {
             stepForwardImageMinor.setDisable(true);
             stepForwardImageMinor.setOpacity(0.6);
-            throw new IndexOutOfBoundsException();
+            //throw new IndexOutOfBoundsException();
         }
     }
     
@@ -1033,7 +1060,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepTwoLabel.setText(labelTwoText);
         
         iterationKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.equals(oldValue) && newValue < maxIterationsMain) {
+            if (!newValue.equals(oldValue) && newValue < maxIterationsMain && newValue >= 0) {
+                if (isLinked) iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(newValue);
                 kmeansCanvasMain = new Canvas(420, 420);
                 kmeansCanvasMain.setCache(false);
                 kmeansCanvasMain.setCacheHint(CacheHint.SPEED);
@@ -1057,11 +1085,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     skipToStartImage.setDisable(true);
                     skipToStartImage.setOpacity(0.6);
                 }
+            } else {
+                iterationKmeansSpinner.valueFactoryProperty().get().setValue(oldValue);
             }
         });
         
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.equals(oldValue) && newValue < maxIterationsMinor) {
+            if (!newValue.equals(oldValue) && newValue < maxIterationsMinor && newValue >= 0) {
                 kmeansCanvasMinor = new Canvas(420, 420);
                 kmeansCanvasMinor.setCache(false);
                 kmeansCanvasMinor.setCacheHint(CacheHint.SPEED);
@@ -1070,6 +1100,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 visualizerMinor.setIteration(newValue);
                 //logger.debug("IterationMinor set to " + newValue);
+            } else {
+                iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(oldValue);
             }
         });
         
