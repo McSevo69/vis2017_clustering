@@ -604,30 +604,63 @@ public class VisualizerFX implements IVisualizer {
         canvas.heightProperty().addListener(evt -> draw());
     }
     
-    public ArrayList<ArrayList<ArrayList<Double>>> hashCenters (Data data) {
-        return new ArrayList<ArrayList<ArrayList<Double>>>();
+    public ArrayList<ArrayList<ArrayList<String>>> hashCenters (Data data) {
+        ArrayList<ArrayList<ArrayList<String>>> centers = new ArrayList<ArrayList<ArrayList<String>>>();
+        
+        for (int k = 0; k < data.getCenters().size(); ++k) {
+            centers.add(new ArrayList<ArrayList<String>>());
+            for (int i = 0; i < canvas.getWidth(); ++i) {
+                centers.get(k).add(new ArrayList<String>());
+                for (int j = 0; j < canvas.getHeight(); ++j) {
+                    centers.get(k).get(i).add(null);
+                }
+            }
+        }
+        
+        for (int i = 0; i < data.getCenters().size(); ++i) {
+            ArrayList<Point> list = data.getCenters().get(i);
+            for (Point p : list) {
+                for (int j = 0; j < cSize; ++j) {
+                    for (int k = 0; k < cSize; ++k) {
+                        String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY())
+                                + "\nCluster ID:   " + p.getClusterNumber() 
+                                + "\nCluster size: " + p.getClusterSize();
+                        centers.get(i).get((int) normalizeX(p.getX()) + j).set((int) normalizeY(p.getY()) + k, msg);
+                    }
+                }
+            }
+        }
+        
+        for (int i = 0; i < centers.size(); ++i) {
+            logger.debug("in iteration: " + i + ":");
+            for (int j = 0; j < centers.get(i).size(); ++j) {
+                for (int k = 0; k < centers.get(i).get(j).size(); ++k) {
+                    if (centers.get(i).get(j).get(k) != null) {
+                        logger.debug(j + ":" + k);
+                        logger.debug(centers.get(i).get(j).get(k));
+                    }
+                }
+            }
+        }
+        
+        return centers;
     }
     
-    public ArrayList<ArrayList<Integer>> hashPoints (Data data) {
-        ArrayList<ArrayList<Integer>> points = new ArrayList<ArrayList<Integer>>();
+    public ArrayList<ArrayList<String>> hashPoints (Data data) {
+        ArrayList<ArrayList<String>> points = new ArrayList<ArrayList<String>>();
         
         for (int i = 0; i < canvas.getWidth(); ++i) {
-            points.add(new ArrayList<Integer>());
+            points.add(new ArrayList<String>());
             for (int j = 0; j < canvas.getHeight(); ++j) {
-                points.get(i).add(-1);
+                points.get(i).add(null);
             }
         }
         
         for (Point p : data.getIterationData(0)) {
             for (int i = 0; i < pSize; ++i) {
                 for (int j = 0; j < pSize; ++j) {
-                    // code: xxxx yyyy c
-                    // code: xxxx * 10000 + yyyy * 10 + c
-                    // xxxx = code / 100000
-                    // yyyy = (code / 10) % 10000
-                    // c   = % 10
-                    int code = (int) normalizeX(p.getX()) * 10000 + (int) normalizeY(p.getY()) * 10 + p.getClusterNumber();
-                    points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, (Integer) code);
+                    String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY());
+                    points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, msg);
                 }
             }
         }

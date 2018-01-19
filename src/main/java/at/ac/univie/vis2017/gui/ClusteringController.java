@@ -153,8 +153,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private String algorithm;
     private String initMode;
     private ArrayList<Point> clusterCenters;
-    private ArrayList<ArrayList<Integer>> hashedPoints;
-    private ArrayList<ArrayList<ArrayList<Double>>> hashedCenters;
+    private ArrayList<ArrayList<String>> hashedPoints;
+    private ArrayList<ArrayList<ArrayList<String>>> hashedCenters;
     
     private int maxIterationsMain;
     private int maxIterationsMinor;
@@ -1201,17 +1201,28 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 boolean dummy = false;
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                int code = 0;
+                String msg = "";
+                
+                logger.debug("mouse on: " + x + ":" + y);
                 
                 try {
-                    code = hashedPoints.get(x).get(y);
-                    dummy = (code >= 0);
+                    msg = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
+                    logger.debug(msg);
+                    dummy = (msg != null);
+                } catch (Exception e) {
+                    logger.debug(e.getMessage());
+                }
+                
+                try {
+                    if (!dummy) {
+                        msg = hashedPoints.get(x).get(y);
+                        dummy = (msg != null);
+                    }
                 } catch (Exception e) {
                     logger.debug(e.getMessage());
                 }
                 
                 if (dummy) {
-                    String msg = "x:" + code/10000 + ", y:" + (code/10) % 1000;
                     mousePositionToolTip.setText(msg);
 
                     Node node = (Node) event.getSource();
