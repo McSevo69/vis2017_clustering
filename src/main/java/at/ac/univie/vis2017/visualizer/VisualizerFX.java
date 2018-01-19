@@ -53,6 +53,7 @@ public class VisualizerFX implements IVisualizer {
     private boolean showCenters;
     private boolean showData;
     private boolean showVoronoi;
+    private boolean showIteration;
     
     private Data data;
     
@@ -83,6 +84,7 @@ public class VisualizerFX implements IVisualizer {
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
+        this.showIteration = false;
         
         this.colorValueChunk = 360;
         
@@ -100,6 +102,7 @@ public class VisualizerFX implements IVisualizer {
         this.showData = true;
         this.showCenters = true;
         this.showVoronoi = false;
+        this.showIteration = false;
 
 //        installTooltips ();
     }
@@ -183,6 +186,10 @@ public class VisualizerFX implements IVisualizer {
     public void setShowVornoi (boolean showVoronoi) {
         this.showVoronoi = showVoronoi;
         draw();
+    }
+    
+    public void setShowIteration (boolean showIteration) {
+        this.showIteration = showIteration;
     }
 
     public void setData (Data data) {
@@ -533,6 +540,11 @@ public class VisualizerFX implements IVisualizer {
 
                 if (showVoronoi) {
                     drawIterationVoronoi();
+                }
+                
+                if (showIteration) {
+                    gc.setFill(Color.BLACK);
+                    gc.fillText(iteration + "", canvas.getWidth()/20, canvas.getHeight()/10);
                 }
             } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
 

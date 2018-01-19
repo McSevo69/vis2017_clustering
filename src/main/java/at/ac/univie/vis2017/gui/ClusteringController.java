@@ -1266,14 +1266,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 int x = (int) event.getX() - 1;
                 int y = (int) event.getY() - 1;
 
-                logger.debug(x + ":" + y);
-                
                 x = (int) (x * (canvasWidthOnHash / kmeansCanvasMain.getWidth()));
                 y = (int) (y * (canvasHeightOnHash / kmeansCanvasMain.getHeight()));
-                
-                logger.debug(canvasWidthOnHash + ":" + canvasHeightOnHash);
-                logger.debug(kmeansCanvasMain.getWidth() / canvasWidthOnHash + ":" + kmeansCanvasMain.getHeight() / canvasHeightOnHash);
-                logger.debug(x + ":" + y);
                 
                 String msg = "";
                 
