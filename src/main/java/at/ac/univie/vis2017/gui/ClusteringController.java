@@ -578,8 +578,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         skipToStartImageMinor.setOpacity(1);
         stepBackImageMinor.setDisable(false);
         stepBackImageMinor.setOpacity(1);
-        //stepForwardImageMinor.setDisable(false);
-        //stepForwardImageMinor.setOpacity(1);
+        stepForwardImageMinor.setDisable(false);
+        stepForwardImageMinor.setOpacity(1);
         iterationKmeansSpinnerMinor.setDisable(false);
         computeButtonMinor.setDisable(false);
         randomDataMinorButton.setDisable(false);
@@ -1031,6 +1031,18 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (isLinked) {
             linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
             activateControlsMinor();
+            if (visualizerMinor.getIteration() == 0) {
+                skipToStartImageMinor.setDisable(true);
+                skipToStartImageMinor.setOpacity(0.6);
+                stepBackImageMinor.setDisable(true);
+                stepBackImageMinor.setOpacity(0.6);
+            }
+            
+            if (visualizerMinor.getIteration() >= maxIterationsMinor-1) {
+                stepForwardImageMinor.setDisable(true);
+                stepForwardImageMinor.setOpacity(0.6);
+            }
+            
             if (!isComputedMinor) { //this could be done in a nicer way
                 computeButtonMinor.setDisable(true);
                 skipToStartImageMinor.setDisable(true);
