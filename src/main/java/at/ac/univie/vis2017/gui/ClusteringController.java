@@ -157,6 +157,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private ArrayList<ArrayList<ArrayList<String>>> hashedCenters;
     private double canvasHeightOnHash;
     private double canvasWidthOnHash;
+    private ArrayList<ArrayList<String>> hashedPointsMinor;
+    private ArrayList<ArrayList<ArrayList<String>>> hashedCentersMinor;
+    private double canvasHeightOnHashMinor;
+    private double canvasWidthOnHashMinor;
     
     private int maxIterationsMain;
     private int maxIterationsMinor;
@@ -362,6 +366,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             //logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
             visualizer.setData(data);
+            hashedPoints = visualizer.hashPoints(data);
+            canvasWidthOnHash = kmeansCanvasMain.getWidth();
+            canvasHeightOnHash = kmeansCanvasMain.getHeight();
             visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
@@ -384,6 +391,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 
                 Data datCopy = new Data(data);
                 visualizerMinor.setData(datCopy);
+                hashedPointsMinor = visualizerMinor.hashPoints(data);
+                canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+                canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
                 visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
  
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
@@ -414,6 +424,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             //logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, buffer));
             visualizerMinor.setData(data);
+            hashedPointsMinor = visualizerMinor.hashPoints(data);
+            canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+            canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
             visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
@@ -682,6 +695,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             Data datCopy = new Data(dat);
             maxIterationsMinor = datCopy.getIterations();
             visualizerMinor.setData(datCopy);
+            hashedCentersMinor = visualizerMinor.hashCenters(datCopy);
+            canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+            canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
             visualizerMinor.setAfterComputation();
             visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
@@ -697,6 +713,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Data dat = kmeansAlgorithmMinor.clusterData();
         maxIterationsMinor = dat.getIterations();
         visualizerMinor.setData(dat);
+        hashedCentersMinor = visualizerMinor.hashCenters(dat);
+        canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+        canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
+        
         visualizerMinor.setAfterComputation();
         visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
         //logger.debug("iterateKmeans pressed");
@@ -982,6 +1002,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("Random data generated");
         Data dat = new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, initialStatePointsMinor);
         visualizerMinor.setData(dat);
+        hashedPointsMinor = visualizerMinor.hashPoints(dat);
+        canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+        canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
+        
         visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
         //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
@@ -1232,6 +1256,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 
         Tooltip mousePositionToolTip = new Tooltip("");
         Tooltip tooManyCentroidsTooltip = new Tooltip("");
+        Tooltip mousePositionToolTipMinor = new Tooltip("");
+        Tooltip tooManyCentroidsTooltipMinor = new Tooltip("");
 
         kmeansParentPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
@@ -1310,6 +1336,62 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 }
 
 //                visualizer.drawPoint(p, 1);
+            }
+        });  
+        
+        
+        kmeansParentPaneMinor.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //TODO
+                boolean dummy = false;
+                int x = (int) event.getX() - 1;
+                int y = (int) event.getY() - 1;
+
+                logger.debug(x + ":" + y);
+                
+                x = (int) (x * (canvasWidthOnHashMinor / kmeansCanvasMinor.getWidth()));
+                y = (int) (y * (canvasHeightOnHashMinor / kmeansCanvasMinor.getHeight()));
+                
+                logger.debug(canvasWidthOnHashMinor + ":" + canvasHeightOnHashMinor);
+                logger.debug(kmeansCanvasMinor.getWidth() / canvasWidthOnHashMinor + ":" + kmeansCanvasMinor.getHeight() / canvasHeightOnHashMinor);
+                logger.debug(x + ":" + y);
+                
+                String msg = "";
+                
+                try {
+                    msg = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
+                    dummy = (msg != null);
+                } catch (Exception e) {
+                    //logger.debug(e.getMessage());
+                }
+                
+                try {
+                    if (!dummy) {
+                        msg = hashedPointsMinor.get(x).get(y);
+                        dummy = (msg != null);
+                    }
+                } catch (Exception e) {
+                    //logger.debug(e.getMessage());
+                }
+                
+                if (dummy) {
+                    mousePositionToolTipMinor.setText(msg);
+
+                    Node node = (Node) event.getSource();
+                    mousePositionToolTipMinor.show(node, event.getScreenX() + 50, event.getScreenY());
+                } else {
+                    mousePositionToolTipMinor.hide();
+                }
+            }
+
+        });
+        
+        kmeansParentPaneMinor.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mousePositionToolTipMinor.hide();
+                tooManyCentroidsTooltipMinor.hide();
             }
         });        
     }    
