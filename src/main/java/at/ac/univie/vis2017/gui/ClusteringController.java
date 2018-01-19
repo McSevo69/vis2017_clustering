@@ -1214,7 +1214,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
 //        visualizer.drawShapes(gc);
 
-
         //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
         //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
         //visualizer.drawShapes(kmeansCanvasEnd.getGraphicsContext2D());

@@ -296,8 +296,8 @@ public class KMEANS {
                 System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
 
 
-                updateCentroids(computeNewCentroids());
                 findClosestClusterCenter(this.getDistanceFunction());
+                updateCentroids(computeNewCentroids());
 
                 ArrayList<Point> iterationBuf = new ArrayList<>();
                 for (Point p : getPoints())
