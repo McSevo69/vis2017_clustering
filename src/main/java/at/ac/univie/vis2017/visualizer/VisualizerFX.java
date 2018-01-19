@@ -630,7 +630,7 @@ public class VisualizerFX implements IVisualizer {
                 }
             }
         }
-        
+        /*
         for (int i = 0; i < centers.size(); ++i) {
             logger.debug("in iteration: " + i + ":");
             for (int j = 0; j < centers.get(i).size(); ++j) {
@@ -642,7 +642,7 @@ public class VisualizerFX implements IVisualizer {
                 }
             }
         }
-        
+        */
         return centers;
     }
     

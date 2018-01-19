@@ -1203,11 +1203,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 int y = (int) event.getY() - 1;
                 String msg = "";
                 
-                logger.debug("mouse on: " + x + ":" + y);
-                
                 try {
                     msg = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
-                    logger.debug(msg);
                     dummy = (msg != null);
                 } catch (Exception e) {
                     logger.debug(e.getMessage());
