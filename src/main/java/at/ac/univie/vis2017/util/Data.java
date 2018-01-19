@@ -87,7 +87,7 @@ public class Data {
     }
     
     public boolean checkData () {
-        logger.debug("checkData called");
+        //logger.debug("checkData called");
         for (ArrayList<Point> a : data) {
             if (a.size() != n) {
                 return false;
@@ -97,34 +97,34 @@ public class Data {
     }
 
     public void addIteration (ArrayList<Point> newData) {
-        logger.debug("addIteration called");
+        //logger.debug("addIteration called");
         data.add(newData);
     }
 
     public void addCenters (ArrayList<Point> newCenters) {
-        logger.debug("addCenters called");
+        //logger.debug("addCenters called");
         data.add(newCenters);
     }
     
     public void addIteration (ArrayList<Point> newData, ArrayList<Point> newCenters) {
-        logger.debug("addIteration including centers called");
+        //logger.debug("addIteration including centers called");
         data.add(newData);
         centers.add(newCenters);
     }
 
     public void setIteration (int iteration, ArrayList<Point> newData) {
-        logger.debug("setIteration called");
+        //logger.debug("setIteration called");
         data.set(iteration, newData);
     }
     
     public void setIteration (int iteration, ArrayList<Point> newData, ArrayList<Point> newCenters) {
-        logger.debug("setIteration including centers called");
+        //logger.debug("setIteration including centers called");
         data.set(iteration, newData);
         centers.set(iteration, newCenters);
     }
 
     public ArrayList<ArrayList<Point>> getIteration (int iteration) {
-        logger.debug("getIteration called");
+        //logger.debug("getIteration called");
         ArrayList<ArrayList<Point>> buf = new ArrayList<ArrayList<Point>>();
         buf.add(data.get(iteration));
         buf.add(centers.get(iteration));
@@ -132,67 +132,67 @@ public class Data {
     }
     
     public ArrayList<Point> getIterationData (int iteration) {
-        logger.debug("getIterationData called");
+        //logger.debug("getIterationData called");
         return data.get(iteration);
     }
 
     public ArrayList<Point> getIterationCenters (int iteration) {
-        logger.debug("getIterationCenters called");
+        //logger.debug("getIterationCenters called");
         return centers.get(iteration);
     }
 
     public int getIterations () {
-        logger.debug("getIterations = " + data.size());
+        //logger.debug("getIterations = " + data.size());
         return data.size();
     }
     
     public Algorithm getAlgorithm () {
-        logger.debug("geAlgorithm = " + algorithm);
+        //logger.debug("geAlgorithm = " + algorithm);
         return algorithm;
     }
     
     public int getN () {
-        logger.debug("getN = " + n);
+        //logger.debug("getN = " + n);
         return n;
     }
     
     public int getK () {
-        logger.debug("getK = " + k);
+        //logger.debug("getK = " + k);
         return k;
     }
     
     public ArrayList<ArrayList<Point>> getData() {
-        logger.debug("into getData");
+        //logger.debug("into getData");
         return data;
     }
     
     public ArrayList<ArrayList<Point>> getCenters() {
-        logger.debug("into getCenters");
+        //logger.debug("into getCenters");
         return centers;
     }
     
     public ArrayList<Integer> getClusterNumber() {
-        logger.debug("into getClusterNumber");
+        //logger.debug("into getClusterNumber");
         return clusterNumber;
     }
     
     public void setMaxX (double maxX) {
-        logger.debug("setMaxX = " + maxX);
+        //logger.debug("setMaxX = " + maxX);
         this.maxX = maxX;
     }
     
     public double getMaxX () {
-        logger.debug("getMaxX = " + maxX);
+        //logger.debug("getMaxX = " + maxX);
         return this.maxX;
     }
     
     public void setMaxY (double maxY) {
-        logger.debug("setMaxY = " + maxY);
+        //logger.debug("setMaxY = " + maxY);
         this.maxY = maxY;
     }
 
     public double getMaxY () {
-        logger.debug("getMaxY = " + maxY);
+        //logger.debug("getMaxY = " + maxY);
         return this.maxY;
     }
     

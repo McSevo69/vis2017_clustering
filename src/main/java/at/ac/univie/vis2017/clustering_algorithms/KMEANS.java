@@ -263,10 +263,10 @@ public class KMEANS {
         int numberClusters = this.getNumberClusters();
 
         for (int i = 0; i < numberClusters; i++) {
-
             logger.trace(i);
             this.centers.get(i).setX(newCenters.get(i).getX());
             this.centers.get(i).setY(newCenters.get(i).getY());
+            this.centers.get(i).setClusterSize(newCenters.get(i).getClusterSize());
         }
     }
 
@@ -304,8 +304,11 @@ public class KMEANS {
                     iterationBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
 
                 ArrayList<Point> centersBuf = new ArrayList<>();
-                for (Point p : getCenters())
-                    centersBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                for (Point p : getCenters()) {
+                    Point a = new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber());
+                    a.setClusterSize(p.getClusterSize());
+                    centersBuf.add(a);
+                }
 
 
                 dat.addIteration(iterationBuf, centersBuf);

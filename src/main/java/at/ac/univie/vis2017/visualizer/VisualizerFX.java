@@ -146,18 +146,18 @@ public class VisualizerFX implements IVisualizer {
     public void setSpeed (int speed) {
         this.speed = (int) ((speed/100.0) * data.getN());
         /*
-        logger.debug("  " + data.getN() + " - " + "((int) " + data.getN() + "/" + this.speed + ") * " + this.speed);
-        logger.debug("= " + data.getN() + " - " + "((int) " + data.getN()/this.speed + ") * " + this.speed);
-        logger.debug("= " + data.getN() + " - " + (int) data.getN()/this.speed + " * " + this.speed);
-        logger.debug("= " + data.getN() + " - " + ((int) data.getN()/this.speed) * this.speed);
-        logger.debug("= " + (data.getN() - ((int) data.getN()/this.speed) * this.speed));
+        //logger.debug("  " + data.getN() + " - " + "((int) " + data.getN() + "/" + this.speed + ") * " + this.speed);
+        //logger.debug("= " + data.getN() + " - " + "((int) " + data.getN()/this.speed + ") * " + this.speed);
+        //logger.debug("= " + data.getN() + " - " + (int) data.getN()/this.speed + " * " + this.speed);
+        //logger.debug("= " + data.getN() + " - " + ((int) data.getN()/this.speed) * this.speed);
+        //logger.debug("= " + (data.getN() - ((int) data.getN()/this.speed) * this.speed));
         */
         lastStep = data.getN() - (((int) (data.getN()/this.speed)) * this.speed);
     }
     
     public void setMode (Mode mode) {
         this.mode = mode;
-        logger.debug("mode is set to: " + mode.toString());
+        //logger.debug("mode is set to: " + mode.toString());
         draw();
     }
     
@@ -242,14 +242,14 @@ public class VisualizerFX implements IVisualizer {
         } else {
             
         }
-        
-        logger.debug(
+/*        
+        //logger.debug(
                 "Iteration, speed, pointIterator: " + 
                 iteration + ", " + 
                 speed + ", " + 
                 pointIterator
         );
-        
+*/        
         draw();
     }
     
@@ -275,35 +275,37 @@ public class VisualizerFX implements IVisualizer {
         }
 /*
         if (iteration > 0) {
-            logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
+            //logger.debug("pointIterator=" + pointIterator + ", speed=" + speed + ", pointIterator-speed=" + (pointIterator-speed)+ ", >0?", (pointIterator-speed > 0));
             if (pointIterator-speed > 0) {
-                logger.debug("pointIterator: " + pointIterator);
-                logger.debug("speed: " + speed);
+                //logger.debug("pointIterator: " + pointIterator);
+                //logger.debug("speed: " + speed);
                 pointIterator -= speed;
             } else {
-                logger.debug("pointIterator: " + pointIterator);
-                logger.debug("speed: " + speed);
+                //logger.debug("pointIterator: " + pointIterator);
+                //logger.debug("speed: " + speed);
                 oldIteration = iteration--;
                 pointIterator = data.getN();
             }
         } else if (pointIterator > 0) {
             if (pointIterator-speed > 0) {
-                logger.debug("line 188");
+                //logger.debug("line 188");
                 pointIterator -= speed;
             } else {
-                logger.debug("line 191");
+                //logger.debug("line 191");
                 pointIterator = 0;
             }
         } else {
-            logger.debug("line 195");
+            //logger.debug("line 195");
         }
 */        
-        logger.debug(
+/*
+        //logger.debug(
                 "Iteration, speed, pointIterator: " + 
                 iteration + ", " + 
                 speed + ", " + 
                 pointIterator
         );
+*/
         
         draw();
     }
@@ -360,9 +362,9 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawCenter(Point p) {
-        logger.debug("drawCenter called");
+        //logger.debug("drawCenter called");
         if (iteration < 0) return;
-        logger.debug("  not returned");
+        //logger.debug("  not returned");
         
         if (beforeComputation) {
             gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,0,0.5)); // THAT'S DIRTY!!!
@@ -379,7 +381,7 @@ public class VisualizerFX implements IVisualizer {
     
     
     public void drawIterationData() {
-        logger.debug("executing drawIterationData");
+        //logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (pointIterator == 0) {
@@ -393,11 +395,11 @@ public class VisualizerFX implements IVisualizer {
         
         try {        
             if (data.getIterationData(iteration+1) == null) {
-                logger.debug("no " + iteration + "+1 found!");
+                //logger.debug("no " + iteration + "+1 found!");
                 return;
             }
         } catch (java.lang.IndexOutOfBoundsException ex) {
-            logger.debug("no " + iteration + "+1 found!");
+            //logger.debug("no " + iteration + "+1 found!");
             return;   
         }
         ArrayList<Point> points = data.getIterationData(iteration+1);
@@ -418,7 +420,7 @@ public class VisualizerFX implements IVisualizer {
     }
 
     public void drawIterationCenters () {
-        logger.debug("executing drawIterationCenters");
+        //logger.debug("executing drawIterationCenters");
         try {
             if (data.getIterationCenters(0) == null) return;
         } catch (java.lang.IndexOutOfBoundsException ex) {
@@ -431,7 +433,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationPaths () {
-        logger.debug("executing drawIterationPaths");
+        //logger.debug("executing drawIterationPaths");
         if (data.getIterationCenters(0) == null) return;
         for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
             for (int j = 1; j <= iteration; ++j) {
@@ -449,7 +451,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationVoronoi () {
-        logger.debug("executing drawIterationVoronoi");
+        //logger.debug("executing drawIterationVoronoi");
         if (data.getIterationCenters(0) == null) return;
 
         ArrayList<Point> voronoiPoints = new ArrayList<Point>();
@@ -504,10 +506,10 @@ public class VisualizerFX implements IVisualizer {
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
         
-        logger.debug("showPaths is set to:   " + showPaths);
-        logger.debug("showData is set to:    " + showData);
-        logger.debug("showCenters is set to: " + showCenters);
-        logger.debug("showVoronoi is set to: " + showVoronoi);
+        //logger.debug("showPaths is set to:   " + showPaths);
+        //logger.debug("showData is set to:    " + showData);
+        //logger.debug("showCenters is set to: " + showCenters);
+        //logger.debug("showVoronoi is set to: " + showVoronoi);
         /*
         System.out.println("showPaths:   " + showPaths);
         System.out.println("showData:    " + showData);
@@ -632,12 +634,12 @@ public class VisualizerFX implements IVisualizer {
         }
         /*
         for (int i = 0; i < centers.size(); ++i) {
-            logger.debug("in iteration: " + i + ":");
+            //logger.debug("in iteration: " + i + ":");
             for (int j = 0; j < centers.get(i).size(); ++j) {
                 for (int k = 0; k < centers.get(i).get(j).size(); ++k) {
                     if (centers.get(i).get(j).get(k) != null) {
-                        logger.debug(j + ":" + k);
-                        logger.debug(centers.get(i).get(j).get(k));
+                        //logger.debug(j + ":" + k);
+                        //logger.debug(centers.get(i).get(j).get(k));
                     }
                 }
             }
