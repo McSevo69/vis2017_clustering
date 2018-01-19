@@ -1199,8 +1199,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
             public void handle(MouseEvent event) {
                 //TODO
                 boolean dummy = false;
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+                int x = (int) event.getX() - 1;
+                int y = (int) event.getY() - 1;
                 String msg = "";
                 
                 logger.debug("mouse on: " + x + ":" + y);
