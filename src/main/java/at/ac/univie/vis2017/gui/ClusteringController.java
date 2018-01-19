@@ -567,6 +567,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             multiples.get(i).setShowData(dataPointsKmeansCheckBox.selectedProperty().get());
             multiples.get(i).setShowCenters(clusterCentersKmeansCheckBox.selectedProperty().get());
             multiples.get(i).setShowPaths(centroidPathKmeansCheckBox.selectedProperty().get());
+            multiples.get(i).setShowIteration(true);
             multiples.get(i).draw();         
         }
         
