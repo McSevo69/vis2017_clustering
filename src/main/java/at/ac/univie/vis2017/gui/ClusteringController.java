@@ -73,6 +73,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -669,7 +670,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
 //        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
-        
         logger.debug("centroids after calculation: " + dat.getIterationCenters(0).size());
 
         maxIterationsMain = dat.getIterations();
@@ -971,7 +971,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         //logger.debug("Controls are deactivated.");
         deactivateControls();
-        computeButton.setDisable(false);
+        if (!initMode.equals("I'll choose")) {
+            computeButton.setDisable(false);
+        }
         isComputed = false;
         
         clusterCenters.clear();
@@ -1217,6 +1219,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kmeansInitChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             //logger.debug("Init-strat (Main) set to " + newValue);
             this.initMode = newValue;
+            if (newValue.equals("I'll choose")) {
+                computeButton.setDisable(true);
+            } else {
+                clusterCenters.clear();
+            }
         });
         
         kmeansAlgorithmChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -1335,6 +1342,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 } else {
                     clusterCenters.add(p);
                     visualizer.drawCenter(p);
+                    
+                    if (clusterCenters.size() == kOfKmeans) {
+                        computeButton.setDisable(false);
+                    }
 /*
                     kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
                     kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 9, 9);
@@ -1402,6 +1413,25 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 mousePositionToolTipMinor.hide();
                 tooManyCentroidsTooltipMinor.hide();
             }
-        });        
+        });
+        
+        Tooltip recomputeDisabled = new Tooltip("hallo");
+        computeButton.setTooltip(recomputeDisabled);
+        computeButton.setOnMouseMoved(new EventHandler<MouseEvent> () {
+            @Override
+            public void handle (MouseEvent e) {
+                if (!computeButton.isDisabled()) return;
+                recomputeDisabled.setText("Cluster centers set does not match k");
+                Node node = (Node) e.getSource();
+                recomputeDisabled.show(node, e.getX(), e.getY());
+            }
+        });
+
+        computeButton.setOnMouseExited(new EventHandler<MouseEvent> () {
+            @Override
+            public void handle (MouseEvent e) {
+                recomputeDisabled.hide();
+            }
+        });
     }    
 }

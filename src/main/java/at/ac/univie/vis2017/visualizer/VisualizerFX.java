@@ -88,6 +88,7 @@ public class VisualizerFX implements IVisualizer {
         
         this.colorValueChunk = 360;
         
+        this.beforeComputation = true;
 //        installTooltips ();
     }
     
@@ -104,6 +105,9 @@ public class VisualizerFX implements IVisualizer {
         this.showVoronoi = false;
         this.showIteration = false;
 
+        this.colorValueChunk = 360;
+        
+        this.beforeComputation = true;
 //        installTooltips ();
     }
 /*    
