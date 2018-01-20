@@ -42,6 +42,15 @@ public class Point {
         this.centerY = centerY;
         this.clusterNumber = clusterNumber;
     }
+    
+    public Point (Point p) {
+        this.x = p.x;
+        this.y = p.y;
+        this.centerX = p.centerX;
+        this.centerY = p.centerY;
+        this.clusterNumber = p.clusterNumber;
+        this.clusterSize = p.clusterSize;
+    }
 
     /*@Override
     public String toString() {
