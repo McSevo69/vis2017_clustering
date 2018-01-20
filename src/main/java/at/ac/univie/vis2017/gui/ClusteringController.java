@@ -704,7 +704,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         } else if (initMode.equals("Random centroids")) {
             this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
         } else {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.RANDOM_PARTITION);
+            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.RANDOM_PARTITION);
             //TODO random partitioning
         }
         
