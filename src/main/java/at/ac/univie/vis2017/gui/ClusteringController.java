@@ -1437,8 +1437,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             public void handle (MouseEvent e) {
                 if (!isDisabledComputeButton) return;
                 recomputeDisabled.setText("Cluster centers set does not match k");
-                Node node = (Node) e.getSource();
-                recomputeDisabled.show(node, e.getX(), e.getY());
+                recomputeDisabled.show(computeButton, e.getX(), e.getY());
             }
         });
 
