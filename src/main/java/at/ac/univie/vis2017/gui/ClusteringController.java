@@ -629,7 +629,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void iterateKmeans() {
         
-        if (!isDisabledComputeButton) {        
+        if (!isDisabledComputeButton) {
+            
+            if (isLinked) {
+                this.initialStatePointsMinor = new ArrayList<Point>();
+                
+                for (Point p : initialStatePoints)
+                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+            }
             
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
@@ -673,24 +680,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
             skipToStartImage.setOpacity(0.6);
 
             if (isLinked) {
-                /*Data datCopy = new Data(dat);
-                maxIterationsMinor = datCopy.getIterations();
-                visualizerMinor.setData(datCopy);
-                hashedCentersMinor = visualizerMinor.hashCenters(datCopy);
-                canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
-                canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
-                visualizerMinor.setAfterComputation();
-                visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-                iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-                //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
-                restartManualKmeansMinor();
-                activateFiltersMinor();
-                isComputedMinor = true;*/
-                this.initialStatePointsMinor = new ArrayList<Point>();
-                
-                for (Point p : initialStatePoints)
-                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
-                
+                ArrayList<Point> centersBuf = new ArrayList<>();
+                for (Point p : dat.getIterationCenters(0)) {
+                    Point a = new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber());
+                    a.setClusterSize(p.getClusterSize());
+                    centersBuf.add(a);
+                }
+                clusterCentersMinor = centersBuf;                
                 iterateKmeansMinor();
             }
         }
@@ -699,7 +695,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void iterateKmeansMinor() {
         
         if (isLinked && initMode.equals(initModeMinor)) {
-            clusterCentersMinor = kmeansAlgorithm.getCenters();
             initModeMinor = "I'll choose";
         }
         
@@ -732,6 +727,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("Controls are activated.");
         //logger.debug("Iteration Spinner updated. New value: " + 0);
         if (!isLinked) activateControlsMinor();
+        activateFiltersMinor();
         restartManualKmeansMinor();
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
         isComputedMinor = true;
