@@ -633,13 +633,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
-                logger.debug(this.kmeansAlgorithm.getInit().toString());
             } else if (initMode.equals("D2-Sampling")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.D2);
             } else if (initMode.equals("Random centroids")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+//            } else if (initMode.equals("Random partitioning")) {
             } else {
-                //TODO random partitioning
+                logger.debug("random partitioning");
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.RANDOM_PARTITION);
             }
             
             if (algorithm.equals("K-medians")) {
@@ -710,6 +711,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         } else if (initMode.equals("Random centroids")) {
             this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
         } else {
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.RANDOM_PARTITION);
             //TODO random partitioning
         }
         

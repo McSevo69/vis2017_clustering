@@ -253,6 +253,7 @@ public class KMEANS {
     }
 
     public void setClusterCenters() {
+        Random r = new Random();
 
         // get extent from data
         ArrayList<Double> extent = getExtentFromDataPoints(this.points);
@@ -265,7 +266,6 @@ public class KMEANS {
                 for (int i = 0; i < this.numberClusters; i++) {
                     logger.trace(i + " from random initialization");
                     // create random values for centers
-                    Random r = new Random();
                     double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
                     double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
                     
@@ -275,22 +275,43 @@ public class KMEANS {
                     p.setClusterNumber(i);
                     
                     centers.add(p);
-                }   break;
+                } 
+                break;
             case RANDOM_PARTITION:
-                for (int i = 0; i < this.numberClusters; i++) {
+                ArrayList<ArrayList<Point>> clusterSets = new ArrayList<>(this.numberClusters);
+                
+                for (int i = 0; i < this.numberClusters; ++i) {
+                    clusterSets.add(new ArrayList<>());
+                }
+                
+                for (Point p : points) {
+                    int c = r.nextInt(numberClusters);
+                    p.setClusterNumber(c);
+                    clusterSets.get(c).add(new Point(p));
+                }
+                
+                
+                for (int i = 0; i < this.numberClusters; ++i) {
+                    double sumX = 0;
+                    double sumY = 0;
+
+                    for (int j = 0; j < clusterSets.get(i).size(); ++j) {
+                        sumX += clusterSets.get(i).get(j).getX();
+                        sumY += clusterSets.get(i).get(j).getY();
+                    }
                     
-                    //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
-                    Point p = new Point(-10-i, -10-i);
-                    p.setCenterPointTrue();
-                    p.setClusterNumber(i);
-                    
-                    centers.add(p);
-                }   break;
+                    Point c = new Point(sumX/clusterSets.get(i).size(), sumY/clusterSets.get(i).size());
+                    c.setCenterPointTrue();
+                    c.setClusterSize(clusterSets.get(i).size());
+                    c.setClusterNumber(i);
+                    centers.add(c);
+                    System.out.println(c);
+                }
+                break;
             case FARTHEST:
                 break;
             case D2:
                 int i = 0;
-                Random r = new Random();
                 double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
                 double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
                 //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
