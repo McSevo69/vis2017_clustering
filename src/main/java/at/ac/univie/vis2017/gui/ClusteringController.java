@@ -655,11 +655,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
-/*
+
         if (initMode.equals("I'll choose")) {
-            if (clusterCenters.size() == kOfKmeans) {
-                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-            }
+            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
+            logger.debug(this.kmeansAlgorithm.getInit().toString());
         } else if (initMode.equals("Farthest")) {
             this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         } else if (initMode.equals("Random")) {
@@ -667,9 +666,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         } else {
             
         }
-*/
-        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+
+//        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
         Data dat = kmeansAlgorithm.clusterData();
+        
+        logger.debug("centroids after calculation: " + dat.getIterationCenters(0).size());
 
         maxIterationsMain = dat.getIterations();
         hashedCenters = visualizer.hashCenters(dat);
@@ -1323,7 +1324,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kmeansParentPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Point p = new Point(event.getX(), event.getY());
+                Point p = new Point(event.getX()/kmeansCanvasMain.getWidth() * 150, event.getY()/kmeansCanvasMain.getHeight() * 150);
                 p.setCenterPointTrue();
                 if (!initMode.equals("I'll choose")) {
                     tooManyCentroidsTooltip.setText("Set initialization mode to \"I'll choose\"\n to set centroids manually");
@@ -1333,12 +1334,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
                 } else {
                     clusterCenters.add(p);
-
+                    visualizer.drawCenter(p);
+/*
                     kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
                     kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 9, 9);
                     
                     kmeansCanvasMain.getGraphicsContext2D().setStroke(Color.BLACK);
                     kmeansCanvasMain.getGraphicsContext2D().strokeRect(p.getX(), p.getY(), 9, 9);
+*/
                 }
 
 //                visualizer.drawPoint(p, 1);

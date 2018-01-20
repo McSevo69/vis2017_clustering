@@ -16,7 +16,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class KMEANS {
-
+    
+    public enum Initialization {RANDOM, FARTHEST, USERCHOICE};
+    
     // number of clusters (minimum is 2)
     private int numberClusters = 2;
     // maximum number of iterations
@@ -33,6 +35,8 @@ public class KMEANS {
     private String distanceFunction = "euclidean";
     // lloyd or macqueen
     private String updateFunction = "lloyd";
+    // initialization
+    private Initialization init = Initialization.RANDOM;
     // convergence
     private double convergenceThreshold = 1e-3;
 
@@ -52,7 +56,7 @@ public class KMEANS {
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
-        setClusterCenters("random");
+        setClusterCenters();
 
         if(this.getUpdateFunction() == "lloyd") {
             findClosestClusterCenter(distanceFunction);
@@ -66,9 +70,58 @@ public class KMEANS {
 
     }
 
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, ArrayList<Point> centers) {
+        this.numberClusters = numberClusters;
+        this.maxIter = maxIter;
+        this.points = points;
+        setUpdateFunction("lloyd");
+        this.setConvergenceThreshold(1e-3);
+
+
+        this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
+
+        // set cluster centers before first iteration
+        this.centers = new ArrayList<>(centers);
+        setClusterCenters();
+
+        if(this.getUpdateFunction() == "lloyd") {
+            findClosestClusterCenter(distanceFunction);
+        }
 
 
 
+
+        Algorithm algorithm = Algorithm.KMEANS;
+        dat = new Data(this.points.size(), numberClusters, algorithm);
+
+    }
+
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, ArrayList<Point> centers, Initialization init) {
+        this.numberClusters = numberClusters;
+        this.maxIter = maxIter;
+        this.points = points;
+        this.init = init;
+        setUpdateFunction("lloyd");
+        this.setConvergenceThreshold(1e-3);
+
+
+        this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
+
+        // set cluster centers before first iteration
+        this.centers = new ArrayList<>(centers);
+        setClusterCenters();
+
+        if(this.getUpdateFunction() == "lloyd") {
+            findClosestClusterCenter(distanceFunction);
+        }
+
+
+
+
+        Algorithm algorithm = Algorithm.KMEANS;
+        dat = new Data(this.points.size(), numberClusters, algorithm);
+
+    }
 
     public double getConvergenceThreshold() {
         return convergenceThreshold;
@@ -76,6 +129,14 @@ public class KMEANS {
 
     public void setConvergenceThreshold(double convergenceThreshold) {
         this.convergenceThreshold = convergenceThreshold;
+    }
+    
+    public Initialization getInit () {
+        return init;
+    }
+    
+    public void setInitialization (Initialization init) {
+        this.init = init;
     }
 
     public String getUpdateFunction() {
@@ -142,21 +203,19 @@ public class KMEANS {
         this.centers = centers;
     }
 
-    public void setClusterCenters(String strategy) {
+    public void setClusterCenters() {
 
         ClusteringController cc = new ClusteringController();
 
         // get extent from data
         ArrayList<Double> extent = cc.getExtentFromDataPoints(this.points);
 
-
+        System.out.println(init.toString());
 
         // initialize data randomly
-        if(strategy.equals("random")) {
-
-
+        if(init == Initialization.RANDOM) {
             for (int i = 0; i < this.numberClusters; i++) {
-                System.out.println(i);
+                System.out.println(i + " from random initialization");
                 // create random values for centers
                 Random r = new Random();
                 double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
@@ -169,6 +228,17 @@ public class KMEANS {
 
                 centers.add(p);
 
+            }
+        } else if (init == Initialization.FARTHEST) {
+            
+        } else if (init == Initialization.USERCHOICE) {
+            if (centers.size() != numberClusters) {
+                throw new IllegalArgumentException("cluster list passed by user does not match k");
+            }
+            
+            for (int i = 0; i < numberClusters; ++i) {
+                centers.get(i).setCenterPointTrue();
+                centers.get(i).setClusterNumber(i);
             }
         }
 /*

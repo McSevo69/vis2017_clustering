@@ -511,7 +511,7 @@ public class VisualizerFX implements IVisualizer {
         clearCanvas();
         
         pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
-        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
+        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/60;
         
         //logger.debug("showPaths is set to:   " + showPaths);
         //logger.debug("showData is set to:    " + showData);
