@@ -678,8 +678,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
             skipToStartImage.setDisable(true);
             skipToStartImage.setOpacity(0.6);
 
-            if (isLinked) {                                
-                clusterCentersMinor = dat.getIterationCenters(0);                
+            if (isLinked) {
+                ArrayList<Point> centersBuf = new ArrayList<>();
+                for (Point p : dat.getIterationCenters(0)) {
+                    Point a = new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber());
+                    a.setClusterSize(p.getClusterSize());
+                    centersBuf.add(a);
+                }
+                clusterCentersMinor = centersBuf;                
                 iterateKmeansMinor();
             }
         }
@@ -718,7 +724,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("iterateKmeans pressed");
         //logger.debug("Controls are activated.");
         //logger.debug("Iteration Spinner updated. New value: " + 0);
-        if (!isLinked) activateControlsMinor();
+        activateControlsMinor();
         restartManualKmeansMinor();
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
         isComputedMinor = true;
