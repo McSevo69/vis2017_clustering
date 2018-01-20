@@ -692,7 +692,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void iterateKmeansMinor() {
         
-        if (isLinked && !initModeMinor.equals("Random partitioning") && initMode.equals(initModeMinor)) {
+        if (initModeMinor.equals("Random partitioning")) {
+            //void;
+        } else if (isLinked && initMode.equals(initModeMinor)) {
             initModeMinor = "I'll choose";
         }
         
