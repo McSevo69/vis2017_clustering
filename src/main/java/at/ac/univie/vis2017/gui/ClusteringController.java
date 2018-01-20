@@ -177,6 +177,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isComputedMinor = false;
     private boolean isComputed = false;
     private boolean isDisabledComputeButton = true;
+    private boolean isDisabledComputeButtonMinor = true;
     private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
@@ -1443,6 +1444,24 @@ public class ClusteringController extends AnchorPane implements Initializable {
             @Override
             public void handle (MouseEvent e) {
                 recomputeDisabled.hide();
+            }
+        });
+        
+        Tooltip recomputeDisabledMinor = new Tooltip("hallo");
+        computeButtonMinor.setTooltip(recomputeDisabledMinor);
+        computeButtonMinor.setOnMouseMoved(new EventHandler<MouseEvent> () {
+            @Override
+            public void handle (MouseEvent e) {
+                if (!isDisabledComputeButtonMinor) return;
+                recomputeDisabledMinor.setText("Cluster centers set does not match k");
+                recomputeDisabledMinor.show(computeButtonMinor, e.getX(), e.getY());
+            }
+        });
+
+        computeButtonMinor.setOnMouseExited(new EventHandler<MouseEvent> () {
+            @Override
+            public void handle (MouseEvent e) {
+                recomputeDisabledMinor.hide();
             }
         });
     }    
