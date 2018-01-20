@@ -630,14 +630,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void iterateKmeans() {
         
         if (!isDisabledComputeButton) {
-            
-            if (isLinked) {
-                this.initialStatePointsMinor = new ArrayList<Point>();
-                
-                for (Point p : initialStatePoints)
-                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
-            }
-            
+                       
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
             } else if (initMode.equals("D2-Sampling")) {
@@ -679,7 +672,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
             skipToStartImage.setDisable(true);
             skipToStartImage.setOpacity(0.6);
 
-            if (isLinked) {
+            if (isLinked) {                
+                this.initialStatePointsMinor = new ArrayList<Point>();
+                
+                for (Point p : initialStatePoints)
+                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                
                 ArrayList<Point> centersBuf = new ArrayList<>();
                 for (Point p : dat.getIterationCenters(0)) {
                     Point a = new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber());
@@ -694,7 +692,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void iterateKmeansMinor() {
         
-        if (isLinked && initMode.equals(initModeMinor)) {
+        if (isLinked && !initModeMinor.equals("Random partitioning") && initMode.equals(initModeMinor)) {
             initModeMinor = "I'll choose";
         }
         
