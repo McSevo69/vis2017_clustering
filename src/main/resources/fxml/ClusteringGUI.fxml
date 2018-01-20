@@ -257,8 +257,9 @@
                                                                   <ChoiceBox fx:id="kmeansInitChoiceBoxMinor" prefHeight="28.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                                                      <items>
                                                                         <FXCollections fx:factory="observableArrayList">
-                                                                           <String fx:value="Random" />
-                                                                           <String fx:value="Farthest" />
+                                                                           <String fx:value="Random centroids" />
+                                                                           <String fx:value="Random partitioning" />
+                                                                           <String fx:value="D2-Sampling" />
                                                                            <String fx:value="I'll choose" />
                                                                         </FXCollections>
                                                                      </items>
@@ -585,9 +586,10 @@
                                                 <ChoiceBox fx:id="kmeansInitChoiceBox" prefHeight="28.0" prefWidth="90.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                                    <items>
                                                       <FXCollections fx:factory="observableArrayList">
-                                                         <String fx:value="Random" />
-                                                         <String fx:value="Farthest" />
-                                                         <String fx:value="I'll choose" />
+                                                        <String fx:value="Random centroids" />
+                                                        <String fx:value="Random partitioning" />
+                                                        <String fx:value="D2-Sampling" />
+                                                        <String fx:value="I'll choose" />
                                                       </FXCollections>
                                                    </items>
                                                 </ChoiceBox>
