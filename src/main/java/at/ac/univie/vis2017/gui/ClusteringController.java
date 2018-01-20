@@ -176,6 +176,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isLinked = true;           
     private boolean isComputedMinor = false;
     private boolean isComputed = false;
+    private boolean isDisabledComputeButton = true;
     private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
@@ -381,7 +382,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             //logger.debug("Controls are deactivated.");
             deactivateControls();
-            computeButton.setDisable(false);
+            //TODO check if I'll choose is set
+            fakeActivateComputeButton();
             isComputed = false;
             
             if (isLinked) {
@@ -458,7 +460,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepForwardImage.setDisable(true);
         stepForwardImage.setOpacity(0.6);
         iterationKmeansSpinner.setDisable(true);
-        computeButton.setDisable(true);
+        fakeDeactivateComputeButton();
         restartAutoModeKmeansImage.setDisable(true);
         restartAutoModeKmeansImage.setOpacity(0.6);
         pauseAutoModeKmeansImage.setDisable(true);
@@ -476,7 +478,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepForwardImage.setDisable(false);
         stepForwardImage.setOpacity(1);
         iterationKmeansSpinner.setDisable(false);
-        computeButton.setDisable(false);
+        fakeActivateComputeButton();
         restartAutoModeKmeansImage.setDisable(false);
         restartAutoModeKmeansImage.setOpacity(1);
         pauseAutoModeKmeansImage.setDisable(false);
@@ -656,57 +658,60 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void iterateKmeans() {
-
-        if (initMode.equals("I'll choose")) {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
-            logger.debug(this.kmeansAlgorithm.getInit().toString());
-        } else if (initMode.equals("Farthest")) {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-        } else if (initMode.equals("Random")) {
-            this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-        } else {
-            
-        }
-
-//        this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-        Data dat = kmeansAlgorithm.clusterData();
-        logger.debug("centroids after calculation: " + dat.getIterationCenters(0).size());
-
-        maxIterationsMain = dat.getIterations();
-        hashedCenters = visualizer.hashCenters(dat);
-        canvasWidthOnHash = kmeansCanvasMain.getWidth();
-        canvasHeightOnHash = kmeansCanvasMain.getHeight();
-
-        visualizer.setData(dat);
-        visualizer.setAfterComputation();
-        visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-        //logger.debug("iterateKmeans pressed");
-        //logger.debug("Controls are activated.");
-        //logger.debug("Iteration Spinner updated. New value: " + 0);
-        activateControls();
-        restartManualKmeans();
-        activateFilters();
-        iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
         
-        isComputed = true;
-        updateSmallMultiples(dat);
-        skipToStartImage.setDisable(true);
-        skipToStartImage.setOpacity(0.6);
-        
-        if (isLinked) {
-            Data datCopy = new Data(dat);
-            maxIterationsMinor = datCopy.getIterations();
-            visualizerMinor.setData(datCopy);
-            hashedCentersMinor = visualizerMinor.hashCenters(datCopy);
-            canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
-            canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
-            visualizerMinor.setAfterComputation();
-            visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-            iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-            //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
-            restartManualKmeansMinor();
-            activateFiltersMinor();
-            isComputedMinor = true;
+        if (!isDisabledComputeButton) {
+
+            if (initMode.equals("I'll choose")) {
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
+                logger.debug(this.kmeansAlgorithm.getInit().toString());
+            } else if (initMode.equals("Farthest")) {
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            } else if (initMode.equals("Random")) {
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            } else {
+
+            }
+
+    //      this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+            Data dat = kmeansAlgorithm.clusterData();
+            logger.debug("centroids after calculation: " + dat.getIterationCenters(0).size());
+
+            maxIterationsMain = dat.getIterations();
+            hashedCenters = visualizer.hashCenters(dat);
+            canvasWidthOnHash = kmeansCanvasMain.getWidth();
+            canvasHeightOnHash = kmeansCanvasMain.getHeight();
+
+            visualizer.setData(dat);
+            visualizer.setAfterComputation();
+            visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
+            //logger.debug("iterateKmeans pressed");
+            //logger.debug("Controls are activated.");
+            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            activateControls();
+            restartManualKmeans();
+            activateFilters();
+            iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
+
+            isComputed = true;
+            updateSmallMultiples(dat);
+            skipToStartImage.setDisable(true);
+            skipToStartImage.setOpacity(0.6);
+
+            if (isLinked) {
+                Data datCopy = new Data(dat);
+                maxIterationsMinor = datCopy.getIterations();
+                visualizerMinor.setData(datCopy);
+                hashedCentersMinor = visualizerMinor.hashCenters(datCopy);
+                canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+                canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
+                visualizerMinor.setAfterComputation();
+                visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
+                iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
+                //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
+                restartManualKmeansMinor();
+                activateFiltersMinor();
+                isComputedMinor = true;
+            }
         }
     }
     
@@ -972,7 +977,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("Controls are deactivated.");
         deactivateControls();
         if (!initMode.equals("I'll choose")) {
-            computeButton.setDisable(false);
+            fakeActivateComputeButton();
         }
         isComputed = false;
         
@@ -1085,6 +1090,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void updateAutoSpeedMinor(int speed) {
         int invertedSpeed = invertValues(speed, 10, 80);       
         autoModeSpeedMinor = MAX_DURATION*invertedSpeed/100;  
+    }
+    
+    public void fakeDeactivateComputeButton() {
+        computeButton.setOpacity(0.4);
+        isDisabledComputeButton = true;
+    }
+    
+    public void fakeActivateComputeButton() {
+        computeButton.setOpacity(1);
+        isDisabledComputeButton = false;
     }
         
     @Override
@@ -1220,7 +1235,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             //logger.debug("Init-strat (Main) set to " + newValue);
             this.initMode = newValue;
             if (newValue.equals("I'll choose")) {
-                computeButton.setDisable(true);
+                fakeDeactivateComputeButton();
             } else {
                 clusterCenters.clear();
             }
@@ -1344,7 +1359,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     visualizer.drawCenter(p);
                     
                     if (clusterCenters.size() == kOfKmeans) {
-                        computeButton.setDisable(false);
+                        fakeActivateComputeButton();
                     }
 /*
                     kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
@@ -1420,7 +1435,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         computeButton.setOnMouseMoved(new EventHandler<MouseEvent> () {
             @Override
             public void handle (MouseEvent e) {
-                if (!computeButton.isDisabled()) return;
+                if (!isDisabledComputeButton) return;
                 recomputeDisabled.setText("Cluster centers set does not match k");
                 Node node = (Node) e.getSource();
                 recomputeDisabled.show(node, e.getX(), e.getY());

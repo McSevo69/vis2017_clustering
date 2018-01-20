@@ -178,7 +178,7 @@
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="computeButtonMinor" alignment="CENTER" disable="true" maxHeight="46.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#iterateKmeansMinor" prefHeight="40.0" text="(Re-)Compute" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                                      <Button fx:id="computeButtonMinor" alignment="CENTER" maxHeight="46.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#iterateKmeansMinor" prefHeight="40.0" text="(Re-)Compute" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                                          <GridPane.margin>
                                                             <Insets />
                                                          </GridPane.margin>
@@ -509,7 +509,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Button fx:id="computeButton" alignment="CENTER" disable="true" maxHeight="46.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#iterateKmeans" prefHeight="40.0" text="(Re-)Compute" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                    <Button fx:id="computeButton" alignment="CENTER" maxHeight="46.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#iterateKmeans" prefHeight="40.0" text="(Re-)Compute" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
