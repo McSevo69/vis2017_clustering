@@ -70,6 +70,32 @@ public class KMEANS {
 
     }
 
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, Initialization init) {
+        this.numberClusters = numberClusters;
+        this.maxIter = maxIter;
+        this.points = points;
+        this.init = init;
+        setUpdateFunction("lloyd");
+        this.setConvergenceThreshold(1e-3);
+
+
+        this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
+
+        // set cluster centers before first iteration
+        setClusterCenters();
+
+        if(this.getUpdateFunction() == "lloyd") {
+            findClosestClusterCenter(distanceFunction);
+        }
+
+
+
+
+        Algorithm algorithm = Algorithm.KMEANS;
+        dat = new Data(this.points.size(), numberClusters, algorithm);
+
+    }
+
     public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, ArrayList<Point> centers) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
@@ -229,9 +255,9 @@ public class KMEANS {
                 centers.add(p);
 
             }
-        } else if (init == Initialization.D2) {
-            
         } else if (init == Initialization.FARTHEST) {
+            
+        } else if (init == Initialization.D2) {
             int i = 0;
             Random r = new Random();
             double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
@@ -258,9 +284,15 @@ public class KMEANS {
                     sumDistance += minDistance;
                 }
                 
-                for (int j = 0; j < points.size(); ++j) {
-                    if (r.nextDouble() < minDistances.get(j)/sumDistance) {
-                        centers.add(new Point(points.get(j)));
+                while (centers.size() == i) {
+                    for (int j = 0; j < points.size(); ++j) {
+                        if (r.nextDouble() < minDistances.get(j)/sumDistance) {
+                            Point c = new Point(points.get(j));
+                            c.setCenterPointTrue();
+                            c.setClusterNumber(i);
+                            centers.add(c);
+                            break;
+                        }
                     }
                 }
             }
