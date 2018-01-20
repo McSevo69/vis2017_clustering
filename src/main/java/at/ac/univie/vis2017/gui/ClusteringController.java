@@ -1048,6 +1048,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("ChangeNavigation called");
         if (isLinked) {
             linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
+            initModeMinor = kmeansInitChoiceBoxMinor.selectionModelProperty().get().getSelectedItem();
             activateControlsMinor();
             if (visualizerMinor.getIteration() == 0) {
                 skipToStartImageMinor.setDisable(true);
