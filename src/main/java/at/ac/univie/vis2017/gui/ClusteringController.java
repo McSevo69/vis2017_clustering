@@ -724,7 +724,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
         //logger.debug("iterateKmeans pressed");
         //logger.debug("Controls are activated.");
         //logger.debug("Iteration Spinner updated. New value: " + 0);
-        activateControlsMinor();
+        if (!isLinked) activateControlsMinor();
+        activateFiltersMinor();
         restartManualKmeansMinor();
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
         isComputedMinor = true;
