@@ -673,7 +673,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             }
             
             if (algorithm.equals("K-medians")) {
-                kmeansAlgorithm.setDistanceFunction("manhatten");
+                kmeansAlgorithm.setDistanceFunction("manhattan");
             }
 
     //      this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
@@ -744,7 +744,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         }
         
         if (algorithmMinor.equals("K-medians")) {
-            kmeansAlgorithmMinor.setDistanceFunction("manhatten");
+            kmeansAlgorithmMinor.setDistanceFunction("manhattan");
         }
         
         Data dat = kmeansAlgorithmMinor.clusterData();
