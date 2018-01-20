@@ -53,7 +53,12 @@ public class KMEANS {
 
         // set cluster centers before first iteration
         setClusterCenters("random");
-        findClosestClusterCenter(distanceFunction);
+
+        if(this.getUpdateFunction() == "lloyd") {
+            findClosestClusterCenter(distanceFunction);
+        }
+
+
 
 
         Algorithm algorithm = Algorithm.KMEANS;
@@ -144,8 +149,6 @@ public class KMEANS {
         // get extent from data
         ArrayList<Double> extent = cc.getExtentFromDataPoints(this.points);
 
-        //System.out.println("Extent");
-        //System.out.println("Minx = " + extent.get(0) + "; maxX = " + extent.get(1)  + "; minY = " + extent.get(2)  + "; maxY = " + extent.get(3) );
 
 
         // initialize data randomly
@@ -333,6 +336,10 @@ public class KMEANS {
             }
 
         } else if(this.getUpdateFunction() == "macqueen"){
+
+            int numberPoints = this.points.size();
+            String distanceFunction = this.getDistanceFunction();
+
             while((i < maxIterations) && (Math.abs(Math.abs(convergence) - Math.abs(old_Convergence)) > this.getConvergenceThreshold())) {
 
                 logger.trace("iteration i: " + i);
@@ -344,9 +351,49 @@ public class KMEANS {
                 System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
 
 
+                // compute initial centroids
+                updateCentroids(computeNewCentroids());
 
-                // update macqueen
 
+                // update macqueen style
+                for (int k = 0; k < numberPoints; k++) {
+
+
+                    double newDistance = 0.0;
+                    int oldCluster = this.points.get(k).getClusterNumber();
+                    double actualDistance = Point.getDistanceBetweenPoints(centers.get(oldCluster), points.get(k), distanceFunction);
+
+                    // check for each point if there is a new nearest cluster center and update if
+                    for (int j = 0; j < numberClusters; j++) {
+
+                        newDistance = Point.getDistanceBetweenPoints(centers.get(j), points.get(k), distanceFunction);
+
+                        if (newDistance < actualDistance) {
+                            actualDistance = newDistance;
+                            points.get(i).setClusterNumber(j + 1);
+
+
+                            // assign new cluster center if distance is nearer than to actual center
+                            int newCluster = j + 1;
+
+                            this.points.get(k).setClusterNumber(newCluster);
+
+                            // recompute centroids for affected clusters
+                            for (int l = 0; l < numberPoints; l++) {
+
+
+                                // compute centroids for points with cluster numbers
+                                // TO DO update centroids of clusters
+
+
+                            }
+
+
+                        }
+                    }
+
+
+                }
 
 
 
