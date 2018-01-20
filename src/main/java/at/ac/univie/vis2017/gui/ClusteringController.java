@@ -664,12 +664,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
                 logger.debug(this.kmeansAlgorithm.getInit().toString());
-            } else if (initMode.equals("Farthest")) {
+            } else if (initMode.equals("D2-Sampling")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.D2);
-            } else if (initMode.equals("Random")) {
+            } else if (initMode.equals("Random centroids")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
             } else {
-
+                //TODO random partitioning
             }
 
     //      this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
