@@ -177,7 +177,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isComputedMinor = false;
     private boolean isComputed = false;
     private boolean isDisabledComputeButton = true;
-    private boolean haveSameDataSet;
     private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
@@ -388,7 +387,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
             isComputed = false;
             
             if (isLinked) {
-                haveSameDataSet = true;
                 this.initialStatePointsMinor = new ArrayList<Point>();
                 
                 for (Point p : initialStatePoints)
@@ -447,7 +445,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
             loadFromFileMinorButton.setDisable(false);
             computeButtonMinor.setDisable(false);
             isComputedMinor = false;
-            haveSameDataSet = false;
             
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
@@ -674,6 +671,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
             } else {
                 //TODO random partitioning
             }
+            
+            if (algorithm.equals("K-medians")) {
+                kmeansAlgorithm.setDistanceFunction("manhatten");
+            }
 
     //      this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
             Data dat = kmeansAlgorithm.clusterData();
@@ -701,7 +702,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             skipToStartImage.setOpacity(0.6);
 
             if (isLinked) {
-                Data datCopy = new Data(dat);
+                /*Data datCopy = new Data(dat);
                 maxIterationsMinor = datCopy.getIterations();
                 visualizerMinor.setData(datCopy);
                 hashedCentersMinor = visualizerMinor.hashCenters(datCopy);
@@ -713,13 +714,39 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
                 restartManualKmeansMinor();
                 activateFiltersMinor();
-                isComputedMinor = true;
+                isComputedMinor = true;*/
+                this.initialStatePointsMinor = new ArrayList<Point>();
+                
+                for (Point p : initialStatePoints)
+                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                
+                iterateKmeansMinor();
             }
         }
     }
     
     public void iterateKmeansMinor() {
-        this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
+        
+        if (isLinked && initMode.equals(initModeMinor)) {
+            clusterCentersMinor = kmeansAlgorithm.getCenters();
+            initModeMinor = "I'll choose";
+        }
+        
+        if (initModeMinor.equals("I'll choose")) {
+            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, clusterCentersMinor, KMEANS.Initialization.USERCHOICE);
+            logger.debug(this.kmeansAlgorithmMinor.getInit().toString());
+        } else if (initModeMinor.equals("D2-Sampling")) {
+            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.D2);
+        } else if (initMode.equals("Random centroids")) {
+            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
+        } else {
+            //TODO random partitioning
+        }
+        
+        if (algorithmMinor.equals("K-medians")) {
+            kmeansAlgorithmMinor.setDistanceFunction("manhatten");
+        }
+        
         Data dat = kmeansAlgorithmMinor.clusterData();
         maxIterationsMinor = dat.getIterations();
         visualizerMinor.setData(dat);
@@ -987,7 +1014,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         clusterCenters.clear();
         
         if (isLinked) {
-            haveSameDataSet = true;
             this.initialStatePointsMinor = new ArrayList<Point>();
                 
             for (Point p : initialStatePoints)
@@ -1010,7 +1036,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansMinorPressed() {
-        haveSameDataSet = false;
         //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
         this.initialStatePointsMinor  = createGaussianRandomData(90);
         //logger.debug("Random data generated");
