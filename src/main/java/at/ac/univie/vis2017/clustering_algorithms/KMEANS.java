@@ -44,12 +44,17 @@ public class KMEANS {
     Logger logger = LogManager.getLogger(KMEANS.class);
 
     //default constructor -> LLOYD, EUCLIDIAN, RANDOM
-    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points) {
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> initPoints) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
-        this.points = points;
         this.updateFunction = "lloyd";
         this.convergenceThreshold = 1e-3;
+        
+        ArrayList<Point> initBuf = new ArrayList<>();
+        for (Point p : initPoints)
+            initBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+        
+        this.points = initBuf;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
@@ -58,13 +63,18 @@ public class KMEANS {
 
     }
 
-    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, Initialization init) {
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> initPoints, Initialization init) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
-        this.points = points;
         this.init = init;
         this.updateFunction = "lloyd";
         this.convergenceThreshold = 1e-3;
+        
+        ArrayList<Point> initBuf = new ArrayList<>();
+        for (Point p : initPoints)
+            initBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+        
+        this.points = initBuf;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
@@ -73,12 +83,17 @@ public class KMEANS {
 
     }
 
-    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, ArrayList<Point> centers) {
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> initPoints, ArrayList<Point> centers) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
-        this.points = points;
         this.updateFunction = "lloyd";
         this.convergenceThreshold = 1e-3;
+        
+        ArrayList<Point> initBuf = new ArrayList<>();
+        for (Point p : initPoints)
+            initBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+        
+        this.points = initBuf;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
@@ -88,15 +103,19 @@ public class KMEANS {
 
     }
 
-    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points, ArrayList<Point> centers, Initialization init) {
+    public KMEANS(int numberClusters, int maxIter, ArrayList<Point> initPoints, ArrayList<Point> centers, Initialization init) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
-        this.points = points;
         this.init = init;
         this.updateFunction = "lloyd";
         this.convergenceThreshold = 1e-3;
-
-
+        
+        ArrayList<Point> initBuf = new ArrayList<>();
+        for (Point p : initPoints)
+            initBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+        
+        this.points = initBuf;
+        
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
