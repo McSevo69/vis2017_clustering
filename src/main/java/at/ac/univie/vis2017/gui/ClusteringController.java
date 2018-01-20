@@ -665,7 +665,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
                 logger.debug(this.kmeansAlgorithm.getInit().toString());
             } else if (initMode.equals("Farthest")) {
-                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
+                this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.D2);
             } else if (initMode.equals("Random")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
             } else {
