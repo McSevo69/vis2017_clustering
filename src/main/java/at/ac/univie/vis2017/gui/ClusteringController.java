@@ -177,6 +177,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isComputedMinor = false;
     private boolean isComputed = false;
     private boolean isDisabledComputeButton = true;
+    private boolean haveSameDataSet;
     private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
@@ -387,6 +388,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             isComputed = false;
             
             if (isLinked) {
+                haveSameDataSet = true;
                 this.initialStatePointsMinor = new ArrayList<Point>();
                 
                 for (Point p : initialStatePoints)
@@ -445,6 +447,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             loadFromFileMinorButton.setDisable(false);
             computeButtonMinor.setDisable(false);
             isComputedMinor = false;
+            haveSameDataSet = false;
             
         } catch (IOException ex) {
             logger.error("Cannot load file!\n" + ex);
@@ -659,8 +662,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void iterateKmeans() {
         
-        if (!isDisabledComputeButton) {
-
+        if (!isDisabledComputeButton) {        
+            
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
                 logger.debug(this.kmeansAlgorithm.getInit().toString());
@@ -984,6 +987,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         clusterCenters.clear();
         
         if (isLinked) {
+            haveSameDataSet = true;
             this.initialStatePointsMinor = new ArrayList<Point>();
                 
             for (Point p : initialStatePoints)
@@ -1006,6 +1010,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansMinorPressed() {
+        haveSameDataSet = false;
         //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
         this.initialStatePointsMinor  = createGaussianRandomData(90);
         //logger.debug("Random data generated");
