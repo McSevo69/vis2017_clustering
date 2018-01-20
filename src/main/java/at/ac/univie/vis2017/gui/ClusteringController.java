@@ -178,7 +178,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private boolean isComputed = false;
     private boolean isDisabledComputeButton = true;
     private boolean isDisabledComputeButtonMinor = true;
-    private String distanceFunction;
     private int autoModeSpeedMain = 300;
     private int autoModeSpeedMinor = 300;
     private Thread autoModeMainThread;
@@ -210,6 +209,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.visualizerMinor = new VisualizerFX();
         this.initialStatePoints = new ArrayList<>();
         this.clusterCenters = new ArrayList<>();
+        this.clusterCentersMinor = new ArrayList<>();
         this.autoModeMainThread = new Thread();
         this.autoModeMinorThread = new Thread();
         this.multiples = new ArrayList<>();
@@ -414,7 +414,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             deactivateControlsMinor();
             randomDataMinorButton.setDisable(false);
             loadFromFileMinorButton.setDisable(false);
-            computeButtonMinor.setDisable(false);
+            fakeActivateComputeButtonMinor();
             isComputedMinor = false;
             
         } catch (IOException ex) {
@@ -467,7 +467,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepForwardImageMinor.setDisable(true);
         stepForwardImageMinor.setOpacity(0.6);
         iterationKmeansSpinnerMinor.setDisable(true);
-        computeButtonMinor.setDisable(true);
+        fakeDeactivateComputeButtonMinor();
         randomDataMinorButton.setDisable(true);
         loadFromFileMinorButton.setDisable(true);        
         restartAutoModeKmeansImageMinor.setDisable(true);
@@ -555,7 +555,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         stepForwardImageMinor.setDisable(false);
         stepForwardImageMinor.setOpacity(1);
         iterationKmeansSpinnerMinor.setDisable(false);
-        computeButtonMinor.setDisable(false);
+        fakeActivateComputeButtonMinor();
         randomDataMinorButton.setDisable(false);
         loadFromFileMinorButton.setDisable(false);
         restartAutoModeKmeansImageMinor.setDisable(false);
@@ -685,55 +685,60 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     a.setClusterSize(p.getClusterSize());
                     centersBuf.add(a);
                 }
-                clusterCentersMinor = centersBuf;                
+                clusterCentersMinor = centersBuf; 
+                isDisabledComputeButtonMinor = false;
                 iterateKmeansMinor();
+                isDisabledComputeButtonMinor = true;
             }
         }
     }
     
     public void iterateKmeansMinor() {
         
-        if (initModeMinor.equals("Random partitioning")) {
-            //void;
-        } else if (isLinked && initMode.equals(initModeMinor)) {
-            initModeMinor = "I'll choose";
+        if (!isDisabledComputeButtonMinor) {
+        
+            if (initModeMinor.equals("Random partitioning")) {
+                //void;
+            } else if (isLinked && initMode.equals(initModeMinor)) {
+                initModeMinor = "I'll choose";
+            }
+
+            if (initModeMinor.equals("I'll choose")) {
+                this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, clusterCentersMinor, KMEANS.Initialization.USERCHOICE);
+                logger.debug(this.kmeansAlgorithmMinor.getInit().toString());
+            } else if (initModeMinor.equals("D2-Sampling")) {
+                this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.D2);
+            } else if (initModeMinor.equals("Random centroids")) {
+                this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
+            } else {
+                this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.RANDOM_PARTITION);
+                //TODO random partitioning
+            }
+
+            if (algorithmMinor.equals("K-medians")) {
+                kmeansAlgorithmMinor.setDistanceFunction("manhattan");
+            }
+
+            Data dat = kmeansAlgorithmMinor.clusterData();
+            maxIterationsMinor = dat.getIterations();
+            visualizerMinor.setData(dat);
+            hashedCentersMinor = visualizerMinor.hashCenters(dat);
+            canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
+            canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
+
+            visualizerMinor.setAfterComputation();
+            visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
+            //logger.debug("iterateKmeans pressed");
+            //logger.debug("Controls are activated.");
+            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            if (!isLinked) activateControlsMinor();
+            activateFiltersMinor();
+            restartManualKmeansMinor();
+            iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
+            isComputedMinor = true;
+            skipToStartImageMinor.setDisable(true);
+            skipToStartImageMinor.setOpacity(0.6);
         }
-        
-        if (initModeMinor.equals("I'll choose")) {
-            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, clusterCentersMinor, KMEANS.Initialization.USERCHOICE);
-            logger.debug(this.kmeansAlgorithmMinor.getInit().toString());
-        } else if (initModeMinor.equals("D2-Sampling")) {
-            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.D2);
-        } else if (initModeMinor.equals("Random centroids")) {
-            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
-        } else {
-            this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.RANDOM_PARTITION);
-            //TODO random partitioning
-        }
-        
-        if (algorithmMinor.equals("K-medians")) {
-            kmeansAlgorithmMinor.setDistanceFunction("manhattan");
-        }
-        
-        Data dat = kmeansAlgorithmMinor.clusterData();
-        maxIterationsMinor = dat.getIterations();
-        visualizerMinor.setData(dat);
-        hashedCentersMinor = visualizerMinor.hashCenters(dat);
-        canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
-        canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
-        
-        visualizerMinor.setAfterComputation();
-        visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
-        //logger.debug("iterateKmeans pressed");
-        //logger.debug("Controls are activated.");
-        //logger.debug("Iteration Spinner updated. New value: " + 0);
-        if (!isLinked) activateControlsMinor();
-        activateFiltersMinor();
-        restartManualKmeansMinor();
-        iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-        isComputedMinor = true;
-        skipToStartImageMinor.setDisable(true);
-        skipToStartImageMinor.setOpacity(0.6);
     }
     
     public void stepBackKmeans() {
@@ -1028,7 +1033,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         deactivateFiltersMinor();
         randomDataMinorButton.setDisable(false);
         loadFromFileMinorButton.setDisable(false);
-        computeButtonMinor.setDisable(false);
+        fakeActivateComputeButtonMinor();
         isComputedMinor = false;
                 
     }
@@ -1051,7 +1056,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             }
             
             if (!isComputedMinor) { //this could be done in a nicer way
-                computeButtonMinor.setDisable(true);
+                fakeDeactivateComputeButtonMinor();
                 skipToStartImageMinor.setDisable(true);
                 skipToStartImageMinor.setOpacity(0.6);
                 stepBackImageMinor.setDisable(true);
@@ -1099,6 +1104,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void fakeActivateComputeButton() {
         computeButton.setOpacity(1);
         isDisabledComputeButton = false;
+    }
+    
+    public void fakeDeactivateComputeButtonMinor() {
+        computeButtonMinor.setOpacity(0.4);
+        isDisabledComputeButtonMinor = true;
+    }
+    
+    public void fakeActivateComputeButtonMinor() {
+        computeButtonMinor.setOpacity(1);
+        isDisabledComputeButtonMinor = false;
     }
         
     @Override
@@ -1253,6 +1268,11 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kmeansInitChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             //logger.debug("Init-strat (Minor) set to " + newValue);
             this.initModeMinor = newValue;
+            if (newValue.equals("I'll choose")) {
+                fakeDeactivateComputeButtonMinor();
+            } else {
+                clusterCentersMinor.clear();
+            }
         });
         
         kmeansAlgorithmChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -1293,176 +1313,156 @@ public class ClusteringController extends AnchorPane implements Initializable {
         Tooltip mousePositionToolTipMinor = new Tooltip("");
         Tooltip tooManyCentroidsTooltipMinor = new Tooltip("");
 
-        kmeansParentPane.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                //TODO
-                boolean dummy = false;
-                int x = (int) event.getX() - 1;
-                int y = (int) event.getY() - 1;
-
-                x = (int) (x * (canvasWidthOnHash / kmeansCanvasMain.getWidth()));
-                y = (int) (y * (canvasHeightOnHash / kmeansCanvasMain.getHeight()));
-                
-                String msg = "";
-                
-                try {
-                    msg = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
-                    dummy = (msg != null);
-                } catch (Exception e) {
-                    //logger.debug(e.getMessage());
-                }
-                
-                try {
-                    if (!dummy) {
-                        msg = hashedPoints.get(x).get(y);
-                        dummy = (msg != null);
-                    }
-                } catch (Exception e) {
-                    //logger.debug(e.getMessage());
-                }
-                
-                if (dummy) {
-                    mousePositionToolTip.setText(msg);
-
-                    Node node = (Node) event.getSource();
-                    mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
-                } else {
-                    mousePositionToolTip.hide();
-                }
+        kmeansParentPane.setOnMouseMoved((MouseEvent event) -> {
+            //TODO
+            boolean dummy = false;
+            int x = (int) event.getX() - 1;
+            int y = (int) event.getY() - 1;
+            
+            x = (int) (x * (canvasWidthOnHash / kmeansCanvasMain.getWidth()));
+            y = (int) (y * (canvasHeightOnHash / kmeansCanvasMain.getHeight()));
+            
+            String msg = "";
+            
+            try {
+                msg = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
+                dummy = (msg != null);
+            } catch (Exception e) {
+                //logger.debug(e.getMessage());
             }
-
+            
+            try {
+                if (!dummy) {
+                    msg = hashedPoints.get(x).get(y);
+                    dummy = (msg != null);
+                }
+            } catch (Exception e) {
+                //logger.debug(e.getMessage());
+            }
+            
+            if (dummy) {
+                mousePositionToolTip.setText(msg);
+                
+                Node node = (Node) event.getSource();
+                mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
+            } else {
+                mousePositionToolTip.hide();
+            }
         });
         
-        kmeansParentPane.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mousePositionToolTip.hide();
-                tooManyCentroidsTooltip.hide();
-            }
+        kmeansParentPane.setOnMouseExited((MouseEvent event) -> {
+            mousePositionToolTip.hide();
+            tooManyCentroidsTooltip.hide();
         });        
         
-        kmeansParentPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Point p = new Point(event.getX()/kmeansCanvasMain.getWidth() * 150, event.getY()/kmeansCanvasMain.getHeight() * 150);
-                p.setCenterPointTrue();
-                if (!initMode.equals("I'll choose")) {
-                    tooManyCentroidsTooltip.setText("Set initialization mode to \"I'll choose\"\n to set centroids manually");
-                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
-                } else if (clusterCenters.size() >= kOfKmeans) {
-                    tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
-                    tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
-                } else {
-                    clusterCenters.add(p);
-                    visualizer.drawCenter(p);
-                    
-                    if (clusterCenters.size() == kOfKmeans) {
-                        fakeActivateComputeButton();
-                    }
-/*
-                    kmeansCanvasMain.getGraphicsContext2D().setFill(Color.LIGHTGRAY);
-                    kmeansCanvasMain.getGraphicsContext2D().fillRect(p.getX(), p.getY(), 9, 9);
-                    
-                    kmeansCanvasMain.getGraphicsContext2D().setStroke(Color.BLACK);
-                    kmeansCanvasMain.getGraphicsContext2D().strokeRect(p.getX(), p.getY(), 9, 9);
-*/
+        kmeansParentPane.setOnMouseClicked((MouseEvent event) -> {
+            Point p = new Point(event.getX()/kmeansCanvasMain.getWidth() * 150, event.getY()/kmeansCanvasMain.getHeight() * 150);
+            p.setCenterPointTrue();
+            if (!initMode.equals("I'll choose")) {
+                tooManyCentroidsTooltip.setText("Set initialization mode to \"I'll choose\"\n to set centroids manually");
+                tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
+            } else if (clusterCenters.size() >= kOfKmeans) {
+                tooManyCentroidsTooltip.setText("Set k higher to set more centroids!");
+                tooManyCentroidsTooltip.show((Node) event.getSource(), event.getScreenX() + 50, event.getScreenY());
+            } else {
+                clusterCenters.add(p);
+                visualizer.drawCenter(p);
+                
+                if (clusterCenters.size() == kOfKmeans) {
+                    fakeActivateComputeButton();
                 }
-
-//                visualizer.drawPoint(p, 1);
             }
         });  
         
         
-        kmeansParentPaneMinor.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                //TODO
-                boolean dummy = false;
-                int x = (int) event.getX() - 1;
-                int y = (int) event.getY() - 1;
-
-                logger.debug(x + ":" + y);
-                
-                x = (int) (x * (canvasWidthOnHashMinor / kmeansCanvasMinor.getWidth()));
-                y = (int) (y * (canvasHeightOnHashMinor / kmeansCanvasMinor.getHeight()));
-                
-                logger.debug(canvasWidthOnHashMinor + ":" + canvasHeightOnHashMinor);
-                logger.debug(kmeansCanvasMinor.getWidth() / canvasWidthOnHashMinor + ":" + kmeansCanvasMinor.getHeight() / canvasHeightOnHashMinor);
-                logger.debug(x + ":" + y);
-                
-                String msg = "";
-                
-                try {
-                    msg = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
-                    dummy = (msg != null);
-                } catch (Exception e) {
-                    //logger.debug(e.getMessage());
-                }
-                
-                try {
-                    if (!dummy) {
-                        msg = hashedPointsMinor.get(x).get(y);
-                        dummy = (msg != null);
-                    }
-                } catch (Exception e) {
-                    //logger.debug(e.getMessage());
-                }
-                
-                if (dummy) {
-                    mousePositionToolTipMinor.setText(msg);
-
-                    Node node = (Node) event.getSource();
-                    mousePositionToolTipMinor.show(node, event.getScreenX() + 50, event.getScreenY());
-                } else {
-                    mousePositionToolTipMinor.hide();
-                }
+        kmeansParentPaneMinor.setOnMouseMoved((MouseEvent event) -> {
+            //TODO
+            boolean dummy = false;
+            int x = (int) event.getX() - 1;
+            int y = (int) event.getY() - 1;
+            
+            logger.debug(x + ":" + y);
+            
+            x = (int) (x * (canvasWidthOnHashMinor / kmeansCanvasMinor.getWidth()));
+            y = (int) (y * (canvasHeightOnHashMinor / kmeansCanvasMinor.getHeight()));
+            
+            logger.debug(canvasWidthOnHashMinor + ":" + canvasHeightOnHashMinor);
+            logger.debug(kmeansCanvasMinor.getWidth() / canvasWidthOnHashMinor + ":" + kmeansCanvasMinor.getHeight() / canvasHeightOnHashMinor);
+            logger.debug(x + ":" + y);
+            
+            String msg = "";
+            
+            try {
+                msg = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
+                dummy = (msg != null);
+            } catch (Exception e) {
+                //logger.debug(e.getMessage());
             }
-
+            
+            try {
+                if (!dummy) {
+                    msg = hashedPointsMinor.get(x).get(y);
+                    dummy = (msg != null);
+                }
+            } catch (Exception e) {
+                //logger.debug(e.getMessage());
+            }
+            
+            if (dummy) {
+                mousePositionToolTipMinor.setText(msg);
+                
+                if (!isLinked) mousePositionToolTipMinor.show(kmeansParentPaneMinor, event.getScreenX() + 50, event.getScreenY());
+            } else {
+                mousePositionToolTipMinor.hide();
+            }
         });
         
-        kmeansParentPaneMinor.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mousePositionToolTipMinor.hide();
-                tooManyCentroidsTooltipMinor.hide();
-            }
+        kmeansParentPaneMinor.setOnMouseExited((MouseEvent event) -> {
+            mousePositionToolTipMinor.hide();
+            tooManyCentroidsTooltipMinor.hide();
         });
+        
+        kmeansParentPaneMinor.setOnMouseClicked((MouseEvent event) -> {
+            Point p = new Point(event.getX()/kmeansCanvasMinor.getWidth() * 150, event.getY()/kmeansCanvasMinor.getHeight() * 150);
+            p.setCenterPointTrue();
+            if (!initModeMinor.equals("I'll choose")) {
+                tooManyCentroidsTooltipMinor.setText("Set initialization mode to \"I'll choose\"\n to set centroids manually");
+                tooManyCentroidsTooltipMinor.show(kmeansParentPaneMinor, event.getScreenX() + 50, event.getScreenY());
+            } else if (clusterCentersMinor.size() >= kOfKmeansMinor) {
+                tooManyCentroidsTooltipMinor.setText("Set k higher to set more centroids!");
+                tooManyCentroidsTooltipMinor.show(kmeansParentPaneMinor, event.getScreenX() + 50, event.getScreenY());
+            } else {
+                clusterCentersMinor.add(p);
+                visualizerMinor.drawCenter(p);
+                
+                if (clusterCentersMinor.size() == kOfKmeansMinor) {
+                    fakeActivateComputeButtonMinor();
+                }
+            }
+        }); 
         
         Tooltip recomputeDisabled = new Tooltip("hallo");
         computeButton.setTooltip(recomputeDisabled);
-        computeButton.setOnMouseMoved(new EventHandler<MouseEvent> () {
-            @Override
-            public void handle (MouseEvent e) {
-                if (!isDisabledComputeButton) return;
-                recomputeDisabled.setText("Cluster centers set does not match k");
-                recomputeDisabled.show(computeButton, e.getX(), e.getY());
-            }
+        computeButton.setOnMouseMoved((MouseEvent e) -> {
+            if (!isDisabledComputeButton) return;
+            recomputeDisabled.setText("Cluster centers set does not match k");
+            if (initMode.equals("I'll choose")) recomputeDisabled.show(computeButton, e.getX(), e.getY());
         });
 
-        computeButton.setOnMouseExited(new EventHandler<MouseEvent> () {
-            @Override
-            public void handle (MouseEvent e) {
-                recomputeDisabled.hide();
-            }
+        computeButton.setOnMouseExited((MouseEvent e) -> {
+            recomputeDisabled.hide();
         });
         
         Tooltip recomputeDisabledMinor = new Tooltip("hallo");
         computeButtonMinor.setTooltip(recomputeDisabledMinor);
-        computeButtonMinor.setOnMouseMoved(new EventHandler<MouseEvent> () {
-            @Override
-            public void handle (MouseEvent e) {
-                if (!isDisabledComputeButtonMinor) return;
-                recomputeDisabledMinor.setText("Cluster centers set does not match k");
-                recomputeDisabledMinor.show(computeButtonMinor, e.getX(), e.getY());
-            }
+        computeButtonMinor.setOnMouseMoved((MouseEvent e) -> {
+            if (!isDisabledComputeButtonMinor) return;
+            recomputeDisabledMinor.setText("Cluster centers set does not match k");
+            if (!isLinked && initModeMinor.equals("I'll choose")) recomputeDisabledMinor.show(computeButtonMinor, e.getX(), e.getY());
         });
 
-        computeButtonMinor.setOnMouseExited(new EventHandler<MouseEvent> () {
-            @Override
-            public void handle (MouseEvent e) {
-                recomputeDisabledMinor.hide();
-            }
+        computeButtonMinor.setOnMouseExited((MouseEvent e) -> {
+            recomputeDisabledMinor.hide();
         });
     }    
 }
