@@ -17,7 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 public class KMEANS {
     
-    public enum Initialization {RANDOM, FARTHEST, D2, USERCHOICE};
+    public enum Initialization {RANDOM, RANDOM_PARTITION, FARTHEST, D2, USERCHOICE};
+    public enum Update {LLOYD, MACQUEEN};
     
     // number of clusters (minimum is 2)
     private int numberClusters = 2;
@@ -40,30 +41,22 @@ public class KMEANS {
     // convergence
     private double convergenceThreshold = 1e-3;
 
-
-
-
     Logger logger = LogManager.getLogger(KMEANS.class);
 
+    //default constructor -> LLOYD, EUCLIDIAN, RANDOM
     public KMEANS(int numberClusters, int maxIter, ArrayList<Point> points) {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
         this.points = points;
-        setUpdateFunction("lloyd");
-        this.setConvergenceThreshold(1e-3);
-
+        this.updateFunction = "lloyd";
+        this.convergenceThreshold = 1e-3;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
         setClusterCenters();
 
-        if(this.getUpdateFunction() == "lloyd") {
-            findClosestClusterCenter(distanceFunction);
-        }
-
-
-
+        findClosestClusterCenter(distanceFunction);
 
         Algorithm algorithm = Algorithm.KMEANS;
         dat = new Data(this.points.size(), numberClusters, algorithm);
@@ -228,91 +221,121 @@ public class KMEANS {
     public void setCenters(ArrayList<Point> centers) {
         this.centers = centers;
     }
+    
+    // function finds the extent of the given dataset
+    public ArrayList<Double> getExtentFromDataPoints(ArrayList<Point> points) {
+
+        // extent[0]=minX; extent[1]=maxX; extent[2]=minY; extent[3]=maxY;
+        ArrayList<Double> extent = new ArrayList<>();
+
+
+        // get extent of data to randomly set the initial points
+        extent.add(Double.MAX_VALUE);      //minX
+        extent.add(Double.MIN_NORMAL);     //maxX
+        extent.add(Double.MAX_VALUE);      //minY
+        extent.add(Double.MIN_VALUE);     //maxY
+
+        // assign min and max x from points
+        for(Point p : points) {
+            if (p.getX() < extent.get(0))
+                extent.set(0, p.getX());
+            if (p.getX() > extent.get(1))
+                extent.set(1, p.getX());
+            if (p.getY() < extent.get(2))
+                extent.set(2, p.getY());
+            if (p.getY() > extent.get(3))
+                extent.set(3, p.getY());
+        }
+
+        //System.out.println(extent.size());
+
+        return extent;
+    }
 
     public void setClusterCenters() {
 
-        ClusteringController cc = new ClusteringController();
-
         // get extent from data
-        ArrayList<Double> extent = cc.getExtentFromDataPoints(this.points);
+        ArrayList<Double> extent = getExtentFromDataPoints(this.points);
 
-        System.out.println(init.toString());
+        logger.debug(init.toString());
 
-        // initialize data randomly
-        if(init == Initialization.RANDOM) {
-            for (int i = 0; i < this.numberClusters; i++) {
-                System.out.println(i + " from random initialization");
-                // create random values for centers
+        if(null != init) // initialize data randomly
+        switch (init) {
+            case RANDOM:
+                for (int i = 0; i < this.numberClusters; i++) {
+                    logger.trace(i + " from random initialization");
+                    // create random values for centers
+                    Random r = new Random();
+                    double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
+                    double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
+                    
+                    //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
+                    Point p = new Point(randomValueX, randomValueY);
+                    p.setCenterPointTrue();
+                    p.setClusterNumber(i);
+                    
+                    centers.add(p);
+                }   break;
+            case RANDOM_PARTITION:
+                for (int i = 0; i < this.numberClusters; i++) {
+                    
+                    //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
+                    Point p = new Point(-10-i, -10-i);
+                    p.setCenterPointTrue();
+                    p.setClusterNumber(i);
+                    
+                    centers.add(p);
+                }   break;
+            case FARTHEST:
+                break;
+            case D2:
+                int i = 0;
                 Random r = new Random();
                 double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
                 double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
-
                 //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
-                Point p = new Point(randomValueX, randomValueY);
-                p.setCenterPointTrue();
-                p.setClusterNumber(i);
-
-                centers.add(p);
-
-            }
-        } else if (init == Initialization.FARTHEST) {
-            
-        } else if (init == Initialization.D2) {
-            int i = 0;
-            Random r = new Random();
-            double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
-            double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
-
-            //System.out.println("Point: " + i + "x = " + randomValueX + "; y = " + randomValueY);
-            Point c0 = new Point(randomValueX, randomValueY);
-            c0.setCenterPointTrue();
-            c0.setClusterNumber(i++);
-            centers.add(c0);
-            
-            for (; i < numberClusters; ++i) {
-                ArrayList<Double> minDistances = new ArrayList<>();
-                double sumDistance = 0;
-                for (Point p : points) {
-                    double minDistance = Double.MAX_VALUE;
-                    for (Point c : centers) {
-                        if (Point.getDistanceBetweenPoints(c, p, distanceFunction) < minDistance) {
-                            minDistance = Point.getDistanceBetweenPoints(c, p, distanceFunction);
+                Point c0 = new Point(randomValueX, randomValueY);
+                c0.setCenterPointTrue();
+                c0.setClusterNumber(i++);
+                centers.add(c0);
+                for (; i < numberClusters; ++i) {
+                    ArrayList<Double> minDistances = new ArrayList<>();
+                    double sumDistance = 0;
+                    for (Point p : points) {
+                        double minDistance = Double.MAX_VALUE;
+                        for (Point c : centers) {
+                            if (Point.getDistanceBetweenPoints(c, p, distanceFunction) < minDistance) {
+                                minDistance = Point.getDistanceBetweenPoints(c, p, distanceFunction);
+                            }
                         }
+                        
+                        minDistances.add(minDistance);
+                        sumDistance += minDistance;
                     }
                     
-                    minDistances.add(minDistance);
-                    sumDistance += minDistance;
-                }
-                
-                while (centers.size() == i) {
-                    for (int j = 0; j < points.size(); ++j) {
-                        if (r.nextDouble() < minDistances.get(j)/sumDistance) {
-                            Point c = new Point(points.get(j));
-                            c.setCenterPointTrue();
-                            c.setClusterNumber(i);
-                            centers.add(c);
-                            break;
+                    while (centers.size() == i) {
+                        for (int j = 0; j < points.size(); ++j) {
+                            if (r.nextDouble() < minDistances.get(j)/sumDistance) {
+                                Point c = new Point(points.get(j));
+                                c.setCenterPointTrue();
+                                c.setClusterNumber(i);
+                                centers.add(c);
+                                break;
+                            }
                         }
                     }
-                }
-            }
-        } else if (init == Initialization.USERCHOICE) {
-            if (centers.size() != numberClusters) {
-                throw new IllegalArgumentException("cluster list passed by user does not match k");
-            }
-            
-            for (int i = 0; i < numberClusters; ++i) {
-                centers.get(i).setCenterPointTrue();
-                centers.get(i).setClusterNumber(i);
-            }
+                }   break;
+            case USERCHOICE:
+                if (centers.size() != numberClusters) {
+                    throw new IllegalArgumentException("cluster list passed by user does not match k");
+                }   for (int j = 0; j < numberClusters; ++j) {
+                    centers.get(j).setCenterPointTrue();
+                    centers.get(j).setClusterNumber(j);
+                }   break;
+            default:
+                break;
         }
-/*
 
-        System.out.println("Number CenterPoints = " + centers.size());
-
-        for(Point p : centers) {
-            System.out.println(p);
-        }*/
     }
 
     // function assigns each point to closest cluster
@@ -419,7 +442,7 @@ public class KMEANS {
         int i = 0;
 
 
-        if(this.getUpdateFunction() == "lloyd") {
+        if(updateFunction.equals("lloyd")) {
 
             // iterate until maxiter or convergence
             while((i < maxIterations) && (Math.abs(Math.abs(convergence) - Math.abs(old_Convergence)) > this.getConvergenceThreshold())) {
@@ -451,7 +474,6 @@ public class KMEANS {
                 dat.addIteration(iterationBuf, centersBuf);
 
 
-
                 ArrayList<Point> newCenters;
                 newCenters = this.getCenters();
 
@@ -469,7 +491,7 @@ public class KMEANS {
                 i += 1;
             }
 
-        } else if(this.getUpdateFunction() == "macqueen"){
+        } else if(updateFunction.equals("macqueen")){
 
             int numberPoints = this.points.size();
             String distanceFunction = this.getDistanceFunction();
@@ -484,10 +506,8 @@ public class KMEANS {
 
                 System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
 
-
                 // compute initial centroids
                 updateCentroids(computeNewCentroids());
-
 
                 // update macqueen style
                 for (int k = 0; k < numberPoints; k++) {
@@ -526,15 +546,8 @@ public class KMEANS {
                         }
                     }
 
-
                 }
-
-
-
-
-
-
-
+                
                 ArrayList<Point> newCenters;
                 newCenters = this.getCenters();
 
@@ -545,17 +558,14 @@ public class KMEANS {
                     convergence += Math.sqrt(actualCenters.get(j).getX() + newCenters.get(j).getX() * actualCenters.get(j).getY() + newCenters.get(j).getY());
                 }
 
-                System.out.println("Convergence = " + convergence);
+                logger.debug("Convergence = " + convergence);
 
                 logger.trace(this.getCenters());
 
-                i += 1;
+                i++;
 
             }
         }
-
-
-
 
 
         return this.dat;
