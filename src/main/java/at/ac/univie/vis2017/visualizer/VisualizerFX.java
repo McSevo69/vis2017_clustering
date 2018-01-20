@@ -362,7 +362,7 @@ public class VisualizerFX implements IVisualizer {
     
     
     public void drawPoint(Point p, double opaque) {
-        if (beforeComputation) {
+        if (beforeComputation || p.getClusterNumber() < 0) {
             gc.setFill(Color.BLACK);
         } else {
             gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
@@ -377,7 +377,7 @@ public class VisualizerFX implements IVisualizer {
         if (iteration < 0) return;
         //logger.debug("  not returned");
         
-        if (beforeComputation) {
+        if (beforeComputation || p.getClusterNumber() < 0) {
             gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,0,0.5)); // THAT'S DIRTY!!!
         } else {
             gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
