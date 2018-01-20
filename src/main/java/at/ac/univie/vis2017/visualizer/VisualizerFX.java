@@ -549,6 +549,9 @@ public class VisualizerFX implements IVisualizer {
                 if (showIteration) {
                     gc.setFill(Color.BLACK);
                     gc.fillText(iteration + "", canvas.getWidth()/20, canvas.getHeight()/10);
+                } else if (iteration == data.getIterations()-1) {
+                    gc.setFill(Color.BLACK);
+                    gc.fillText("converged", canvas.getWidth()/20, canvas.getHeight()/20);
                 }
             } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
 
