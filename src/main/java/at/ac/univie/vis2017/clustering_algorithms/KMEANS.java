@@ -54,12 +54,7 @@ public class KMEANS {
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
-        setClusterCenters();
-
-        findClosestClusterCenter(distanceFunction);
-
-        Algorithm algorithm = Algorithm.KMEANS;
-        dat = new Data(this.points.size(), numberClusters, algorithm);
+        initKmeans();
 
     }
 
@@ -68,24 +63,13 @@ public class KMEANS {
         this.maxIter = maxIter;
         this.points = points;
         this.init = init;
-        setUpdateFunction("lloyd");
-        this.setConvergenceThreshold(1e-3);
-
+        this.updateFunction = "lloyd";
+        this.convergenceThreshold = 1e-3;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
-        setClusterCenters();
-
-        if(this.getUpdateFunction() == "lloyd") {
-            findClosestClusterCenter(distanceFunction);
-        }
-
-
-
-
-        Algorithm algorithm = Algorithm.KMEANS;
-        dat = new Data(this.points.size(), numberClusters, algorithm);
+        initKmeans();
 
     }
 
@@ -93,25 +77,14 @@ public class KMEANS {
         this.numberClusters = numberClusters;
         this.maxIter = maxIter;
         this.points = points;
-        setUpdateFunction("lloyd");
-        this.setConvergenceThreshold(1e-3);
-
+        this.updateFunction = "lloyd";
+        this.convergenceThreshold = 1e-3;
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
         this.centers = new ArrayList<>(centers);
-        setClusterCenters();
-
-        if(this.getUpdateFunction() == "lloyd") {
-            findClosestClusterCenter(distanceFunction);
-        }
-
-
-
-
-        Algorithm algorithm = Algorithm.KMEANS;
-        dat = new Data(this.points.size(), numberClusters, algorithm);
+        initKmeans();
 
     }
 
@@ -120,26 +93,36 @@ public class KMEANS {
         this.maxIter = maxIter;
         this.points = points;
         this.init = init;
-        setUpdateFunction("lloyd");
-        this.setConvergenceThreshold(1e-3);
+        this.updateFunction = "lloyd";
+        this.convergenceThreshold = 1e-3;
 
 
         this.clusterNumber = new ArrayList<Integer>(Collections.nCopies(this.points.size(), 0));
 
         // set cluster centers before first iteration
-        this.centers = new ArrayList<>(centers);
+        this.centers = new ArrayList<>(centers);        
+        initKmeans();
+
+    }
+    
+    public void initKmeans() {
         setClusterCenters();
-
-        if(this.getUpdateFunction() == "lloyd") {
-            findClosestClusterCenter(distanceFunction);
-        }
-
-
-
 
         Algorithm algorithm = Algorithm.KMEANS;
         dat = new Data(this.points.size(), numberClusters, algorithm);
+        
+        ArrayList<Point> iterationBuf = new ArrayList<>();
+        for (Point p : points)
+            iterationBuf.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
 
+        ArrayList<Point> centersBuf = new ArrayList<>();
+        for (Point p : centers) {
+            Point a = new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber());
+            a.setClusterSize(p.getClusterSize());
+            centersBuf.add(a);
+        }
+
+        dat.addIteration(iterationBuf, centersBuf);
     }
 
     public double getConvergenceThreshold() {
@@ -432,7 +415,7 @@ public class KMEANS {
 
 
     public Data clusterData() {
-
+        
         double convergence = 1e10;
         double old_Convergence = 1e100;
         //double threshold = this.getConvergenceThreshold();
@@ -453,7 +436,7 @@ public class KMEANS {
                 ArrayList<Point> actualCenters;
                 actualCenters = this.getCenters();
 
-                System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
+                logger.trace("Cluster center of iteration " + i  + " = " + actualCenters);
 
 
                 findClosestClusterCenter(this.getDistanceFunction());
@@ -484,7 +467,7 @@ public class KMEANS {
                     convergence += Math.sqrt(actualCenters.get(j).getX() + newCenters.get(j).getX() * actualCenters.get(j).getY() + newCenters.get(j).getY());
                 }
 
-                System.out.println("Convergence = " + convergence);
+                logger.debug("Convergence = " + convergence);
 
                 logger.trace(this.getCenters());
 
