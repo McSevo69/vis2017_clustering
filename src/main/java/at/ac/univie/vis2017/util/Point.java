@@ -32,7 +32,7 @@ public class Point {
         this.y = y;
         this.centerX = 0;
         this.centerY = 0;
-        this.clusterNumber = 0;
+        this.clusterNumber = -1;
     }
     
     public Point(double x, double y, double centerX, double centerY, int clusterNumber) {

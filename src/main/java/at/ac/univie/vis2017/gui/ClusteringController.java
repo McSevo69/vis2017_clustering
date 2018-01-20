@@ -333,7 +333,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             ArrayList<Point> buffer = new ArrayList<>();
             for (Point p : initialStatePoints)
-                buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), -1));
             
             //logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
@@ -360,7 +360,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 this.initialStatePointsMinor = new ArrayList<Point>();
                 
                 for (Point p : initialStatePoints)
-                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                    initialStatePointsMinor.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), -1));
                 
                 Data datCopy = new Data(data);
                 visualizerMinor.setData(datCopy);
@@ -392,7 +392,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             ArrayList<Point> buffer = new ArrayList<>();
             for (Point p : initialStatePointsMinor)
-                buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), p.getClusterNumber()));
+                buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), -1));
             
             //logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, buffer));
