@@ -139,6 +139,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML Button computeButtonMinor;
     @FXML Button loadFromFileMinorButton;
     @FXML Button randomDataMinorButton;
+    @FXML Button randomDataButton;
     @FXML GridPane smallMultiplesGridPane;
     @FXML Label stepTwoLabel;
 
@@ -631,6 +632,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void iterateKmeans() {
         
         if (!isDisabledComputeButton) {
+            fakeDeactivateComputeButton();
                        
             if (initMode.equals("I'll choose")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, clusterCenters, KMEANS.Initialization.USERCHOICE);
@@ -690,6 +692,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 iterateKmeansMinor();
                 isDisabledComputeButtonMinor = true;
             }
+            
+            fakeActivateComputeButton();
         }
     }
     
@@ -960,6 +964,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansPressed() {
+        randomDataButton.setDisable(true);
         //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
         this.initialStatePoints  = createGaussianRandomData(90);
         //logger.debug("Random data generated");
@@ -1007,6 +1012,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             deactivateControlsMinor();
         }
         
+        randomDataButton.setDisable(false);      
     }
     
     public void randomDataKmeansMinorPressed() {

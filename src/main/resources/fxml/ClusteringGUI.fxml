@@ -543,7 +543,7 @@
                                                 <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="NEVER" />
                                              </rowConstraints>
                                              <children>
-                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#randomDataKmeansPressed" prefHeight="30.0" prefWidth="80.0" text="Random Dataset" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                <Button fx:id="randomDataButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#randomDataKmeansPressed" prefHeight="30.0" prefWidth="80.0" text="Random Dataset" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#loadKmeansFile" prefHeight="30.0" prefWidth="80.0" text="Load from file" GridPane.halignment="CENTER" />
                                              </children>
                                           </GridPane>
