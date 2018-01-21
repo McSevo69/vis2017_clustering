@@ -138,6 +138,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void setColorblindMode (boolean colorblindMode) {
         this.colorblindMode = colorblindMode;
+        draw();
     }
     
     public boolean getColorblindMode () {
@@ -386,7 +387,7 @@ public class VisualizerFX implements IVisualizer {
         }
 
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
-        if (true) {
+        if (colorblindMode) {
             switch (p.getClusterNumber()) {
                 case 0:
                     drawKaro(p);
