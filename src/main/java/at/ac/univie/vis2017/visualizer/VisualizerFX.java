@@ -62,6 +62,10 @@ public class VisualizerFX implements IVisualizer {
     private double colorValueChunk; // the space of 360 degrees is divided into
                                     // k equally sized chunks, where k is the
                                     // amount of clusters in the data.
+    private double colorLower = 20;
+    private double colorUpper = 200;
+    
+    private boolean colorblindMode = false;
     
     private int pSize = 5;
     private int cSize = 5;
@@ -130,6 +134,14 @@ public class VisualizerFX implements IVisualizer {
 */    
     public void setAfterComputation () {
         beforeComputation = false;
+    }
+    
+    public void setColorblindMode (boolean colorblindMode) {
+        this.colorblindMode = colorblindMode;
+    }
+    
+    public boolean getColorblindMode () {
+        return colorblindMode;
     }
     
     public void setAlgorithm (Algorithm algorithm) {
@@ -328,7 +340,11 @@ public class VisualizerFX implements IVisualizer {
     }
     
     private void setColorValueChunk () {
-        colorValueChunk = 360.0 / data.getK();
+        colorValueChunk = 2 * (colorUpper - colorLower) / data.getK();
+    }
+    
+    private double getHueByID (int id) {
+        return id * colorValueChunk + colorLower;
     }
     
     private double normalizeX (double x) {
@@ -365,11 +381,45 @@ public class VisualizerFX implements IVisualizer {
         if (beforeComputation || p.getClusterNumber() < 0) {
             gc.setFill(Color.BLACK);
         } else {
-            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
+//            gc.setFill(Color.hsb(p.getClusterNumber()*colorValueChunk,opaque,1));
+            gc.setFill(Color.hsb(getHueByID(p.getClusterNumber()),opaque,1));
         }
 
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
-        gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
+        if (true) {
+            switch (p.getClusterNumber()) {
+                case 0:
+                    drawKaro(p);
+                    break;
+                case 1:
+                    drawCross(p);
+                    break;
+                case 2:
+                    drawX(p);
+                    break;
+                case 3:
+                    drawTriangle(p);
+                    break;
+                case 4:
+                    drawStar(p);
+                    break;
+                case 5:
+                    gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
+                    break;
+                case 6:
+                    drawPentagon(p);
+                    break;
+                case 7:
+                    drawHashtag(p);
+                    break;
+                case -1:
+                    gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
+                    break;
+                default:
+            }
+        } else {
+            gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
+        }
     }
     
     public void drawCenter(Point p) {
@@ -378,9 +428,11 @@ public class VisualizerFX implements IVisualizer {
         //logger.debug("  not returned");
         
         if (beforeComputation || p.getClusterNumber() < 0) {
-            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,0,0.5)); // THAT'S DIRTY!!!
+//            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,0,0.5)); // THAT'S DIRTY!!!
+            gc.setFill(Color.hsb(getHueByID(p.getClusterNumber() + 1),0,0.5));
         } else {
-            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
+//            gc.setFill(Color.hsb((p.getClusterNumber()+1)*colorValueChunk,1,1)); // THAT'S DIRTY!!!
+            gc.setFill(Color.hsb(getHueByID(p.getClusterNumber() + 1),1,1));
         }
 
         gc.setStroke(Color.BLACK);
@@ -514,8 +566,8 @@ public class VisualizerFX implements IVisualizer {
         
         clearCanvas();
         
-        pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/80;
-        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/60;
+        pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/70;
+        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/70;
         
         //logger.debug("showPaths is set to:   " + showPaths);
         //logger.debug("showData is set to:    " + showData);
@@ -529,6 +581,7 @@ public class VisualizerFX implements IVisualizer {
         */
         if (data != null) {
             if (data.getAlgorithm() == Algorithm.KMEANS) {
+                
                 
                 if (showData) {
                     drawIterationData();
@@ -691,5 +744,77 @@ public class VisualizerFX implements IVisualizer {
         }
         
         return points;
+    }
+    
+    public void drawKaro (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 4;
+        double[] x = new double [] {pSize/2+pX, pSize+pX, pSize/2+pX, 0+pX};
+        double[] y = new double [] {0+pY, pSize/2+pY, pSize+pY, pSize/2+pY};
+        gc.fillPolygon(x, y, n);
+    }
+    
+    public void drawCross (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 12;
+        double[] x = new double [] {0+pX, pSize/2+pX, pSize/2+pX, pSize/2+pX+2, pSize/2+pX+2, pSize+pX+2, pSize+pX+2, pSize/2+pX+2, pSize/2+pX+2, pSize/2+pX, pSize/2+pX, 0+pX};
+        double[] y = new double [] {pSize/2+pY, pSize/2+pY, 0+pY, 0+pY, pSize/2+pY, pSize/2+pY, pSize/2+pY+2, pSize/2+pY+2, pSize+pY+2, pSize+pY+2, pSize/2+pY+2, pSize/2+pY+2};
+        gc.fillPolygon(x, y, n);
+    }
+    
+    public void drawTriangle (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 3;
+        double[] x = new double [] {0+pX, pSize/2+pX, pSize+pX};
+        double[] y = new double [] {pSize+pY, 0+pY, pSize+pY};
+        gc.fillPolygon(x, y, n);
+    }
+
+    public void drawStar (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 10;
+        double[] x = new double [] {0+pX, pSize/4+pX, pSize/2+pX, 3*pSize/4+pX, pSize+pX, 2*pSize/3+pX, 4*pSize/5+pX, pSize/2+pX, pSize/5+pX, pSize/3+pX};
+        double[] y = new double [] {pSize/3+pY, pSize/3+pY, 0+pY, pSize/3+pY, pSize/3+pY, 3*pSize/5+pY, pSize+pY, 3*pSize/5+pY, pSize+pY, 3*pSize/5+pY};
+        gc.fillPolygon(x, y, n);
+    }
+    
+    public void drawX (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 8;
+        double[] x = new double [] {0+pX, pSize/2+pX,   pSize+pX, 3*pSize/4+pX, pSize+pX, pSize/2+pX,   0+pX,     pSize/4+pX};
+        double[] y = new double [] {0+pY, pSize/4+pY, 0+pY,     pSize/2+pY,   pSize+pY, 3*pSize/4+pY, pSize+pY, pSize/2+pY};
+        gc.fillPolygon(x, y, n);
+    }
+    
+    public void drawPentagon (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 5;
+        double[] x = new double [] {0+pX, pSize/2+pX, pSize+pX, 4*pSize/5+pX, pSize/5+pX};
+        double[] y = new double [] {2*pSize/5+pY, 0+pY, 2*pSize/5+pY, pSize+pY, pSize+pY};
+        gc.fillPolygon(x, y, n);
+    }
+    
+    public void drawHashtag (Point p) {
+        double pX = normalizeX(p.getX());
+        double pY = normalizeY(p.getY());
+        int n = 4;
+        double[] x = new double [] {pSize/5+pX, 2*pSize/5+pX, 2*pSize/5+pX, pSize/5+pX};
+        double[] y = new double [] {0+pY, 0+pY, pSize+pY, pSize+pY};
+        gc.fillPolygon(x, y, n);
+        x = new double [] {0+pX, 0+pX, pSize+pX, pSize+pX};
+        y = new double [] {pSize/5+pY, 2*pSize/5+pY, 2*pSize/5+pY, pSize/5+pY};
+        gc.fillPolygon(x, y, n);
+        x = new double [] {3*pSize/5+pX, 4*pSize/5+pX, 4*pSize/5+pX, 3*pSize/5+pX};
+        y = new double [] {0+pY, 0+pY, pSize+pY, pSize+pY};
+        gc.fillPolygon(x, y, n);
+        x = new double [] {0+pX, 0+pX, pSize+pX, pSize+pX};
+        y = new double [] {3*pSize/5+pY, 4*pSize/5+pY, 4*pSize/5+pY, 3*pSize/5+pY};
+        gc.fillPolygon(x, y, n);
     }
 }
