@@ -1456,7 +1456,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             if (dummy) {
                 mousePositionToolTipMinor.setText(msg);
-                visualizerMinor.highlightCluster(clusterToHighlight);
+                visualizerMinor.highlightCluster(clusterToHighlight+1);
                 
                 Node node = (Node) event.getSource();
                 mousePositionToolTipMinor.show(node, event.getScreenX() + 50, event.getScreenY());
