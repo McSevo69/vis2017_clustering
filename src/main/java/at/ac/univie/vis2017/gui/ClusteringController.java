@@ -129,6 +129,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     @FXML CheckBox centroidPathKmeansCheckBoxMinor;
     @FXML CheckBox clusterCentersKmeansCheckBoxMinor;
     @FXML CheckBox dataPointsKmeansCheckBoxMinor;
+    @FXML CheckBox shapesCheckBox;
+    @FXML CheckBox shapesCheckBoxMinor;
     @FXML ChoiceBox<String> kmeansUpdateStratChoiceBox;
     @FXML ChoiceBox<String> kmeansInitChoiceBox;
     @FXML ChoiceBox<String> kmeansAlgorithmChoiceBox;
@@ -577,24 +579,28 @@ public class ClusteringController extends AnchorPane implements Initializable {
         centroidPathKmeansCheckBox.setDisable(false);
         clusterCentersKmeansCheckBox.setDisable(false);
         dataPointsKmeansCheckBox.setDisable(false);  
+        shapesCheckBox.setDisable(false);
     }
                 
     public void activateFiltersMinor() {
         centroidPathKmeansCheckBoxMinor.setDisable(false);
         clusterCentersKmeansCheckBoxMinor.setDisable(false);
-        dataPointsKmeansCheckBoxMinor.setDisable(false);     
+        dataPointsKmeansCheckBoxMinor.setDisable(false);   
+        shapesCheckBoxMinor.setDisable(false);
     }
     
     public void deactivateFilters() {
         centroidPathKmeansCheckBox.setDisable(true);
         clusterCentersKmeansCheckBox.setDisable(true);
-        dataPointsKmeansCheckBox.setDisable(true);  
+        dataPointsKmeansCheckBox.setDisable(true);
+        shapesCheckBox.setDisable(true);
     }
                 
     public void deactivateFiltersMinor() {
         centroidPathKmeansCheckBoxMinor.setDisable(true);
         clusterCentersKmeansCheckBoxMinor.setDisable(true);
-        dataPointsKmeansCheckBoxMinor.setDisable(true);     
+        dataPointsKmeansCheckBoxMinor.setDisable(true);
+        shapesCheckBoxMinor.setDisable(true);
     }
     
     public void restartManualKmeans() {
@@ -1007,6 +1013,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         clusterCenters.clear();
         
         if (isLinked) {
+            isComputedMinor = false;
             this.initialStatePointsMinor = new ArrayList<Point>();
                 
             for (Point p : initialStatePoints)
@@ -1266,6 +1273,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizerMinor.setShowData(newValue);
         });
         
+        shapesCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            //logger.debug("Show data points: " + newValue.toString());
+            visualizer.setColorblindMode(newValue);
+            for (VisualizerFX vis : multiples) vis.setColorblindMode(newValue);
+        });
+        
+        shapesCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            //logger.debug("Show data points Minor: " + newValue.toString());
+            visualizerMinor.setColorblindMode(newValue);
+        });
+        
         kmeansUpdateStratChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             //logger.debug("Update-strat (Main) set to " + newValue);
             this.strategy = newValue;
@@ -1386,7 +1404,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
             } else {
                 mousePositionToolTip.hide();
-                visualizer.draw();
+                if (isComputed) visualizer.draw();
             }
         });
         
@@ -1462,7 +1480,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 mousePositionToolTipMinor.show(node, event.getScreenX() + 50, event.getScreenY());
             } else {
                 mousePositionToolTipMinor.hide();
-                visualizerMinor.draw();
+                if (isComputedMinor) visualizerMinor.draw();
             }
         });
         
