@@ -966,13 +966,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void autoModePlayKmeans() {
         visualizer.setMode(Mode.AUTO);
         //logger.debug("setMode.AUTO pressed");
-        startAutoModeMainThread();      
+        startAutoModeMainThread();
+        //if (isLinked) autoModePlayKmeansMinor();
     }
     
     public void autoModePlayKmeansMinor() {
         visualizerMinor.setMode(Mode.AUTO);
         //logger.debug("setMode.AUTO pressed");
-        startAutoModeMinorThread();        
+        startAutoModeMinorThread();
     }
     
     public void autoModePauseKmeans() {
@@ -988,7 +989,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void autoModeRestartKmeans() {
         visualizer.restart();
-        visualizer.setMode(Mode.AUTO);
         //logger.debug("autoMode restarted");
         updateKmeansIteration();
         autoModePlayKmeans();
@@ -997,7 +997,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void autoModeRestartKmeansMinor() {
         visualizerMinor.restart();
-        visualizerMinor.setMode(Mode.AUTO);
         //logger.debug("autoMode (minor) restarted");
         updateKmeansIterationMinor();
         autoModePlayKmeansMinor();
