@@ -341,7 +341,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     private void setColorValueChunk () {
-        colorValueChunk = (colorUpper - colorLower) / data.getK();
+        colorValueChunk = (colorUpper - colorLower) / (data.getK()+1);
     }
     
     private double getHueByID (int id) {
@@ -388,7 +388,7 @@ public class VisualizerFX implements IVisualizer {
 
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
         if (colorblindMode) {
-            switch (p.getClusterNumber() % 8) {
+            switch (p.getClusterNumber()) {
                 case 1:
                     gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
                     break;
@@ -579,8 +579,8 @@ public class VisualizerFX implements IVisualizer {
         
         clearCanvas();
         
-        pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/70;
-        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/70;
+        pSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/60;
+        cSize = (int) ((canvas.getWidth() + canvas.getHeight())/2)/60;
         
         //logger.debug("showPaths is set to:   " + showPaths);
         //logger.debug("showData is set to:    " + showData);
