@@ -394,7 +394,7 @@ public class VisualizerFX implements IVisualizer {
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (p.getClusterNumber() == clusterID) {
-                drawPoint (p, 1);
+                drawPoint (p, 0.9);
             } 
         }
     }
