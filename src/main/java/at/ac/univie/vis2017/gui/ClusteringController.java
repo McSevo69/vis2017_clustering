@@ -211,6 +211,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         this.visualizer = new VisualizerFX();
         this.visualizerMinor = new VisualizerFX();
         this.initialStatePoints = new ArrayList<>();
+        this.initialStatePointsMinor = new ArrayList<>();
         this.clusterCenters = new ArrayList<>();
         this.clusterCentersMinor = new ArrayList<>();
         this.autoModeMainThread = new Thread();
@@ -1177,7 +1178,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 stepBackImage.setOpacity(1);
                 stepForwardImage.setDisable(false);
                 stepForwardImage.setOpacity(1);
-                visualizer.setIteration(newValue);
+                if (isComputed) visualizer.setIteration(newValue);
                 //logger.debug("Iteration set to " + newValue);        
                 if (visualizer.getIteration()+1 >= maxIterationsMain) {
                     stepForwardImage.setDisable(true);
@@ -1201,7 +1202,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansParentPaneMinor.getChildren().clear();
                 kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
                 visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
-                visualizerMinor.setIteration(newValue);
+                if (isComputedMinor) visualizerMinor.setIteration(newValue);
                 for (VisualizerFX vis : multiples) vis.setHighlight(false);
                 multiples.get(newValue).setHighlight(true);
                 //logger.debug("IterationMinor set to " + newValue);
@@ -1296,8 +1297,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
             this.initMode = newValue;
             if (newValue.equals("I'll choose")) {
                 fakeDeactivateComputeButton();
+                isComputed = false;
             } else {
                 clusterCenters.clear();
+                if (!initialStatePoints.isEmpty()) fakeActivateComputeButton();
             }
         });
         
@@ -1316,8 +1319,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
             this.initModeMinor = newValue;
             if (newValue.equals("I'll choose")) {
                 fakeDeactivateComputeButtonMinor();
+                isComputedMinor = false;
             } else {
                 clusterCentersMinor.clear();
+                if (!initialStatePointsMinor.isEmpty()) fakeActivateComputeButtonMinor();
             }
         });
         
