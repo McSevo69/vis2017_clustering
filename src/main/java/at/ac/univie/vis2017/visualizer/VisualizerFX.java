@@ -401,7 +401,7 @@ public class VisualizerFX implements IVisualizer {
                     drawTriangle(p);
                     break;
                 case 4:
-                    drawStar(p);
+                    drawHashtag(p);
                     break;
                 case 5:
                     gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
@@ -410,7 +410,7 @@ public class VisualizerFX implements IVisualizer {
                     drawPentagon(p);
                     break;
                 case 7:
-                    drawHashtag(p);
+                    drawStar(p);
                     break;
                 case -1:
                     gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
