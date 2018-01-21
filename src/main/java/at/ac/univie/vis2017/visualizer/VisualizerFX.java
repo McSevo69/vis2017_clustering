@@ -388,29 +388,29 @@ public class VisualizerFX implements IVisualizer {
 
 //        System.out.println("(" + (int)normalizeX(p.getX()) + "," + (int)normalizeY(p.getY()) + ") -> " + p.getClusterNumber());
         if (colorblindMode) {
-            switch (p.getClusterNumber()) {
-                case 0:
-                    drawKaro(p);
-                    break;
+            switch (p.getClusterNumber() % 8) {
                 case 1:
-                    drawCross(p);
-                    break;
-                case 2:
-                    drawX(p);
-                    break;
-                case 3:
-                    drawTriangle(p);
-                    break;
-                case 4:
-                    drawHashtag(p);
-                    break;
-                case 5:
                     gc.fillOval(normalizeX(p.getX()), normalizeY(p.getY()), pSize, pSize);
                     break;
+                case 2:
+                    drawKaro(p);
+                    break;
+                case 3:
+                    drawCross(p);
+                    break;
+                case 4:
+                    drawTriangle(p);
+                    break;
+                case 5:
+                    drawHashtag(p);
+                    break;
                 case 6:
-                    drawPentagon(p);
+                    drawX(p);
                     break;
                 case 7:
+                    drawPentagon(p);
+                    break;
+                case 8:
                     drawStar(p);
                     break;
                 case -1:
@@ -445,7 +445,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void highlightCluster(int clusterID) {
         int oldpSize = pSize;
-        pSize *= 1.2;
+        pSize *= 1.1;
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (p.getClusterNumber() == clusterID) {
