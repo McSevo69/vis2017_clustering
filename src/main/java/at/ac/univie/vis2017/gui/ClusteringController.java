@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
@@ -166,8 +167,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private double canvasHeightOnHashMinor;
     private double canvasWidthOnHashMinor;
     
-    private int maxIterationsMain;
-    private int maxIterationsMinor;
+    private int maxIterationsMain = 0;
+    private int maxIterationsMinor = 0;
     
     private String strategyMinor;
     private String algorithmMinor;
@@ -802,7 +803,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         }
     }
     
-    public void forwardKmeans() throws IndexOutOfBoundsException {
+    public void forwardKmeans() {
         stepForwardImage.setDisable(true);
         stepForwardImage.setOpacity(0.6);
         //logger.debug("forwardKmeans pressed");        
@@ -836,13 +837,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
             stepForwardImage.setOpacity(1);
             //throw new IndexOutOfBoundsException();
         }
-        
+         
     }
     
-    public void forwardKmeansMinor() throws IndexOutOfBoundsException {
+    public void forwardKmeansMinor() {
         stepForwardImageMinor.setDisable(true);
         stepForwardImageMinor.setOpacity(0.6);
         //logger.debug("forwardKmeansMinor pressed");
+
         if (!isLinked) {
             stepBackImageMinor.setDisable(false);
             stepBackImageMinor.setOpacity(1);
@@ -853,6 +855,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (visualizerMinor.getIteration()+1 < maxIterationsMinor){
             visualizerMinor.iterate();
             updateKmeansIterationMinor();
+
         }
         
         if (!isLinked) {        
@@ -865,6 +868,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             stepForwardImageMinor.setOpacity(0.6);
             //throw new IndexOutOfBoundsException();
         }
+        
     }
     
     public void startAutoModeMainThread(){
@@ -877,8 +881,15 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 while (isRunning) {
                     if (visualizer.getMode() == Mode.AUTO) {
                         try {
-                            forwardKmeans();
-                            sleep(autoModeSpeedMain);
+                            if (!stepForwardImage.isDisabled()) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        forwardKmeans();
+                                    }
+                                });                                
+                                sleep(autoModeSpeedMain);
+                            } else isRunning = false;                            
                         } catch (IndexOutOfBoundsException e) {
                             autoModePauseKmeans();
                             isRunning = false;                        
@@ -906,8 +917,15 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 while (isRunning) {
                     if (visualizerMinor.getMode() == Mode.AUTO) {
                         try {
-                            forwardKmeansMinor();
-                            sleep(autoModeSpeedMinor);
+                            if (!stepForwardImageMinor.isDisabled()) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        forwardKmeansMinor();
+                                    }
+                                }); 
+                                sleep(autoModeSpeedMinor);
+                            } else isRunning = false;
                         } catch (IndexOutOfBoundsException e) {
                             autoModePauseKmeansMinor();
                             isRunning = false;                        
