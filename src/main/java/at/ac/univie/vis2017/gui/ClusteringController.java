@@ -1322,7 +1322,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 isComputedMinor = false;
             } else {
                 clusterCentersMinor.clear();
-                if (!initialStatePointsMinor.isEmpty()) fakeActivateComputeButtonMinor();
+                if (!initialStatePointsMinor.isEmpty() && !isLinked) fakeActivateComputeButtonMinor();
             }
         });
         
