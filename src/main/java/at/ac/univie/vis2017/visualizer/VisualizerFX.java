@@ -62,8 +62,8 @@ public class VisualizerFX implements IVisualizer {
     private double colorValueChunk; // the space of 360 degrees is divided into
                                     // k equally sized chunks, where k is the
                                     // amount of clusters in the data.
-    private double colorLower = 20;
-    private double colorUpper = 200;
+    private double colorLower = 0;
+    private double colorUpper = 360;
     
     private boolean colorblindMode = false;
     
@@ -340,7 +340,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     private void setColorValueChunk () {
-        colorValueChunk = 2 * (colorUpper - colorLower) / data.getK();
+        colorValueChunk = (colorUpper - colorLower) / data.getK();
     }
     
     private double getHueByID (int id) {
@@ -443,12 +443,15 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void highlightCluster(int clusterID) {
+        int oldpSize = pSize;
+        pSize *= 1.2;
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (p.getClusterNumber() == clusterID) {
                 drawPoint (p, 0.9);
             } 
         }
+        pSize = oldpSize;
     }
     
     
