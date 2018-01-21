@@ -270,7 +270,6 @@
                                                                         <FXCollections fx:factory="observableArrayList">
                                                                            <String fx:value="K-means" />
                                                                            <String fx:value="K-medians" />
-                                                                           <String fx:value="K-medoids" />
                                                                         </FXCollections>
                                                                      </items>
                                                                   </ChoiceBox>
@@ -607,7 +606,6 @@
                                                       <FXCollections fx:factory="observableArrayList">
                                                             <String fx:value="K-means" />
                                                             <String fx:value="K-medians" />
-                                                            <String fx:value="K-medoids" />
                                                       </FXCollections>
                                                    </items>
                                                 </ChoiceBox>
