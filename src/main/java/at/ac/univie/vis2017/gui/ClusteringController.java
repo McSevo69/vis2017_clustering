@@ -850,7 +850,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             skipToStartImageMinor.setOpacity(1);
         }
         
-        if (visualizerMinor.getIteration() < maxIterationsMinor-1){
+        if (visualizerMinor.getIteration()+1 < maxIterationsMinor){
             visualizerMinor.iterate();
             updateKmeansIterationMinor();
         }
@@ -1179,6 +1179,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 stepForwardImage.setDisable(false);
                 stepForwardImage.setOpacity(1);
                 if (isComputed) visualizer.setIteration(newValue);
+                for (VisualizerFX vis : multiples) vis.setHighlight(false);
+                multiples.get(newValue).setHighlight(true);
                 //logger.debug("Iteration set to " + newValue);        
                 if (visualizer.getIteration()+1 >= maxIterationsMain) {
                     stepForwardImage.setDisable(true);
@@ -1203,8 +1205,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
                 visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 if (isComputedMinor) visualizerMinor.setIteration(newValue);
-                for (VisualizerFX vis : multiples) vis.setHighlight(false);
-                multiples.get(newValue).setHighlight(true);
                 //logger.debug("IterationMinor set to " + newValue);
             } else {
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(oldValue);
