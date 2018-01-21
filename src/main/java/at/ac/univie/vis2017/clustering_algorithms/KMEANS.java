@@ -27,7 +27,7 @@ public class KMEANS {
     // initial data points
     ArrayList<Point> points = new ArrayList<>();
     // actual data centers for each iteration
-     ArrayList<Point> centers = new ArrayList<>();
+    ArrayList<Point> centers = new ArrayList<>();
     // actual cluster numbers
     ArrayList<Integer> clusterNumber;
     // prepare Data object for
@@ -307,7 +307,7 @@ public class KMEANS {
                     c.setClusterSize(clusterSets.get(i).size());
                     c.setClusterNumber(i);
                     centers.add(c);
-                    System.out.println(c);
+                    logger.trace(c);
                 }
                 break;
             case FARTHEST:
@@ -527,7 +527,7 @@ public class KMEANS {
                 ArrayList<Point> actualCenters;
                 actualCenters = this.getCenters();
 
-                System.out.println("Cluster center of iteration " + i  + " = " + actualCenters);
+                logger.trace("Cluster center of iteration " + i  + " = " + actualCenters);
 
                 // compute initial centroids
                 updateCentroids(computeNewCentroids());

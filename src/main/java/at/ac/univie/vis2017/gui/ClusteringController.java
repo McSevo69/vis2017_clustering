@@ -89,11 +89,7 @@ import org.apache.logging.log4j.Logger;
  * ClusteringController
  */
 public class ClusteringController extends AnchorPane implements Initializable {
-    
-    //@FXML TabPane tabPaneMenu;    
-    //@FXML Tab kmeansTab;       
-    //@FXML Tab dbscanTab;     
-    //@FXML Tab opticsTab;  
+     
     @FXML SwingNode kmeansNode;
     @FXML Canvas kmeansCanvasMain;
     @FXML Canvas kmeansCanvasMinor;
@@ -247,38 +243,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         return data;
     }
-
-    public ArrayList<Point> createRandomData(int nrObservations, double boundsX, double boundsY) {
-
-        // array list for data points
-        ArrayList<Point> data = new ArrayList<>();
-
-        // extent[0]=minX; extent[1]=maxX; extent[2]=minY; extent[3]=maxY;
-        ArrayList<Double> extent = new ArrayList<>();
-
-
-        // get extent of data to randomly set the initial points
-//        extent.add(-1.0 * boundsX);         //minX
-        extent.add(0.0);                    //minX
-        extent.add(boundsX);                //maxX
-//        extent.add(-1.0 * boundsY);         //minY
-        extent.add(0.0);                    //minY
-        extent.add(boundsY);                //maxY
-
-        for (int i = 0; i < nrObservations; i++) {
-            Random r = new Random();
-
-            // create random values within given bounds
-            double randomValueX = extent.get(0)  + (extent.get(1)  - extent.get(0) ) * r.nextDouble();
-            double randomValueY = extent.get(2)  + (extent.get(3)  - extent.get(2) ) * r.nextDouble();
-
-            // add new point to existing data set
-            data.add(new Point(randomValueX, randomValueY));
-
-        }
-
-        return data;
-    }
     
     // read data from txt-file
     // http://people.cs.nctu.edu.tw/~rsliang/dbscan/testdatagen.html
@@ -326,7 +290,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 logger.error("Empty file selected");
             }
         } catch (NullPointerException ex) {
-            //logger.debug("File opening aborted");
+            logger.info("File opening aborted");
         }   
         
         return datasetPath;
@@ -341,17 +305,16 @@ public class ClusteringController extends AnchorPane implements Initializable {
             for (Point p : initialStatePoints)
                 buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), -1));
             
-            //logger.debug("File loaded successfully");
+            logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePoints.size(), Algorithm.KMEANS, buffer));
             visualizer.setData(data);
             hashedPoints = visualizer.hashPoints(data);
             canvasWidthOnHash = kmeansCanvasMain.getWidth();
             canvasHeightOnHash = kmeansCanvasMain.getHeight();
             visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-            //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
             iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
-            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            logger.debug("Iteration Spinner updated. New value: " + 0);
             
             visualizer.clearCanvas();
             visualizer.drawIterationData();
@@ -359,7 +322,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             //logger.debug("Controls are deactivated.");
             deactivateControls();
             //TODO check if I'll choose is set
-            fakeActivateComputeButton();
+            if (!initMode.equals("I'll choose")) fakeActivateComputeButton();
             isComputed = false;
             pointsKmeansSlider.setDisable(false);
             
@@ -377,12 +340,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
  
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-                //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
+                logger.debug("IterationSpinnerMinor updated. New value: " + 0);
 
                 visualizerMinor.clearCanvas();
                 visualizerMinor.drawIterationData();
 
-                //logger.debug("ControlsMinor are deactivated.");
+                logger.debug("ControlsMinor are deactivated.");
                 deactivateControlsMinor();
                 pointsKmeansSliderMinor.setDisable(false);
             }
@@ -402,22 +365,21 @@ public class ClusteringController extends AnchorPane implements Initializable {
             for (Point p : initialStatePointsMinor)
                 buffer.add(new Point(p.getX(), p.getY(), p.getCenterX(), p.getCenterY(), -1));
             
-            //logger.debug("File loaded successfully");
+            logger.debug("File loaded successfully");
             Data data = new Data(new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, buffer));
             visualizerMinor.setData(data);
             hashedPointsMinor = visualizerMinor.hashPoints(data);
             canvasWidthOnHashMinor = kmeansCanvasMinor.getWidth();
             canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
             visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-            //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            logger.debug("Iteration Spinner updated. New value: " + 0);
             
             visualizerMinor.clearCanvas();
             visualizerMinor.drawIterationData();
             
-            //logger.debug("Controls are deactivated.");
+            logger.debug("Controls are deactivated.");
             deactivateControlsMinor();
             randomDataMinorButton.setDisable(false);
             loadFromFileMinorButton.setDisable(false);
@@ -552,8 +514,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             multiples.get(i).setShowPaths(centroidPathKmeansCheckBox.selectedProperty().get());
             multiples.get(i).setShowIteration(true);
             multiples.get(i).draw();         
-        }
-        
+        }        
     }
     
     public void activateControlsMinor() {
@@ -607,7 +568,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void restartManualKmeans() {
         visualizer.restart();
-        //logger.debug("restartKmeans pressed");
+        logger.debug("restartKmeans pressed");
         updateKmeansIteration();
         stepForwardImage.setDisable(false);
         stepForwardImage.setOpacity(1);
@@ -620,7 +581,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void restartManualKmeansMinor() {
         visualizerMinor.restart();
-        //logger.debug("restartKmeansMinor pressed");
+        logger.debug("restartKmeansMinor pressed");
         updateKmeansIterationMinor();
         if (!isLinked) {
             stepForwardImageMinor.setDisable(false);
@@ -634,12 +595,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void updateKmeansIteration(){
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(visualizer.getIteration());
-        //logger.debug("Iteration Spinner updated. New value: " + visualizer.getIteration());
+        logger.debug("Iteration Spinner updated. New value: " + visualizer.getIteration());
     }
     
     public void updateKmeansIterationMinor(){
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(visualizerMinor.getIteration());
-        //logger.debug("Iteration Spinner for Minor updated. New value: " + visualizerMinor.getIteration());
+        logger.debug("Iteration Spinner for Minor updated. New value: " + visualizerMinor.getIteration());
     }
     
     public void iterateKmeans() {
@@ -653,7 +614,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.D2);
             } else if (initMode.equals("Random centroids")) {
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
-//            } else if (initMode.equals("Random partitioning")) {
             } else {
                 logger.debug("random partitioning");
                 this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints, KMEANS.Initialization.RANDOM_PARTITION);
@@ -663,7 +623,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansAlgorithm.setDistanceFunction("manhattan");
             }
 
-    //      this.kmeansAlgorithm = new KMEANS(kOfKmeans, 100, initialStatePoints);
             Data dat = kmeansAlgorithm.clusterData();
             logger.debug("centroids after calculation: " + dat.getIterationCenters(0).size());
 
@@ -675,9 +634,9 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizer.setData(dat);
             visualizer.setAfterComputation();
             visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-            //logger.debug("iterateKmeans pressed");
-            //logger.debug("Controls are activated.");
-            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            logger.debug("iterateKmeans pressed");
+            logger.debug("Controls are activated.");
+            logger.debug("Iteration Spinner updated. New value: " + 0);
             activateControls();
             restartManualKmeans();
             activateFilters();
@@ -730,7 +689,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor);
             } else {
                 this.kmeansAlgorithmMinor = new KMEANS(kOfKmeansMinor, 100, initialStatePointsMinor, KMEANS.Initialization.RANDOM_PARTITION);
-                //TODO random partitioning
             }
 
             if (algorithmMinor.equals("K-medians")) {
@@ -746,9 +704,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
 
             visualizerMinor.setAfterComputation();
             visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
-            //logger.debug("iterateKmeans pressed");
-            //logger.debug("Controls are activated.");
-            //logger.debug("Iteration Spinner updated. New value: " + 0);
+            logger.debug("iterateKmeans pressed");
+            logger.debug("Controls are activated.");
             if (!isLinked) activateControlsMinor();
             activateFiltersMinor();
             restartManualKmeansMinor();
@@ -766,7 +723,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (visualizer.getIteration() > 0) {
         
             visualizer.stepback();
-            //logger.debug("stepBackKmeans pressed");
+            logger.debug("stepBackKmeans pressed");
             updateKmeansIteration();
             
             if (visualizer.getIteration() > 0) {
@@ -788,7 +745,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
         if (visualizerMinor.getIteration() > 0) {
         
             visualizerMinor.stepback();
-            //logger.debug("stepBackKmeansMinor pressed");
+            logger.debug("stepBackKmeansMinor pressed");
             updateKmeansIterationMinor();
             
             if (visualizerMinor.getIteration() > 0 && !isLinked) {
@@ -806,7 +763,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void forwardKmeans() {
         stepForwardImage.setDisable(true);
         stepForwardImage.setOpacity(0.6);
-        //logger.debug("forwardKmeans pressed");        
+        logger.debug("forwardKmeans pressed");        
                 
         stepBackImage.setDisable(false);
         stepBackImage.setOpacity(1);
@@ -843,7 +800,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     public void forwardKmeansMinor() {
         stepForwardImageMinor.setDisable(true);
         stepForwardImageMinor.setOpacity(0.6);
-        //logger.debug("forwardKmeansMinor pressed");
+        logger.debug("forwardKmeansMinor pressed");
 
         if (!isLinked) {
             stepBackImageMinor.setDisable(false);
@@ -894,7 +851,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                             autoModePauseKmeans();
                             isRunning = false;                        
                         } catch (InterruptedException ex) {
-                             //logger.debug(ex.getMessage());
+                             logger.info(ex.getMessage());
                              isRunning = false; 
                         }
                     } else {
@@ -930,7 +887,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                             autoModePauseKmeansMinor();
                             isRunning = false;                        
                         } catch (InterruptedException ex) {
-                             //logger.debug(ex.getMessage());
+                             logger.info(ex.getMessage());
                              isRunning = false; 
                         }
                     } else {
@@ -965,31 +922,30 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void autoModePlayKmeans() {
         visualizer.setMode(Mode.AUTO);
-        //logger.debug("setMode.AUTO pressed");
+        logger.debug("setMode.AUTO pressed");
         startAutoModeMainThread();
-        //if (isLinked) autoModePlayKmeansMinor();
     }
     
     public void autoModePlayKmeansMinor() {
         visualizerMinor.setMode(Mode.AUTO);
-        //logger.debug("setMode.AUTO pressed");
+        logger.debug("setMode.AUTO pressed");
         startAutoModeMinorThread();
     }
     
     public void autoModePauseKmeans() {
         visualizer.setMode(Mode.MANUAL);
-        //logger.debug("setMode.MANUAL pressed");
+        logger.debug("setMode.MANUAL pressed");
         if (isLinked) autoModePauseKmeansMinor();
     }
     
     public void autoModePauseKmeansMinor() {
         visualizerMinor.setMode(Mode.MANUAL);
-        //logger.debug("setMode.MANUAL pressed");
+        logger.debug("setMode.MANUAL pressed");
     }
     
     public void autoModeRestartKmeans() {
         visualizer.restart();
-        //logger.debug("autoMode restarted");
+        logger.debug("autoMode restarted");
         updateKmeansIteration();
         autoModePlayKmeans();
         if (isLinked) autoModeRestartKmeansMinor();
@@ -997,16 +953,15 @@ public class ClusteringController extends AnchorPane implements Initializable {
     
     public void autoModeRestartKmeansMinor() {
         visualizerMinor.restart();
-        //logger.debug("autoMode (minor) restarted");
+        logger.debug("autoMode (minor) restarted");
         updateKmeansIterationMinor();
         autoModePlayKmeansMinor();
     }
     
     public void randomDataKmeansPressed() {
         randomDataButton.setDisable(true);
-        //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
         this.initialStatePoints  = createGaussianRandomData(90);
-        //logger.debug("Random data generated");
+        logger.debug("Random data generated");
         Data dat = new Data(initialStatePoints.size(), Algorithm.KMEANS, initialStatePoints);
         visualizer.setData(dat);
         hashedPoints = visualizer.hashPoints(dat);
@@ -1014,15 +969,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
         canvasHeightOnHash = kmeansCanvasMain.getHeight();
         
         visualizer.setSpeed(pointsKmeansSlider.valueProperty().intValue());
-        //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
         iterationKmeansSpinner.valueFactoryProperty().get().setValue(0);
-        //logger.debug("Iteration Spinner updated. New value: " + 0);
+        logger.debug("Iteration Spinner updated. New value: " + 0);
         
         visualizer.clearCanvas();
         visualizer.drawIterationData();
         
-        //logger.debug("Controls are deactivated.");
+        logger.debug("Controls are deactivated.");
         deactivateControls();
         if (!initMode.equals("I'll choose")) {
             fakeActivateComputeButton();
@@ -1043,12 +997,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
             visualizerMinor.setSpeed(pointsKmeansSlider.valueProperty().intValue());
 
             iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-            //logger.debug("IterationSpinnerMinor updated. New value: " + 0);
+            logger.debug("IterationSpinnerMinor updated. New value: " + 0);
 
             visualizerMinor.clearCanvas();
             visualizerMinor.drawIterationData();
 
-            //logger.debug("ControlsMinor are deactivated.");
+            logger.debug("ControlsMinor are deactivated.");
             deactivateControlsMinor();
             pointsKmeansSliderMinor.setDisable(false);
         }
@@ -1058,9 +1012,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void randomDataKmeansMinorPressed() {
-        //this.initialStatePoints  = createRandomData(500, 140.0, 140.0);
         this.initialStatePointsMinor  = createGaussianRandomData(90);
-        //logger.debug("Random data generated");
+        logger.debug("Random data generated");
         Data dat = new Data(initialStatePointsMinor.size(), Algorithm.KMEANS, initialStatePointsMinor);
         visualizerMinor.setData(dat);
         hashedPointsMinor = visualizerMinor.hashPoints(dat);
@@ -1068,15 +1021,14 @@ public class ClusteringController extends AnchorPane implements Initializable {
         canvasHeightOnHashMinor = kmeansCanvasMinor.getHeight();
         
         visualizerMinor.setSpeed(pointsKmeansSliderMinor.valueProperty().intValue());
-        //visualizer.drawInitialState(kmeansCanvasMain.getGraphicsContext2D(), initialStatePoints);
         
         iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(0);
-        //logger.debug("Iteration Spinner Minor updated. New value: " + 0);
+        logger.debug("Iteration Spinner Minor updated. New value: " + 0);
         
         visualizerMinor.clearCanvas();
         visualizerMinor.drawIterationData();
         
-        //logger.debug("Controls are deactivated.");
+        logger.debug("Controls are deactivated.");
         deactivateControlsMinor();
         deactivateFiltersMinor();
         randomDataMinorButton.setDisable(false);
@@ -1088,7 +1040,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
     }
     
     public void changeNavigationLinkage() {
-        //logger.debug("ChangeNavigation called");
+        logger.debug("ChangeNavigation called");
         if (isLinked) {
             linkageImage.setImage(new Image("images/Broken_Link_32px.png"));
             initModeMinor = kmeansInitChoiceBoxMinor.selectionModelProperty().get().getSelectedItem();
@@ -1198,7 +1150,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 if (isComputed) visualizer.setIteration(newValue);
                 for (VisualizerFX vis : multiples) vis.setHighlight(false);
                 multiples.get(newValue).setHighlight(true);
-                //logger.debug("Iteration set to " + newValue);        
+                logger.debug("Iteration set to " + newValue);        
                 if (visualizer.getIteration()+1 >= maxIterationsMain) {
                     stepForwardImage.setDisable(true);
                     stepForwardImage.setOpacity(0.6);
@@ -1222,7 +1174,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
                 visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 if (isComputedMinor) visualizerMinor.setIteration(newValue);
-                //logger.debug("IterationMinor set to " + newValue);
+                logger.debug("IterationMinor set to " + newValue);
             } else {
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(oldValue);
             }
@@ -1231,23 +1183,23 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kOfKmeansSpinner.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             kOfKmeans = newValue;
             if (isLinked) kOfKmeansSpinnerMinor.valueFactoryProperty().get().valueProperty().setValue(newValue);
-            //logger.debug("kOfKmeans set to " + newValue);
+            logger.debug("kOfKmeans set to " + newValue);
         });
         
         kOfKmeansSpinnerMinor.valueFactoryProperty().get().valueProperty().addListener((observable, oldValue, newValue) -> {
             kOfKmeansMinor = newValue;
-            //logger.debug("kOfKmeansMinor set to " + newValue);
+            logger.debug("kOfKmeansMinor set to " + newValue);
         });
                 
         pointsKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizer.setSpeed(newValue.intValue());
-            //logger.debug("new speed set: " + newValue.intValue());
+            logger.debug("new speed set: " + newValue.intValue());
             if (isLinked) pointsKmeansSliderMinor.valueProperty().setValue(newValue.intValue());
         });
         
         pointsKmeansSliderMinor.valueProperty().addListener((observable, oldValue, newValue) -> {
             visualizerMinor.setSpeed(newValue.intValue());
-            //logger.debug("Minor: new speed set: " + newValue.intValue());
+            logger.debug("Minor: new speed set: " + newValue.intValue());
         });
         
         speedKmeansSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -1262,55 +1214,55 @@ public class ClusteringController extends AnchorPane implements Initializable {
         
         //Checkboxes
         centroidPathKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show centroid paths: " + newValue.toString());
+            logger.debug("Show centroid paths: " + newValue.toString());
             visualizer.setShowPaths(newValue);
             for (VisualizerFX vis : multiples) vis.setShowPaths(newValue);
         });
         
         centroidPathKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show centroid paths Minor: " + newValue.toString());
+            logger.debug("Show centroid paths Minor: " + newValue.toString());
             visualizerMinor.setShowPaths(newValue);
         });
         
         clusterCentersKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show cluster centers: " + newValue.toString());
+            logger.debug("Show cluster centers: " + newValue.toString());
             visualizer.setShowCenters(newValue);
             for (VisualizerFX vis : multiples) vis.setShowCenters(newValue);
         });
         
         clusterCentersKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show cluster centers Minor " + newValue.toString());
+            logger.debug("Show cluster centers Minor " + newValue.toString());
             visualizerMinor.setShowCenters(newValue);
         });
         
         dataPointsKmeansCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show data points: " + newValue.toString());
+            logger.debug("Show data points: " + newValue.toString());
             visualizer.setShowData(newValue);
             for (VisualizerFX vis : multiples) vis.setShowData(newValue);
         });
         
         dataPointsKmeansCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show data points Minor: " + newValue.toString());
+            logger.debug("Show data points Minor: " + newValue.toString());
             visualizerMinor.setShowData(newValue);
         });
         
         shapesCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show data points: " + newValue.toString());
+            logger.debug("Show data points: " + newValue.toString());
             visualizer.setColorblindMode(newValue);
         });
         
         shapesCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Show data points Minor: " + newValue.toString());
+            logger.debug("Show data points Minor: " + newValue.toString());
             visualizerMinor.setColorblindMode(newValue);
         });
         
         kmeansUpdateStratChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Update-strat (Main) set to " + newValue);
+            logger.debug("Update-strat (Main) set to " + newValue);
             this.strategy = newValue;
         });
         
         kmeansInitChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Init-strat (Main) set to " + newValue);
+            logger.debug("Init-strat (Main) set to " + newValue);
             this.initMode = newValue;
             if (newValue.equals("I'll choose")) {
                 fakeDeactivateComputeButton();
@@ -1322,17 +1274,17 @@ public class ClusteringController extends AnchorPane implements Initializable {
         });
         
         kmeansAlgorithmChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Algorithm (Main) set to " + newValue);
+            logger.debug("Algorithm (Main) set to " + newValue);
             this.algorithm = newValue;
         });
         
         kmeansUpdateStratChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Update-strat (Minor) set to " + newValue);
+            logger.debug("Update-strat (Minor) set to " + newValue);
             this.strategyMinor = newValue;
         });
         
         kmeansInitChoiceBoxMinor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            //logger.debug("Init-strat (Minor) set to " + newValue);
+            logger.debug("Init-strat (Minor) set to " + newValue);
             this.initModeMinor = newValue;
             if (newValue.equals("I'll choose")) {
                 fakeDeactivateComputeButtonMinor();
@@ -1356,21 +1308,10 @@ public class ClusteringController extends AnchorPane implements Initializable {
         kmeansInitChoiceBoxMinor.getSelectionModel().selectFirst();
         kmeansAlgorithmChoiceBoxMinor.getSelectionModel().selectFirst();
                        
-        //visualizer.drawBorder(gc);
         visualizer.bindProperties(kmeansCanvasMain, kmeansParentPane);
         visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
-//        visualizer.drawShapes(gc);
-
-        //visualizer.drawShapes(kmeansCanvasStart.getGraphicsContext2D());
-        //visualizer.drawShapes(kmeansCanvasMiddle.getGraphicsContext2D());
-        //visualizer.drawShapes(kmeansCanvasEnd.getGraphicsContext2D());
         
         kmeansParentPane.setStyle("-fx-border-color: black");
-        //kmeansParentPane.minWidthProperty().bind(kmeansParentPane.heightProperty());
-        //kmeansParentPane.maxWidthProperty().bind(kmeansParentPane.heightProperty());
-        //kmeansParentPane.setPrefWidth(kmeansParentPane.getMaxHeight());
-        //kmeansParentPane.widthProperty().
-        //gridPaneControl.minWidthProperty().bind(kmeansParentPane.heightProperty());
 
         deactivateControls();
         deactivateControlsMinor();
@@ -1404,7 +1345,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     clusterToHighlight = hoveredCenter.getClusterNumber();
                 }
             } catch (Exception e) {
-                //logger.debug(e.getMessage());
+                //logger.trace(e.getMessage());
             }
             
             try {
@@ -1417,7 +1358,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     }
                 }
             } catch (Exception e) {
-                //logger.debug(e.getMessage());
+                //logger.trace(e.getMessage());
             }
             
             if (dummy) {
@@ -1480,7 +1421,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     clusterToHighlight = hoveredCenter.getClusterNumber();
                 }
             } catch (Exception e) {
-                //logger.debug(e.getMessage());
+                //logger.trace(e.getMessage());
             }
             
             try {
@@ -1493,7 +1434,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     }
                 }
             } catch (Exception e) {
-                //logger.debug(e.getMessage());
+                //logger.trace(e.getMessage());
             }
             
             if (dummy) {

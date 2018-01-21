@@ -366,26 +366,6 @@ public class VisualizerFX implements IVisualizer {
     private double normalizeY (double y) {
         return (y/maxY) * canvas.getHeight();
     }
-
-    /*public void drawInitialState(GraphicsContext gc, ArrayList<Point> is) {
-        
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        
-        double height = gc.getCanvas().getHeight();
-        double width = gc.getCanvas().getWidth();
-        //double canvasHeight = 500;
-        //double canvasWidth = 500;
-        double normalize = 150.0;
-        
-        gc.setFill(Color.BLACK);
-                
-        for (Point point : is) {
-            gc.setStroke(Color.WHITE);
-            gc.fillOval((point.getX()/normalize)*width, (point.getY()/normalize)*height, pSize, pSize);
-        }
-        
-    }*/
     
     
     public void drawPoint(Point p, double opaque) {
@@ -467,7 +447,7 @@ public class VisualizerFX implements IVisualizer {
     
     
     public void drawIterationData() {
-        //logger.debug("executing drawIterationData");
+        logger.debug("executing drawIterationData");
         if (data.getIterationData(0) == null) return;
         for (Point p : data.getIterationData(iteration)) {
             if (pointIterator == 0) {
@@ -481,11 +461,11 @@ public class VisualizerFX implements IVisualizer {
         
         try {        
             if (data.getIterationData(iteration+1) == null) {
-                //logger.debug("no " + iteration + "+1 found!");
+                logger.debug("no " + iteration + "+1 found!");
                 return;
             }
         } catch (java.lang.IndexOutOfBoundsException ex) {
-            //logger.debug("no " + iteration + "+1 found!");
+            logger.debug("no " + iteration + "+1 found!");
             return;   
         }
         ArrayList<Point> points = data.getIterationData(iteration+1);
@@ -506,7 +486,7 @@ public class VisualizerFX implements IVisualizer {
     }
 
     public void drawIterationCenters () {
-        //logger.debug("executing drawIterationCenters");
+        logger.debug("executing drawIterationCenters");
         try {
             if (data.getIterationCenters(0) == null) return;
         } catch (java.lang.IndexOutOfBoundsException ex) {
@@ -519,7 +499,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     public void drawIterationPaths () {
-        //logger.debug("executing drawIterationPaths");
+        logger.debug("executing drawIterationPaths");
         if (data.getIterationCenters(0) == null) return;
         for (int i = 0; i < data.getIterationCenters(iteration).size(); ++i) {
             for (int j = 1; j <= iteration; ++j) {
@@ -733,19 +713,7 @@ public class VisualizerFX implements IVisualizer {
                 }
             }
         }
-        /*
-        for (int i = 0; i < centers.size(); ++i) {
-            //logger.debug("in iteration: " + i + ":");
-            for (int j = 0; j < centers.get(i).size(); ++j) {
-                for (int k = 0; k < centers.get(i).get(j).size(); ++k) {
-                    if (centers.get(i).get(j).get(k) != null) {
-                        //logger.debug(j + ":" + k);
-                        //logger.debug(centers.get(i).get(j).get(k));
-                    }
-                }
-            }
-        }
-        */
+
         return centers;
     }
     
@@ -764,7 +732,6 @@ public class VisualizerFX implements IVisualizer {
         for (Point p : data.getIterationData(0)) {
             for (int i = 0; i < pSize; ++i) {
                 for (int j = 0; j < pSize; ++j) {
-                    //String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY());
                     points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, new Point(p));
                 }
             }
