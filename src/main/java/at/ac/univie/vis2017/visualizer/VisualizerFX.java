@@ -148,6 +148,7 @@ public class VisualizerFX implements IVisualizer {
     
     public void setHighlight (boolean highlight) {
         this.highlight = highlight;
+        draw();
     }
     
     public boolean getHighlight () {

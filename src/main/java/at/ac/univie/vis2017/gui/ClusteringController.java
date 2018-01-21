@@ -685,6 +685,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             updateSmallMultiples(dat);
             skipToStartImage.setDisable(true);
             skipToStartImage.setOpacity(0.6);
+            multiples.get(0).setHighlight(true);
 
             if (isLinked) {                
                 this.initialStatePointsMinor = new ArrayList<Point>();
@@ -1201,6 +1202,8 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 kmeansParentPaneMinor.getChildren().add(kmeansCanvasMinor);
                 visualizerMinor.bindProperties(kmeansCanvasMinor, kmeansParentPaneMinor);
                 visualizerMinor.setIteration(newValue);
+                for (VisualizerFX vis : multiples) vis.setHighlight(false);
+                multiples.get(newValue).setHighlight(true);
                 //logger.debug("IterationMinor set to " + newValue);
             } else {
                 iterationKmeansSpinnerMinor.valueFactoryProperty().get().setValue(oldValue);
