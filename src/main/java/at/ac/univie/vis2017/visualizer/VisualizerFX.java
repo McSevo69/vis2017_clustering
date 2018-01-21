@@ -390,6 +390,15 @@ public class VisualizerFX implements IVisualizer {
         gc.strokeRect(normalizeX(p.getX()), normalizeY(p.getY()), cSize, cSize);
     }
     
+    public void highlightCluster(int clusterID) {
+        if (data.getIterationData(0) == null) return;
+        for (Point p : data.getIterationData(iteration)) {
+            if (p.getClusterNumber() == clusterID) {
+                drawPoint (p, 1);
+            } 
+        }
+    }
+    
     
     public void drawIterationData() {
         //logger.debug("executing drawIterationData");
