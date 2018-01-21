@@ -66,6 +66,7 @@ public class VisualizerFX implements IVisualizer {
     private double colorUpper = 360;
     
     private boolean colorblindMode = false;
+    private boolean highlight = false;
     
     private int pSize = 5;
     private int cSize = 5;
@@ -143,6 +144,14 @@ public class VisualizerFX implements IVisualizer {
     
     public boolean getColorblindMode () {
         return colorblindMode;
+    }
+    
+    public void setHighlight (boolean highlight) {
+        this.highlight = highlight;
+    }
+    
+    public boolean getHighlight () {
+        return highlight;
     }
     
     public void setAlgorithm (Algorithm algorithm) {
@@ -341,7 +350,7 @@ public class VisualizerFX implements IVisualizer {
     }
     
     private void setColorValueChunk () {
-        colorValueChunk = (colorUpper - colorLower) / (data.getK()+1);
+        colorValueChunk = (colorUpper - colorLower) / (data.getK());
     }
     
     private double getHueByID (int id) {
@@ -618,6 +627,10 @@ public class VisualizerFX implements IVisualizer {
                 } else if (iteration == data.getIterations()-1) {
                     gc.setFill(Color.BLACK);
                     gc.fillText("converged", canvas.getWidth()/20, canvas.getHeight()/20);
+                }
+                
+                if (highlight) {
+                    gc.strokeRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 }
             } else if (data.getAlgorithm() == Algorithm.DBSCAN) {
 
