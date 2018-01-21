@@ -155,12 +155,12 @@ public class ClusteringController extends AnchorPane implements Initializable {
     private String algorithm;
     private String initMode;
     private ArrayList<Point> clusterCenters;
-    private ArrayList<ArrayList<String>> hashedPoints;
-    private ArrayList<ArrayList<ArrayList<String>>> hashedCenters;
+    private ArrayList<ArrayList<Point>> hashedPoints;
+    private ArrayList<ArrayList<ArrayList<Point>>> hashedCenters;
     private double canvasHeightOnHash;
     private double canvasWidthOnHash;
-    private ArrayList<ArrayList<String>> hashedPointsMinor;
-    private ArrayList<ArrayList<ArrayList<String>>> hashedCentersMinor;
+    private ArrayList<ArrayList<Point>> hashedPointsMinor;
+    private ArrayList<ArrayList<ArrayList<Point>>> hashedCentersMinor;
     private double canvasHeightOnHashMinor;
     private double canvasWidthOnHashMinor;
     
@@ -1348,19 +1348,31 @@ public class ClusteringController extends AnchorPane implements Initializable {
             x = (int) (x * (canvasWidthOnHash / kmeansCanvasMain.getWidth()));
             y = (int) (y * (canvasHeightOnHash / kmeansCanvasMain.getHeight()));
             
+            Point hoveredCenter = null, hoveredPoint = null;
             String msg = "";
+            int clusterToHighlight = -1;
             
             try {
-                msg = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
-                dummy = (msg != null);
+                hoveredCenter = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
+                dummy = (hoveredCenter != null);
+                if (dummy) {
+                    msg = "x: " + hoveredCenter.getX() + ", y: " + hoveredCenter.getY()
+                                + "\nCluster ID:   " + hoveredCenter.getClusterNumber() 
+                                + "\nCluster size: " + hoveredCenter.getClusterSize();
+                    clusterToHighlight = hoveredCenter.getClusterNumber();
+                }
             } catch (Exception e) {
                 //logger.debug(e.getMessage());
             }
             
             try {
                 if (!dummy) {
-                    msg = hashedPoints.get(x).get(y);
-                    dummy = (msg != null);
+                    hoveredPoint = hashedPoints.get(x).get(y);
+                    dummy = (hoveredPoint != null);
+                    if (dummy) {
+                        msg = "x: " + hoveredPoint.getX() + ", y: " + hoveredPoint.getY();
+                        clusterToHighlight = hoveredPoint.getClusterNumber();
+                    }
                 }
             } catch (Exception e) {
                 //logger.debug(e.getMessage());
@@ -1368,7 +1380,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             if (dummy) {
                 mousePositionToolTip.setText(msg);
-                visualizer.highlightCluster(1); //test
+                visualizer.highlightCluster(clusterToHighlight);
                 
                 Node node = (Node) event.getSource();
                 mousePositionToolTip.show(node, event.getScreenX() + 50, event.getScreenY());
@@ -1408,23 +1420,35 @@ public class ClusteringController extends AnchorPane implements Initializable {
             boolean dummy = false;
             int x = (int) event.getX() - 1;
             int y = (int) event.getY() - 1;
-                        
+            
             x = (int) (x * (canvasWidthOnHashMinor / kmeansCanvasMinor.getWidth()));
             y = (int) (y * (canvasHeightOnHashMinor / kmeansCanvasMinor.getHeight()));
-                        
+            
+            Point hoveredCenter = null, hoveredPoint = null;
             String msg = "";
+            int clusterToHighlight = -1;
             
             try {
-                msg = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
-                dummy = (msg != null);
+                hoveredCenter = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
+                dummy = (hoveredCenter != null);
+                if (dummy) {
+                    msg = "x: " + hoveredCenter.getX() + ", y: " + hoveredCenter.getY()
+                                + "\nCluster ID:   " + hoveredCenter.getClusterNumber() 
+                                + "\nCluster size: " + hoveredCenter.getClusterSize();
+                    clusterToHighlight = hoveredCenter.getClusterNumber();
+                }
             } catch (Exception e) {
                 //logger.debug(e.getMessage());
             }
             
             try {
                 if (!dummy) {
-                    msg = hashedPointsMinor.get(x).get(y);
-                    dummy = (msg != null);
+                    hoveredPoint = hashedPointsMinor.get(x).get(y);
+                    dummy = (hoveredPoint != null);
+                    if (dummy) {
+                        msg = "x: " + hoveredPoint.getX() + ", y: " + hoveredPoint.getY();
+                        clusterToHighlight = hoveredPoint.getClusterNumber();
+                    }
                 }
             } catch (Exception e) {
                 //logger.debug(e.getMessage());
@@ -1432,10 +1456,13 @@ public class ClusteringController extends AnchorPane implements Initializable {
             
             if (dummy) {
                 mousePositionToolTipMinor.setText(msg);
+                visualizerMinor.highlightCluster(clusterToHighlight);
                 
-                if (!isLinked) mousePositionToolTipMinor.show(kmeansParentPaneMinor, event.getScreenX() + 50, event.getScreenY());
+                Node node = (Node) event.getSource();
+                mousePositionToolTipMinor.show(node, event.getScreenX() + 50, event.getScreenY());
             } else {
                 mousePositionToolTipMinor.hide();
+                visualizerMinor.draw();
             }
         });
         

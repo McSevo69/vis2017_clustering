@@ -634,15 +634,15 @@ public class VisualizerFX implements IVisualizer {
         canvas.heightProperty().addListener(evt -> draw());
     }
     
-    public ArrayList<ArrayList<ArrayList<String>>> hashCenters (Data data) {
+    public ArrayList<ArrayList<ArrayList<Point>>> hashCenters (Data data) {
         double width = canvas.getWidth();
         double height = canvas.getHeight();
-        ArrayList<ArrayList<ArrayList<String>>> centers = new ArrayList<ArrayList<ArrayList<String>>>();
+        ArrayList<ArrayList<ArrayList<Point>>> centers = new ArrayList<>();
         
         for (int k = 0; k < data.getCenters().size(); ++k) {
-            centers.add(new ArrayList<ArrayList<String>>());
+            centers.add(new ArrayList<>());
             for (int i = 0; i < width; ++i) {
-                centers.get(k).add(new ArrayList<String>());
+                centers.get(k).add(new ArrayList<>());
                 for (int j = 0; j < height; ++j) {
                     centers.get(k).get(i).add(null);
                 }
@@ -654,10 +654,10 @@ public class VisualizerFX implements IVisualizer {
             for (Point p : list) {
                 for (int j = 0; j < cSize; ++j) {
                     for (int k = 0; k < cSize; ++k) {
-                        String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY())
-                                + "\nCluster ID:   " + p.getClusterNumber() 
-                                + "\nCluster size: " + p.getClusterSize();
-                        centers.get(i).get((int) normalizeX(p.getX()) + j).set((int) normalizeY(p.getY()) + k, msg);
+                        //String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY())
+                          //      + "\nCluster ID:   " + p.getClusterNumber() 
+                            //    + "\nCluster size: " + p.getClusterSize();
+                        centers.get(i).get((int) normalizeX(p.getX()) + j).set((int) normalizeY(p.getY()) + k, new Point(p));
                     }
                 }
             }
@@ -678,13 +678,13 @@ public class VisualizerFX implements IVisualizer {
         return centers;
     }
     
-    public ArrayList<ArrayList<String>> hashPoints (Data data) {
+    public ArrayList<ArrayList<Point>> hashPoints (Data data) {
         double width = canvas.getWidth();
         double height = canvas.getHeight();
-        ArrayList<ArrayList<String>> points = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<Point>> points = new ArrayList<>();
         
         for (int i = 0; i < width; ++i) {
-            points.add(new ArrayList<String>());
+            points.add(new ArrayList<>());
             for (int j = 0; j < height; ++j) {
                 points.get(i).add(null);
             }
@@ -693,8 +693,8 @@ public class VisualizerFX implements IVisualizer {
         for (Point p : data.getIterationData(0)) {
             for (int i = 0; i < pSize; ++i) {
                 for (int j = 0; j < pSize; ++j) {
-                    String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY());
-                    points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, msg);
+                    //String msg = "x: " + (int) normalizeX(p.getX()) + ", y: " + (int) normalizeY(p.getY());
+                    points.get((int) normalizeX(p.getX()) + i).set((int) normalizeY(p.getY()) + j, new Point(p));
                 }
             }
         }
