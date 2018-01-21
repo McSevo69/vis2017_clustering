@@ -1276,7 +1276,6 @@ public class ClusteringController extends AnchorPane implements Initializable {
         shapesCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             //logger.debug("Show data points: " + newValue.toString());
             visualizer.setColorblindMode(newValue);
-            for (VisualizerFX vis : multiples) vis.setColorblindMode(newValue);
         });
         
         shapesCheckBoxMinor.selectedProperty().addListener((observable, oldValue, newValue) -> {
