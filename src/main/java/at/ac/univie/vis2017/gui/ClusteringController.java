@@ -1376,7 +1376,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 hoveredCenter = hashedCenters.get(visualizer.getIteration()).get(x).get(y);
                 dummy = (hoveredCenter != null);
                 if (dummy) {
-                    msg = "x: " + hoveredCenter.getX() + ", y: " + hoveredCenter.getY()
+                    msg = "x: " + (int) hoveredCenter.getX() + ", y: " + (int) hoveredCenter.getY()
                                 + "\nCluster ID:   " + hoveredCenter.getClusterNumber() 
                                 + "\nCluster size: " + hoveredCenter.getClusterSize();
                     clusterToHighlight = hoveredCenter.getClusterNumber();
@@ -1390,7 +1390,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     hoveredPoint = hashedPoints.get(x).get(y);
                     dummy = (hoveredPoint != null);
                     if (dummy) {
-                        msg = "x: " + hoveredPoint.getX() + ", y: " + hoveredPoint.getY();
+                        msg = "x: " + (int) hoveredPoint.getX() + ", y: " + (int) hoveredPoint.getY();
                         clusterToHighlight = hoveredPoint.getClusterNumber();
                     }
                 }
@@ -1452,7 +1452,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                 hoveredCenter = hashedCentersMinor.get(visualizerMinor.getIteration()).get(x).get(y);
                 dummy = (hoveredCenter != null);
                 if (dummy) {
-                    msg = "x: " + hoveredCenter.getX() + ", y: " + hoveredCenter.getY()
+                    msg = "x: " + (int) hoveredCenter.getX() + ", y: " + (int) hoveredCenter.getY()
                                 + "\nCluster ID:   " + hoveredCenter.getClusterNumber() 
                                 + "\nCluster size: " + hoveredCenter.getClusterSize();
                     clusterToHighlight = hoveredCenter.getClusterNumber();
@@ -1466,7 +1466,7 @@ public class ClusteringController extends AnchorPane implements Initializable {
                     hoveredPoint = hashedPointsMinor.get(x).get(y);
                     dummy = (hoveredPoint != null);
                     if (dummy) {
-                        msg = "x: " + hoveredPoint.getX() + ", y: " + hoveredPoint.getY();
+                        msg = "x: " + (int) hoveredPoint.getX() + ", y: " + (int) hoveredPoint.getY();
                         clusterToHighlight = hoveredPoint.getClusterNumber();
                     }
                 }
